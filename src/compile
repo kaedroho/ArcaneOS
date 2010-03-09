@@ -1,0 +1,98 @@
+#!/bin/bash
+
+echo "Assembling... start.asm"
+nasm -f aout -o obj/start.asm.o kernel/start.asm
+
+echo "Compiling... sys.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/sys.o kernel/sys.c
+
+echo "Compiling... gdt.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/gdt.o kernel/gdt.c
+
+echo "Assembling... gdt.asm"
+nasm -f aout -o obj/gdt.asm.o kernel/gdt.asm
+
+echo "Compiling... idt.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/idt.o kernel/idt.c
+
+echo "Assembling... idt.asm"
+nasm -f aout -o obj/idt.asm.o kernel/idt.asm
+
+echo "Compiling... isr.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/isr.o kernel/isr.c
+
+echo "Assembling... isr.asm"
+nasm -f aout -o obj/isr.asm.o kernel/isr.asm
+
+echo "Compiling... irq.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/irq.o kernel/irq.c
+
+echo "Assembling... irq.asm"
+nasm -f aout -o obj/irq.asm.o kernel/irq.asm
+
+echo "Compiling... timer.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/timer.o kernel/timer.c
+
+echo "Compiling... kb.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/kb.o kernel/kb.c
+
+echo "Compiling... cli.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/cli.o kernel/cli.c
+
+echo "Compiling... libs/memory.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/libs/memory.o kernel/libs/memory.c
+
+echo "Compiling... libs/string.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/libs/string.o kernel/libs/string.c
+
+echo "Compiling... libs/rect.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/libs/rect.o kernel/libs/rect.c
+
+echo "Compiling... video/video.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/video/video.o kernel/video/video.c
+
+echo "Compiling... video/vga.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/video/vga.o kernel/video/vga.c
+
+echo "Compiling... ui/ui.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/ui/ui.o kernel/ui/ui.c
+
+echo "Compiling... ui/headerfooter.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/ui/headerfooter.o kernel/ui/headerfooter.c
+
+echo "Compiling... ui/tabs/programs.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/ui/tabs/programs.o kernel/ui/tabs/programs.c
+
+echo "Compiling... ui/tabs/folders.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/ui/tabs/folders.o kernel/ui/tabs/folders.c
+
+echo "Compiling... ui/tabs/settings.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/ui/tabs/settings.o kernel/ui/tabs/settings.c
+
+echo "Compiling... ui/tabs/terminal.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/ui/tabs/terminal.o kernel/ui/tabs/terminal.c
+
+echo "Compiling... ui/tabs/about.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/ui/tabs/about.o kernel/ui/tabs/about.c
+
+echo "Compiling... ui/programs/crashtest.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/ui/programs/crashtest.o kernel/ui/programs/crashtest.c
+
+echo "Compiling... main.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/main.o kernel/main.c
+
+echo "Linking... kernel.bin"
+ld -T link.ld -o bin/kernel.bin obj/start.asm.o obj/sys.o obj/gdt.asm.o obj/gdt.o obj/idt.asm.o obj/idt.o obj/isr.asm.o obj/isr.o obj/irq.asm.o obj/irq.o obj/timer.o obj/kb.o obj/cli.o obj/libs/memory.o obj/libs/string.o obj/libs/rect.o obj/video/video.o obj/video/vga.o obj/ui/ui.o obj/ui/headerfooter.o obj/ui/tabs/programs.o obj/ui/tabs/folders.o obj/ui/tabs/settings.o obj/ui/tabs/terminal.o obj/ui/tabs/about.o obj/main.o
+
+echo "Updating floppy image... floppy.img"
+sudo /sbin/losetup /dev/loop0 img/floppy.img
+sudo mkdir Mount
+sudo mount /dev/loop0 Mount
+sudo cp bin/kernel.bin Mount/kernel.bin
+sudo cp img/menu.lst Mount/boot/grub/menu.lst
+sudo umount /dev/loop0
+sudo /sbin/losetup -d /dev/loop0
+sudo rmdir Mount
+
+
+echo "Done!"
