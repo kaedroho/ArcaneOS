@@ -12,7 +12,7 @@ void program_crashtest_main()
 
 
 //Endless loop
-    while(program_crashtest_exit=0);
+    while(program_crashtest_exit==0);
 }
 
 void program_crashtest_kbhandler(unsigned char scancode)
