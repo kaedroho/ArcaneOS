@@ -33,6 +33,24 @@ void ui_tab_programs_drawlist()
 //Position cursor at beginning
     cli_positioncursor(0,0);
 
+//Loop through programs
+    unsigned int i;
+    for(i=0;i<ui_tab_program_programcount;i++)
+    {
+        cli_putch('\n');
+        if(i==ui_tab_program_currentselectedprogram)
+        {
+            cli_settextcolour(0xF0);
+            cli_putch('[');
+            cli_puts(ui_tab_program_programlist[i].name);
+            cli_putch(']');
+            cli_settextcolour(0x0F);
+        }else{
+            cli_putch('[');
+            cli_puts(ui_tab_program_programlist[i].name);
+            cli_putch(']');
+        }
+    }
 }
 
 void ui_tab_programs_start()
@@ -46,6 +64,7 @@ void ui_tab_programs_runprogram(unsigned int programid)
 //Clear the screen
     cli_cls();
     cli_setrect(0);
+    cli_positioncursor(0,0);
 
 //Set keyboard handler
     kb_setkeyboardhandler(ui_tab_program_programlist[programid].kbhandler);
@@ -66,7 +85,7 @@ void ui_tab_programs_kbhandler(unsigned char scancode)
 //Select program with up and down keys
     if(scancode==0x48)
     {
-        if(ui_tab_program_currentselectedprogram==ui_tab_program_programcount){
+        if(ui_tab_program_currentselectedprogram==ui_tab_program_programcount-1){
             ui_tab_program_currentselectedprogram=0;
         }else{
             ui_tab_program_currentselectedprogram++;
