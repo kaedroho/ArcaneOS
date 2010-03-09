@@ -2,7 +2,7 @@
 #include "cli.h"
 #include "ui/ui.h"
 
-void main()
+int main()
 {
 //Put loading message
     cli_puts("KdOS Loading...");
@@ -18,8 +18,6 @@ void main()
 
 //Start interrupts
     __asm__ __volatile__ ("sti");
-
-    cli_positioncursor(0,20);
 
 //Start ui
     ui_start();
