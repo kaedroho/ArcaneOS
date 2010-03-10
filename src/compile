@@ -60,6 +60,9 @@ gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -no
 echo "Compiling... video/text.c"
 gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/video/text.o kernel/video/text.c
 
+echo "Assembling... video/vga.asm"
+nasm -f aout -o obj/vga.asm.o kernel/vga.asm
+
 echo "Compiling... video/vga.c"
 gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/video/vga.o kernel/video/vga.c
 
