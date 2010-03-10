@@ -1,8 +1,10 @@
 #ifndef _PROGRAMS_H
 #define _PROGRAMS_H
 
-//Crashtest functions
-extern void program_crashtest_main();
-extern void program_crashtest_kbhandler(unsigned char scancode);
+//General functions
+extern void ui_tab_programs_endprogram();
 
+//Crashtest functions
+extern void program_crashtest_start();
+extern void program_crashtest_kbhandler(unsigned char scancode);
 #endif
