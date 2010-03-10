@@ -1,6 +1,7 @@
 #include "sys.h"
 #include "cli.h"
 #include "ui/ui.h"
+#include "boot.h"
 
 int main()
 {
