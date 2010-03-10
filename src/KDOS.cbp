@@ -34,6 +34,7 @@
 		<Unit filename="kernel/h/libs/rect.h" />
 		<Unit filename="kernel/h/libs/string.h" />
 		<Unit filename="kernel/h/sys.h" />
+		<Unit filename="kernel/h/ui/programs.h" />
 		<Unit filename="kernel/h/ui/ui.h" />
 		<Unit filename="kernel/h/video/video.h" />
 		<Unit filename="kernel/idt.asm" />
@@ -73,7 +74,6 @@
 		<Unit filename="kernel/ui/headerfooter.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel/ui/programs.h" />
 		<Unit filename="kernel/ui/programs/crashtest.c">
 			<Option compilerVar="CC" />
 		</Unit>
