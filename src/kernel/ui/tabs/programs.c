@@ -7,7 +7,7 @@ struct ui_tab_program_program
 {
    char *name;
     unsigned int namelength;
-    void (*main)();
+    void (*start)();
     void (*kbhandler)(unsigned char scancode);
 };
 
@@ -24,7 +24,7 @@ void ui_tab_programs_init()
 //Add crashtest
     ui_tab_program_programlist[0].name="Crashtest";
     ui_tab_program_programlist[0].namelength=sizeof("Crashtest");
-    ui_tab_program_programlist[0].main=program_crashtest_start;
+    ui_tab_program_programlist[0].start=program_crashtest_start;
     ui_tab_program_programlist[0].kbhandler=program_crashtest_kbhandler;
 }
 
@@ -69,9 +69,12 @@ void ui_tab_programs_runprogram(unsigned int programid)
 //Set keyboard handler
     kb_setkeyboardhandler(ui_tab_program_programlist[programid].kbhandler);
 
-//Call main function
-    ui_tab_program_programlist[programid].main();
+//Call start function
+    ui_tab_program_programlist[programid].start();
+}
 
+void ui_tab_programs_endprogram()
+{
 //Restart UI
     ui_start();
 }
@@ -104,8 +107,5 @@ void ui_tab_programs_kbhandler(unsigned char scancode)
 
 //Run program with enter key
     if(scancode==0x1C)
-    {
-    //Run program
         ui_tab_programs_runprogram(ui_tab_program_currentselectedprogram);
-    }
 }
