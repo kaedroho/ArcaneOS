@@ -8,9 +8,10 @@ video_vga_enable13:
     mov ah,0x00
     mov al,0x13
     int 0x10
-
+    ret
 global video_vga_disable
 video_vga_disable:
     mov ah,0x00
     mov al,0x03
     int 0x10
+    ret
