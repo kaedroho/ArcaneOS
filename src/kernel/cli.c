@@ -113,6 +113,39 @@ void cli_puts(char* string)
     }
 }
 
+void cli_putu32(unsigned int i, unsigned int base)
+{
+    char buffer[33] = {0};
+    int j;
+    for (j = 32; i || (j == 32); i /= base)
+    {
+         buffer[--j] = (i%base) + '0';
+         if (buffer[j] > '9')
+            buffer[j] += 'A'+1-'9';
+    }
+    cli_puts(buffer+j);
+}
+void cli_puti32(int i, unsigned int base)
+{
+    char buffer[33] = {0};
+    int j;
+
+    int is_signed = i < 0;
+    if (is_signed)
+        i = -i;
+
+    for (j = 32; i || (j == 32); i /= base)
+    {
+         buffer[--j] = (i%base) + '0';
+         if (buffer[j] > '9')
+            buffer[j] += 'A'+1-'9';
+    }
+
+    if (is_signed)
+        cli_putch('-');
+    cli_puts(buffer+j);
+}
+
 void cli_settextcolour(char colour)
 {
     g_CLI_DrawColour=colour;
