@@ -102,7 +102,7 @@ void ui_tab_programs_kbhandler(unsigned char scancode)
         ui_settab(1);
 
 //Select program with up and down keys
-    if(scancode==0x48)
+    if(scancode==0x50)
     {
         if(ui_tab_program_currentselectedprogram==ui_tab_program_programcount-1){
             ui_tab_program_currentselectedprogram=0;
@@ -111,7 +111,7 @@ void ui_tab_programs_kbhandler(unsigned char scancode)
         }
         ui_tab_programs_drawlist();
     }
-    if(scancode==0x50)
+    if(scancode==0x48)
     {
         if(ui_tab_program_currentselectedprogram==0){
             ui_tab_program_currentselectedprogram=ui_tab_program_programcount-1;

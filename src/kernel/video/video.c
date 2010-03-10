@@ -20,17 +20,21 @@ void video_init()
 
 void video_setdriver(struct video_driver* Driver)
 {
-//End current driver
-    if(video_currentdriver!=0)
-        if(video_currentdriver->end!=0)
-            video_currentdriver->end();
+//Check if the driver has changed
+    if(Driver!=video_currentdriver)
+    {
+    //End current driver
+        if(video_currentdriver!=0)
+            if(video_currentdriver->end!=0)
+                video_currentdriver->end();
 
-//Start new driver
-    if(Driver->start!=0)
-        Driver->start();
+    //Start new driver
+        if(Driver->start!=0)
+            Driver->start();
 
-//Set current driver
-    video_currentdriver=Driver;
+    //Set current driver
+        video_currentdriver=Driver;
+    }
 }
 
 void video_putchar(unsigned int x,unsigned int y,char character)
