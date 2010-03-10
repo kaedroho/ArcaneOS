@@ -2,22 +2,23 @@
 #include "ui/ui.h"
 #include "ui/programs.h"
 
-unsigned char program_crashtest_exit;
-void program_crashtest_main()
+void program_crashtest_start()
 {
-//Zero exit variable
-    program_crashtest_exit=0;
-
 //Print message
-
-
-//Endless loop
-    while(program_crashtest_exit==0);
+    cli_puts("Welcome to the ArcaneOS Crash Test!\n\n");
+    cli_puts("This test is designed to trigger the Red Screen of Death for testing purposes.\n");
+    cli_puts("Do not use this demo if you don't want to crash your system!\n");
+    cli_puts("This demo will not harm your computer.\n\n");
+    cli_puts("Press Enter to crash your computer\nPress Esc to quit this program.");
 }
 
 void program_crashtest_kbhandler(unsigned char scancode)
 {
 //Esc quits an application
-    if(scancode==0x73)
-        program_crashtest_exit=1;
+    if(scancode==0x01)
+        ui_tab_programs_endprogram();
+
+//Enter crashes the kernel
+    if(scancode==0x1C)
+        cli_positioncursor(20/0,20);
 }
