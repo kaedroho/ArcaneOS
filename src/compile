@@ -3,6 +3,9 @@
 echo "Assembling... start.asm"
 nasm -f aout -o obj/start.asm.o kernel/start.asm
 
+echo "Assembling... end.asm"
+nasm -f aout -o obj/end.asm.o kernel/end.asm
+
 echo "Compiling... sys.c"
 gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./kernel/h -c -o obj/sys.o kernel/sys.c
 
@@ -91,7 +94,7 @@ echo "Compiling... main.c"
 gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/main.o kernel/main.c
 
 echo "Linking... kernel.bin"
-ld -T link.ld -o bin/kernel.bin obj/start.asm.o obj/sys.o obj/boot.o obj/gdt.asm.o obj/gdt.o obj/idt.asm.o obj/idt.o obj/isr.asm.o obj/isr.o obj/irq.asm.o obj/irq.o obj/timer.o obj/kb.o obj/cli.o obj/libs/memory.o obj/libs/string.o obj/libs/rect.o obj/video/video.o obj/video/text.o obj/video/vga.o obj/ui/ui.o obj/ui/headerfooter.o obj/ui/tabs/programs.o obj/ui/tabs/folders.o obj/ui/tabs/settings.o obj/ui/tabs/terminal.o obj/ui/tabs/about.o obj/ui/programs/crashtest.o obj/ui/programs/debuginfo.o obj/main.o
+ld -T link.ld -o bin/kernel.bin obj/start.asm.o obj/sys.o obj/boot.o obj/gdt.asm.o obj/gdt.o obj/idt.asm.o obj/idt.o obj/isr.asm.o obj/isr.o obj/irq.asm.o obj/irq.o obj/timer.o obj/kb.o obj/cli.o obj/libs/memory.o obj/libs/string.o obj/libs/rect.o obj/video/video.o obj/video/text.o obj/video/vga.o obj/ui/ui.o obj/ui/headerfooter.o obj/ui/tabs/programs.o obj/ui/tabs/folders.o obj/ui/tabs/settings.o obj/ui/tabs/terminal.o obj/ui/tabs/about.o obj/ui/programs/crashtest.o obj/ui/programs/debuginfo.o obj/main.o obj/end.asm.o
 
 echo "Updating floppy image... floppy.img"
 sudo /sbin/losetup /dev/loop0 img/floppy.img

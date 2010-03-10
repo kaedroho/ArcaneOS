@@ -4,6 +4,9 @@
 #include "boot.h"
 #include "video/video.h"
 
+extern void start();
+extern void kernel_end();
+
 int main()
 {
 //Start video driver
@@ -24,6 +27,10 @@ int main()
 
 //Start interrupts
     __asm__ __volatile__ ("sti");
+
+    //cli_puts("\n\nStart: 0x"); cli_putu32((unsigned int)&start,16);
+    //cli_puts("\n\nEnd: 0x"); cli_putu32((unsigned int)&kernel_end,16);
+    //for (;;);
 
 //Start ui
     ui_start();
