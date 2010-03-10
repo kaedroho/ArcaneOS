@@ -24,7 +24,7 @@ void ui_tab_programs_init()
 //Add crashtest
     ui_tab_program_programlist[0].name="Crashtest";
     ui_tab_program_programlist[0].namelength=sizeof("Crashtest");
-    ui_tab_program_programlist[0].main=program_crashtest_main;
+    ui_tab_program_programlist[0].main=program_crashtest_start;
     ui_tab_program_programlist[0].kbhandler=program_crashtest_kbhandler;
 }
 
