@@ -2,7 +2,6 @@
 #include "cli.h"
 #include "ui/ui.h"
 
-//lol
 void ui_drawheaderandfooter()
 {
 //Header
@@ -12,5 +11,5 @@ void ui_drawheaderandfooter()
 //Footer
     cli_positioncursor(0,23);
     cli_puts("================================================================================");
-    cli_puts("                            Copyright Karl Hobley 2010");
+    cli_puts("                 Copyright Karl Hobley and Diggory Blake 2010");
 }
