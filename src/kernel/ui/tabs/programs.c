@@ -2,6 +2,7 @@
 #include "ui/ui.h"
 #include "cli.h"
 #include "ui/programs.h"
+#include "video/video.h"
 
 struct ui_tab_program_program
 {
@@ -13,12 +14,12 @@ struct ui_tab_program_program
 
 unsigned int ui_tab_program_programcount;
 unsigned int ui_tab_program_currentselectedprogram;
-struct ui_tab_program_program ui_tab_program_programlist[2];
+struct ui_tab_program_program ui_tab_program_programlist[3];
 
 void ui_tab_programs_init()
 {
 //Zero variables
-    ui_tab_program_programcount=2;
+    ui_tab_program_programcount=3;
     ui_tab_program_currentselectedprogram=0;
 
 //Add crashtest
@@ -32,6 +33,12 @@ void ui_tab_programs_init()
     ui_tab_program_programlist[1].namelength=sizeof("Debug Info");
     ui_tab_program_programlist[1].start=program_debuginfo_start;
     ui_tab_program_programlist[1].kbhandler=program_debuginfo_kbhandler;
+
+//Add VGA test
+    ui_tab_program_programlist[2].name="VGA Test";
+    ui_tab_program_programlist[2].namelength=sizeof("VGA Test");
+    ui_tab_program_programlist[2].start=program_vgatest_start;
+    ui_tab_program_programlist[2].kbhandler=program_vgatest_kbhandler;
 }
 
 void ui_tab_programs_drawlist()
@@ -81,6 +88,9 @@ void ui_tab_programs_runprogram(unsigned int programid)
 
 void ui_tab_programs_endprogram()
 {
+//Set to text mode
+    video_setdriver(video_text_getdriver());
+
 //Restart UI
     ui_start();
 }
