@@ -2,7 +2,7 @@
 #include "cli.h"
 #include "ui/ui.h"
 
-
+//lol
 void ui_drawheaderandfooter()
 {
 //Header
