@@ -7,4 +7,7 @@ extern void ui_tab_programs_endprogram();
 //Crashtest functions
 extern void program_crashtest_start();
 extern void program_crashtest_kbhandler(unsigned char scancode);
+
+extern void program_debuginfo_start();
+extern void program_debuginfo_kbhandler(unsigned char scancode);
 #endif
