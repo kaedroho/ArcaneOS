@@ -1,25 +1,12 @@
 #include "sys.h"
 #include "cli.h"
 #include "libs/rect.h"
-
-//TODO: Put the text parts of this file into video/text.c
+#include "video/video.h"
 
 unsigned char g_CLI_DrawColour=0x0F;
 unsigned char g_CLI_CursorX=0;
 unsigned char g_CLI_CursorY=0;
 struct Rect* g_CLI_Rect;
-
-void cli_updatecursor()
-{
-//Get cursor postion
-    unsigned short position=(cli_offsetx()+g_CLI_CursorX)+(cli_offsety()+g_CLI_CursorY)*80;
-
-//Send the position to the VGA controller
-    outb(0x3D4,14);
-    outb(0x3D5,position>>8);
-    outb(0x3D4,15);
-    outb(0x3D5,position);
-}
 
 void cli_scrolldown()
 {
@@ -32,20 +19,14 @@ void cli_scrolldown()
     {
         for(collumn=cli_offsetx();collumn<cli_width()+cli_offsetx();collumn++)
         {
-            unsigned short* positiona=(unsigned short*)0xB8000;
-            positiona=positiona+(collumn+row*80);
-            unsigned short* positionb=(unsigned short*)0xB8000;
-            positionb=positionb+(collumn+(row+1)*80);
-            *positiona=*positionb;
+            video_putchar(collumn,row,video_getchar(collumn,row+1));
+            video_putpixel(collumn,row,video_getpixel(collumn,row+1));
         }
     }
 
 //Clear bottom row
     for(collumn=cli_offsetx();collumn<cli_width()+cli_offsetx();collumn++)
-    {
-        unsigned short* position=(unsigned short*)0xB8000+collumn+(cli_offsety()+cli_height()-1)*80;
-        *position=0;
-    }
+        video_putchar(collumn,cli_offsety()+cli_height()-1,0);
 
 //Move cursor up
     g_CLI_CursorY--;
@@ -64,9 +45,10 @@ void cli_putch(char character)
             return;
         }
     }
-//Calculate position in memory to put the character
-    unsigned short* position=(unsigned short*)0xB8000;
-    position=position+((cli_offsetx()+g_CLI_CursorX)+(cli_offsety()+g_CLI_CursorY)*80);
+
+//Calculate position in to put the character
+    unsigned int positionx=cli_offsetx()+g_CLI_CursorX;
+    unsigned int positiony=cli_offsety()+g_CLI_CursorY;
 
 //Check if the character is a new line
     if(character=='\n')
@@ -76,11 +58,12 @@ void cli_putch(char character)
         g_CLI_CursorX=cli_offsetx();
     }else if(character=='\r')
     {
-    //Carriage return
+    //Return
         g_CLI_CursorX=cli_offsetx();
     }else{
     //Put the character there
-        *position=g_CLI_DrawColour<<8|character;
+        video_putchar(positionx,positiony,character);
+        video_putpixel(positionx,positiony,g_CLI_DrawColour);
 
     //Increase cursor position if the character is not null
         if(character!=0)
@@ -99,7 +82,7 @@ void cli_putch(char character)
         cli_scrolldown();
 
 //Update cursor
-    cli_updatecursor();
+    video_positioncursor(cli_offsetx()+g_CLI_CursorX,cli_offsety()+g_CLI_CursorY);
 }
 
 void cli_puts(char* string)
@@ -154,34 +137,32 @@ void cli_settextcolour(char colour)
 void cli_cls()
 {
 //Variables
-    unsigned short* position=(unsigned short*)0xB8000;
-    unsigned short i=0;
+    unsigned short x;
+    unsigned short y;
 
 //Clear the screen
-    for(i=0;i<2000;i++)
-    {
-        *position=g_CLI_DrawColour<<8;
-        position++;
-    }
+    for(x=0;x<video_gettextcollumns();x++)
+        for(y=0;y<video_gettextrows();y++)
+        {
+            video_putpixel(x,y,g_CLI_DrawColour);
+            video_putchar(x,y,0);
+        }
 
 }
 
 void cli_clrect()
 {
 //Variables
-    unsigned short* position=(unsigned short*)0xB8000;
     unsigned short x;
     unsigned short y;
 
 //Clear the screen
     for(x=cli_offsetx();x<cli_offsetx()+cli_width();x++)
-    {
         for(y=cli_offsety();y<cli_offsety()+cli_height();y++)
         {
-            position=(unsigned short*)0xB8000+x+y*80;
-            *position=g_CLI_DrawColour<<8;
+            video_putpixel(x,y,g_CLI_DrawColour);
+            video_putchar(x,y,0);
         }
-    }
 
 }
 
@@ -192,7 +173,7 @@ void cli_positioncursor(unsigned char x,unsigned char y)
     g_CLI_CursorY=y;
 
 //Update cursor
-    cli_updatecursor();
+    video_positioncursor(cli_offsetx()+g_CLI_CursorX,cli_offsety()+g_CLI_CursorY);
 }
 
 void cli_setrect(struct Rect* Rect)
