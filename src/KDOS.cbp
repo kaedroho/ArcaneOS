@@ -84,6 +84,9 @@
 		<Unit filename="kernel/ui/programs/debuginfo.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="kernel/ui/programs/vgatest.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="kernel/ui/tabs/about.c">
 			<Option compilerVar="CC" />
 		</Unit>
