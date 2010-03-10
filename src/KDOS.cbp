@@ -22,6 +22,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="kernel\boot.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="kernel\cli.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -106,7 +109,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
-			<code_completion />
+			<code_completion>
+				<search_path add="kernel\h" />
+			</code_completion>
 			<debugger />
 		</Extensions>
 	</Project>

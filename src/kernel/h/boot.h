@@ -5,10 +5,10 @@
 
 struct multiboot_device
 {
-    unsigned char drive;
-    unsigned char part1;
-    unsigned char part2;
     unsigned char part3;
+    unsigned char part2;
+    unsigned char part1;
+    unsigned char drive;
 } __attribute__((packed));
 
 struct multiboot_module
@@ -98,5 +98,7 @@ struct multiboot_information
     unsigned short vbe_interface_len;
 
 } __attribute__((packed));
+
+extern struct multiboot_information* get_multiboot_info();
 
 #endif // BOOT_H_INCLUDED

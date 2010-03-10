@@ -35,6 +35,10 @@ mboot:
 
 ;Call kernel main funciton
 stublet:
+    ; Get multiboot info from bootloader
+    extern g_multiboot_info
+    mov [g_multiboot_info], ebx
+
     extern main
     call main
     jmp $
