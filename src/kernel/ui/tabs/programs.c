@@ -13,12 +13,12 @@ struct ui_tab_program_program
 
 unsigned int ui_tab_program_programcount;
 unsigned int ui_tab_program_currentselectedprogram;
-struct ui_tab_program_program ui_tab_program_programlist[1];
+struct ui_tab_program_program ui_tab_program_programlist[2];
 
 void ui_tab_programs_init()
 {
 //Zero variables
-    ui_tab_program_programcount=1;
+    ui_tab_program_programcount=2;
     ui_tab_program_currentselectedprogram=0;
 
 //Add crashtest
@@ -26,6 +26,12 @@ void ui_tab_programs_init()
     ui_tab_program_programlist[0].namelength=sizeof("Crashtest");
     ui_tab_program_programlist[0].start=program_crashtest_start;
     ui_tab_program_programlist[0].kbhandler=program_crashtest_kbhandler;
+
+//Add debug info
+    ui_tab_program_programlist[1].name="Debug Info";
+    ui_tab_program_programlist[1].namelength=sizeof("Debug Info");
+    ui_tab_program_programlist[1].start=program_debuginfo_start;
+    ui_tab_program_programlist[1].kbhandler=program_debuginfo_kbhandler;
 }
 
 void ui_tab_programs_drawlist()
