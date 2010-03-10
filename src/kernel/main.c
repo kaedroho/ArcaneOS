@@ -2,9 +2,14 @@
 #include "cli.h"
 #include "ui/ui.h"
 #include "boot.h"
+#include "video/video.h"
 
 int main()
 {
+//Start video driver
+    video_init();
+    video_setdriver(video_text_getdriver());
+
 //Put loading message
     cli_puts("ArcaneOS Loading...\n");
 
