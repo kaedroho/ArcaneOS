@@ -4,7 +4,7 @@
 struct memory_page_allocator
 {
     unsigned long page_size;
-    void* (*alloc)(unsigned int size);
+    void* (*alloc)();
     void (*free)(void* ptr);
 };
 
@@ -15,7 +15,10 @@ struct memory_manager
 
 extern void mm_init_stack_page_allocator();
 
-extern void* mm_page_alloc(unsigned int size);
+extern void* mm_page_alloc();
 extern void mm_page_free(void* ptr);
+extern void mm_init();
+
+extern unsigned int mm_reserved_end;
 
 #endif // MM_H_INCLUDED

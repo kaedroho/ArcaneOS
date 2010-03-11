@@ -1,14 +1,22 @@
 #include "mm.h"
 #include "boot.h"
 #include "cli.h"
+#include "paging.h"
 
 extern void start();
 
+unsigned int mm_reserved_end = 0x120000;
+
 struct memory_manager g_memory_manager;
 
-void* mm_page_alloc(unsigned int size)
+void mm_init()
 {
-    return g_memory_manager.page_allocator.alloc(size);
+    // Use a stack based page allocator
+    mm_init_stack_page_allocator();
+}
+void* mm_page_alloc()
+{
+    return g_memory_manager.page_allocator.alloc();
 }
 void mm_page_free(void* ptr)
 {
@@ -21,13 +29,25 @@ unsigned int* spa_stack_base;
 unsigned int* spa_stack_ptr;
 unsigned int spa_page_count;
 
-void* mm_stack_page_allocator_alloc(unsigned int size)
+void* mm_stack_page_allocator_alloc()
 {
-    return (void*)(g_memory_manager.page_allocator.page_size * *(spa_stack_ptr--));
+    unsigned int ptr = *(spa_stack_ptr--);
+
+    // Map page as present
+    struct pg_directory* cur_dir = pg_get_directory();
+    if (cur_dir)
+        pg_map_page(cur_dir,ptr,ptr,1,1);
+
+    return (void*)(g_memory_manager.page_allocator.page_size * ptr);
 }
 
 void mm_stack_page_allocator_free(void* ptr)
 {
+    // Map page as not present
+    struct pg_directory* cur_dir = pg_get_directory();
+    if (cur_dir)
+        pg_map_page(cur_dir,(unsigned int)ptr,(unsigned int)ptr,1,0);
+
     *(++spa_stack_ptr) = (unsigned int)ptr / g_memory_manager.page_allocator.page_size;
 }
 
@@ -38,10 +58,12 @@ void mm_init_stack_page_allocator()
     struct multiboot_information* boot_info = get_multiboot_info();
 
     unsigned int mem_top = ((boot_info->mem_upper+1024)*1024/page_size);            // Usable memory end in page size bytes
-    unsigned int mem_bottom = ((unsigned int)&start + 0x10000 + page_size-1)/page_size;  // Usable memory start in page size bytes
+    unsigned int mem_bottom = mm_reserved_end/page_size;                            // Usable memory start in page size bytes
 
     unsigned int mem_stack = (mem_top-mem_bottom)*4;
     mem_stack = (mem_stack+page_size-1)/page_size;                                  // Number of page size bytes used for page stack
+
+    mm_reserved_end += mem_stack*page_size;
 
     spa_stack_base = (unsigned int*)(mem_bottom*page_size);
     mem_bottom += mem_stack;
