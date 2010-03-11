@@ -25,6 +25,7 @@ int main()
     timer_init();
     kb_init();
     ui_init();
+    cpuid_init();
 
 //Start interrupts
     __asm__ __volatile__ ("sti");
@@ -34,6 +35,10 @@ int main()
     void* ptr1 = mm_page_alloc(1);
     void* ptr2 = mm_page_alloc(1);
 
+    struct cpuid_struct* cpuidstruct=cpuid_getstruct();
+    cli_puts("Vendor: ");cli_puts(cpuidstruct->vendor);cli_putch('\n');
+
+//Start ui
     cli_puts("\n\nAllocated page 1: 0x"); cli_putu32((unsigned int)ptr1,16);
     cli_puts("\n\nAllocated page 2: 0x"); cli_putu32((unsigned int)ptr2,16);
     for (;;);
