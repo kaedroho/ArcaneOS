@@ -7,8 +7,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="bin\Release\KDOS" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\Release\" />
+				<Option output="bin/Release/KDOS" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -22,102 +22,106 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="kernel\boot.c">
+		<Unit filename="kernel/boot.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\cli.c">
+		<Unit filename="kernel/cli.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\end.asm" />
-		<Unit filename="kernel\gdt.asm" />
-		<Unit filename="kernel\gdt.c">
+		<Unit filename="kernel/cpuid.asm" />
+		<Unit filename="kernel/cpuid.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\h\boot.h" />
-		<Unit filename="kernel\h\cli.h" />
-		<Unit filename="kernel\h\libs\memory.h" />
-		<Unit filename="kernel\h\libs\rect.h" />
-		<Unit filename="kernel\h\libs\string.h" />
-		<Unit filename="kernel\h\mm.h" />
-		<Unit filename="kernel\h\sys.h" />
-		<Unit filename="kernel\h\ui\programs.h" />
-		<Unit filename="kernel\h\ui\ui.h" />
-		<Unit filename="kernel\h\video\video.h" />
-		<Unit filename="kernel\idt.asm" />
-		<Unit filename="kernel\idt.c">
+		<Unit filename="kernel/end.asm" />
+		<Unit filename="kernel/gdt.asm" />
+		<Unit filename="kernel/gdt.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\irq.asm" />
-		<Unit filename="kernel\irq.c">
+		<Unit filename="kernel/h/boot.h" />
+		<Unit filename="kernel/h/cli.h" />
+		<Unit filename="kernel/h/libs/memory.h" />
+		<Unit filename="kernel/h/libs/rect.h" />
+		<Unit filename="kernel/h/libs/string.h" />
+		<Unit filename="kernel/h/mm.h" />
+		<Unit filename="kernel/h/sys.h" />
+		<Unit filename="kernel/h/ui/programs.h" />
+		<Unit filename="kernel/h/ui/ui.h" />
+		<Unit filename="kernel/h/video/video.h" />
+		<Unit filename="kernel/idt.asm" />
+		<Unit filename="kernel/idt.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\isr.asm" />
-		<Unit filename="kernel\isr.c">
+		<Unit filename="kernel/irq.asm" />
+		<Unit filename="kernel/irq.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\kb.c">
+		<Unit filename="kernel/isr.asm" />
+		<Unit filename="kernel/isr.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\libs\memory.c">
+		<Unit filename="kernel/kb.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\libs\rect.c">
+		<Unit filename="kernel/libs/memory.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\libs\string.c">
+		<Unit filename="kernel/libs/rect.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\main.c">
+		<Unit filename="kernel/libs/string.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\mm.c">
+		<Unit filename="kernel/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\start.asm" />
-		<Unit filename="kernel\sys.c">
+		<Unit filename="kernel/mm.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\timer.c">
+		<Unit filename="kernel/start.asm" />
+		<Unit filename="kernel/sys.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\headerfooter.c">
+		<Unit filename="kernel/timer.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\programs\crashtest.c">
+		<Unit filename="kernel/ui/headerfooter.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\programs\debuginfo.c">
+		<Unit filename="kernel/ui/programs/crashtest.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\programs\vgatest.c">
+		<Unit filename="kernel/ui/programs/debuginfo.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\about.c">
+		<Unit filename="kernel/ui/programs/vgatest.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\folders.c">
+		<Unit filename="kernel/ui/tabs/about.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\programs.c">
+		<Unit filename="kernel/ui/tabs/folders.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\settings.c">
+		<Unit filename="kernel/ui/tabs/programs.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\terminal.c">
+		<Unit filename="kernel/ui/tabs/settings.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\ui\ui.c">
+		<Unit filename="kernel/ui/tabs/terminal.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\video\text.c">
+		<Unit filename="kernel/ui/ui.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\video\vga.asm" />
-		<Unit filename="kernel\video\vga.c">
+		<Unit filename="kernel/video/text.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\video\video.c">
+		<Unit filename="kernel/video/vga.asm" />
+		<Unit filename="kernel/video/vga.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/video/video.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
