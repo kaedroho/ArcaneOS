@@ -84,6 +84,9 @@
 		<Unit filename="kernel/paging.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="kernel/power.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="kernel/rtc.c">
 			<Option compilerVar="CC" />
 		</Unit>
