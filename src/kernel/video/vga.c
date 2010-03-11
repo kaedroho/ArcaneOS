@@ -1,9 +1,5 @@
 #include "video/video.h"
 
-//Functions from VGA.asm
-extern void video_vga_enable13();
-extern void video_vga_disable();
-
 struct video_driver* video_vga_driver;
 
 struct video_driver* video_vga_getdriver()
@@ -13,20 +9,17 @@ struct video_driver* video_vga_getdriver()
 
 void video_vga_start()
 {
-//Enable VGA
-    video_vga_enable13();
+
 }
 
 void video_vga_end()
 {
-//Disable VGA
-    video_vga_disable();
+
 }
 
 void video_vga_putpixel(unsigned int x,unsigned int y,unsigned int colour)
 {
-    unsigned char* position=(unsigned char*)0xA000+x+y*320;
-    *position=colour&0xFF;
+
 }
 
 unsigned int video_vga_getpixel(unsigned int x,unsigned int y)
