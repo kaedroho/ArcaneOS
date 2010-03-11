@@ -42,7 +42,7 @@ extern char kb_convertscancodetoascii(unsigned char scancode);
 struct cpuid_struct
 {
     unsigned int maxstandardlevel;                  //0000_0000h (EAX)
-    char vendor[9];                                 //0000_0000h (EBX ECX EDX)
+    char vendor[13];                                //0000_0000h (EBX ECX EDX)
 
     unsigned int processorinfoa;                    //0000_0001h (EAX)
     unsigned int processorinfob;                    //0000_0001h (EBX)
