@@ -38,4 +38,42 @@ extern void kb_init();
 extern void kb_setkeyboardhandler(void (*handler)(unsigned char scancode));
 extern char kb_convertscancodetoascii(unsigned char scancode);
 
+//CPUID STRUCTURE
+struct cpuid_struct
+{
+    unsigned int maxstandardlevel;                  //0000_0000h (EAX)
+    char vendor[9];                                 //0000_0000h (EBX ECX EDX)
+
+    unsigned int processorinfoa;                    //0000_0001h (EAX)
+    unsigned int processorinfob;                    //0000_0001h (EBX)
+    unsigned int processorinfoc;                    //0000_0001h (ECX)
+    unsigned int processorinfod;                    //0000_0001h (EDX)
+
+    unsigned char configuration_descriptors[256];   //0000_0002h (EAX EBX ECX EDX (multiple queries)
+
+    unsigned int cacheconfiga;                      //0000_0004h (EAX)
+    unsigned int cacheconfigb;                      //0000_0004h (EBX)
+    unsigned int cacheconfigc;                      //0000_0004h (ECX)
+    unsigned int cacheconfigd;                      //0000_0004h (EDX)
+
+    unsigned int moninfoa;                          //0000_0005h (EAX)
+    unsigned int moninfob;                          //0000_0005h (EBX)
+    unsigned int moninfoc;                          //0000_0005h (ECX)
+    unsigned int moninfod;                          //0000_0005h (EDX)
+
+    unsigned int powermanagementinfoa;              //0000_0006h (EAX)
+    unsigned int powermanagementinfob;              //0000_0006h (EBX)
+    unsigned int powermanagementinfoc;              //0000_0006h (ECX)
+
+    unsigned int dcaparams;                         //0000_0009h (EAX)
+
+    unsigned int architecturalpemoinfoa;            //0000_000Ah (EAX)
+    unsigned int architecturalpemoinfob;            //0000_000Ah (EBX)
+    unsigned int architecturalpemoinfod;            //0000_000Ah (EDX)
+} __attribute__((packed));
+
+//CPUID FUNCTIONS
+extern void cpuid_init();
+extern struct cpuid_struct* cpuid_getstruct();
+
 #endif
