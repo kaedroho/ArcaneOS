@@ -119,10 +119,19 @@ void exception_handler(struct regs *r)
         cli_positioncursor(0,0);
         cli_puts("An exception has occurred.\nException: ");
         cli_puts(exception_messages[r->int_no]);
-        cli_puts("\n\nSystem Halted.\n");
-        for(;;)
-        {
-            __asm__ __volatile__ ("hlt");
-        }
+        cli_puts("\n\nSystem Halted.\n\n\n\n");
+
+        //Put error code
+        cli_puts("Technical Information:\n\nError Code:  ");
+        cli_putu32(r->err_code,16);
+
+        //Put registers
+        cli_puts("\nRegs:        EAX: ");cli_putu32(r->eax,16);
+        cli_puts("\n             EBX: ");cli_putu32(r->ebx,16);
+        cli_puts("\n             ECX: ");cli_putu32(r->ecx,16);
+        cli_puts("\n             EDX: ");cli_putu32(r->edx,16);
+
+        //Endless loop
+        for(;;);
     }
 }
