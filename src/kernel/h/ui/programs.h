@@ -16,4 +16,7 @@ extern void program_debuginfo_kbhandler(unsigned char scancode);
 extern void program_vgatest_start();
 extern void program_vgatest_kbhandler(unsigned char scancode);
 
+//CPUID Info functions
+extern void program_cpuidinfo_start();
+extern void program_cpuidinfo_kbhandler(unsigned char scancode);
 #endif

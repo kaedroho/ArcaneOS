@@ -49,12 +49,15 @@ struct cpuid_struct
     unsigned int processorinfoc;                    //0000_0001h (ECX)
     unsigned int processorinfod;                    //0000_0001h (EDX)
 
-    unsigned char configuration_descriptors[256];   //0000_0002h (EAX EBX ECX EDX (multiple queries)
+    unsigned int l1cacheconfiga;                    //0000_0004h (EAX)
+    unsigned int l1cacheconfigb;                    //0000_0004h (EBX)
+    unsigned int l1cacheconfigc;                    //0000_0004h (ECX)
+    unsigned int l1cacheconfigd;                    //0000_0004h (EDX)
 
-    unsigned int cacheconfiga;                      //0000_0004h (EAX)
-    unsigned int cacheconfigb;                      //0000_0004h (EBX)
-    unsigned int cacheconfigc;                      //0000_0004h (ECX)
-    unsigned int cacheconfigd;                      //0000_0004h (EDX)
+    unsigned int l2cacheconfiga;                    //0000_0004h (EAX)
+    unsigned int l2cacheconfigb;                    //0000_0004h (EBX)
+    unsigned int l2cacheconfigc;                    //0000_0004h (ECX)
+    unsigned int l2cacheconfigd;                    //0000_0004h (EDX)
 
     unsigned int moninfoa;                          //0000_0005h (EAX)
     unsigned int moninfob;                          //0000_0005h (EBX)
@@ -76,4 +79,23 @@ struct cpuid_struct
 extern void cpuid_init();
 extern struct cpuid_struct* cpuid_getstruct();
 
+//CMOS FUNCTIONS
+extern void cmos_init();
+
+//RTC STRUCTURES
+struct rtc_time
+{
+    unsigned char seccond;
+    unsigned char minute;
+    unsigned char hour;
+    unsigned char weekday;
+    unsigned char dayofmonth;
+    unsigned char month;
+    unsigned char year;
+    unsigned char century;
+};
+
+//RTC FUNCTIONS
+extern void rtc_init();
+extern void rtc_tickseccond();
 #endif

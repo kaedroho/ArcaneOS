@@ -11,7 +11,7 @@ extern void kernel_end();
 
 int main()
 {
-//Start video driver
+//Start video driver (must always be before loading message)
     video_init();
     video_setdriver(video_text_getdriver());
 
@@ -48,7 +48,7 @@ int main()
 
     cli_puts("\n\nAllocated page 1: 0x"); cli_putu32((unsigned int)ptr1,16);
     cli_puts("\n\nAllocated page 2: 0x"); cli_putu32((unsigned int)ptr2,16);
-    for (;;);
+    //for (;;);
 
 //Start ui
     ui_start();

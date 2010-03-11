@@ -14,12 +14,12 @@ struct ui_tab_program_program
 
 unsigned int ui_tab_program_programcount;
 unsigned int ui_tab_program_currentselectedprogram;
-struct ui_tab_program_program ui_tab_program_programlist[3];
+struct ui_tab_program_program ui_tab_program_programlist[4];
 
 void ui_tab_programs_init()
 {
 //Zero variables
-    ui_tab_program_programcount=3;
+    ui_tab_program_programcount=4;
     ui_tab_program_currentselectedprogram=0;
 
 //Add crashtest
@@ -39,6 +39,12 @@ void ui_tab_programs_init()
     ui_tab_program_programlist[2].namelength=sizeof("VGA Test");
     ui_tab_program_programlist[2].start=program_vgatest_start;
     ui_tab_program_programlist[2].kbhandler=program_vgatest_kbhandler;
+
+//Add CPUID Info
+    ui_tab_program_programlist[3].name="CPUID Info";
+    ui_tab_program_programlist[3].namelength=sizeof("CPUID Info");
+    ui_tab_program_programlist[3].start=program_cpuidinfo_start;
+    ui_tab_program_programlist[3].kbhandler=program_cpuidinfo_kbhandler;
 }
 
 void ui_tab_programs_drawlist()
