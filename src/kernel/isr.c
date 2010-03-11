@@ -1,5 +1,6 @@
 #include "sys.h"
 #include "cli.h"
+#include "video/video.h"
 
 //Functions from isr.asm
 extern void isr0();
@@ -114,6 +115,7 @@ void exception_handler(struct regs *r)
     if (r->int_no < 32)
     {
     //Red screen of death!
+        video_setdriver(video_text_getdriver());
         cli_setrect(0);
         cli_settextcolour(0x4F);cli_cls();
         cli_positioncursor(0,0);
