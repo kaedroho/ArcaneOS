@@ -3,6 +3,7 @@
 #include "ui/ui.h"
 #include "boot.h"
 #include "video/video.h"
+#include "mm.h"
 
 extern void start();
 extern void kernel_end();
@@ -28,9 +29,14 @@ int main()
 //Start interrupts
     __asm__ __volatile__ ("sti");
 
-    //cli_puts("\n\nStart: 0x"); cli_putu32((unsigned int)&start,16);
-    //cli_puts("\n\nEnd: 0x"); cli_putu32((unsigned int)&kernel_end,16);
-    //for (;;);
+    mm_init_stack_page_allocator();
+
+    void* ptr1 = mm_page_alloc(1);
+    void* ptr2 = mm_page_alloc(1);
+
+    cli_puts("\n\nAllocated page 1: 0x"); cli_putu32((unsigned int)ptr1,16);
+    cli_puts("\n\nAllocated page 2: 0x"); cli_putu32((unsigned int)ptr2,16);
+    for (;;);
 
 //Start ui
     ui_start();

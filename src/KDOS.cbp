@@ -38,6 +38,7 @@
 		<Unit filename="kernel\h\libs\memory.h" />
 		<Unit filename="kernel\h\libs\rect.h" />
 		<Unit filename="kernel\h\libs\string.h" />
+		<Unit filename="kernel\h\mm.h" />
 		<Unit filename="kernel\h\sys.h" />
 		<Unit filename="kernel\h\ui\programs.h" />
 		<Unit filename="kernel\h\ui\ui.h" />
@@ -67,6 +68,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="kernel\main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel\mm.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="kernel\start.asm" />

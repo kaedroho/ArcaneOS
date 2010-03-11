@@ -104,7 +104,7 @@ void cli_putu32(unsigned int i, unsigned int base)
     {
          buffer[--j] = (i%base) + '0';
          if (buffer[j] > '9')
-            buffer[j] += 'A'+1-'9';
+            buffer[j] = buffer[j] - '9' + 'A' - 1;
     }
     cli_puts(buffer+j);
 }
@@ -121,7 +121,7 @@ void cli_puti32(int i, unsigned int base)
     {
          buffer[--j] = (i%base) + '0';
          if (buffer[j] > '9')
-            buffer[j] += 'A'+1-'9';
+            buffer[j] = buffer[j] - '9' + 'A' - 1;
     }
 
     if (is_signed)
