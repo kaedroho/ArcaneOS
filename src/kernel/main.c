@@ -66,7 +66,7 @@ int main()
     if (pg_get_enabled())
         cli_puts("\n\nPaging is enabled!");
 
-    for (;;);
+    //for (;;);
 
 //Start ui
     ui_start();
