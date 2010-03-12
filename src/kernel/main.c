@@ -38,7 +38,8 @@ int main()
 
     mm_page_free(ptr1);
 
-    *(unsigned int*)ptr1 = 1;
+    //*(unsigned int*)ptr1 = 1; // UNCOMMENT THIS LINE TO CAUSE A PAGE FAULT!
+    *(unsigned int*)ptr2 = 1;
 
     struct cpuid_struct* cpuidstruct=cpuid_getstruct();
     cli_puts("Vendor: ");cli_puts(cpuidstruct->vendor);cli_putch('\n');
@@ -48,7 +49,11 @@ int main()
 
     cli_puts("\n\nAllocated page 1: 0x"); cli_putu32((unsigned int)ptr1,16);
     cli_puts("\n\nAllocated page 2: 0x"); cli_putu32((unsigned int)ptr2,16);
-    //for (;;);
+
+    if (pg_get_enabled())
+        cli_puts("\n\nPaging is enabled!");
+
+    for (;;);
 
 //Start ui
     ui_start();

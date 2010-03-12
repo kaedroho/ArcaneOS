@@ -8,12 +8,14 @@ struct pg_table
 
 struct pg_directory
 {
-    struct pg_table* tables[0];
+    unsigned int tables[0];
 } __attribute__((packed));
 
 extern struct pg_directory* pg_kernel_directory;
 
 extern void pg_init();
+extern void pg_set_enabled(int enabled);
+extern int pg_get_enabled();
 extern void pg_set_directory(struct pg_directory* directory);
 extern struct pg_directory* pg_get_directory();
 extern struct pg_directory* pg_alloc_directory();

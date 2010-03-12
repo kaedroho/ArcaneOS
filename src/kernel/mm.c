@@ -16,9 +16,25 @@ void mm_init()
 }
 void* mm_page_alloc()
 {
-    return g_memory_manager.page_allocator.alloc();
+    void* ptr = g_memory_manager.page_allocator.alloc();
+
+    // Map page as present
+    pg_map_page(pg_kernel_directory,(unsigned int)ptr,(unsigned int)ptr,1,1);
+
+    return ptr;
 }
 void mm_page_free(void* ptr)
+{
+    // Map page as not present
+    pg_map_page(pg_kernel_directory,(unsigned int)ptr,(unsigned int)ptr,1,0);
+
+    g_memory_manager.page_allocator.free(ptr);
+}
+void* mm_physical_page_alloc()
+{
+    return g_memory_manager.page_allocator.alloc();
+}
+void mm_physical_page_free(void* ptr)
 {
     g_memory_manager.page_allocator.free(ptr);
 }
@@ -32,22 +48,11 @@ unsigned int spa_page_count;
 void* mm_stack_page_allocator_alloc()
 {
     unsigned int ptr = *(spa_stack_ptr--);
-
-    // Map page as present
-    struct pg_directory* cur_dir = pg_get_directory();
-    if (cur_dir)
-        pg_map_page(cur_dir,ptr,ptr,1,1);
-
     return (void*)(g_memory_manager.page_allocator.page_size * ptr);
 }
 
 void mm_stack_page_allocator_free(void* ptr)
 {
-    // Map page as not present
-    struct pg_directory* cur_dir = pg_get_directory();
-    if (cur_dir)
-        pg_map_page(cur_dir,(unsigned int)ptr,(unsigned int)ptr,1,0);
-
     *(++spa_stack_ptr) = (unsigned int)ptr / g_memory_manager.page_allocator.page_size;
 }
 

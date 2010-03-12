@@ -17,6 +17,8 @@ extern void mm_init_stack_page_allocator();
 
 extern void* mm_page_alloc();
 extern void mm_page_free(void* ptr);
+extern void* mm_physical_page_alloc();
+extern void mm_physical_page_free(void* ptr);
 extern void mm_init();
 
 extern unsigned int mm_reserved_end;
