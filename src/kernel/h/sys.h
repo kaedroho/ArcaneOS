@@ -81,6 +81,8 @@ extern struct cpuid_struct* cpuid_getstruct();
 
 //CMOS FUNCTIONS
 extern void cmos_init();
+extern unsigned char cmos_get(unsigned char reg);
+extern void cmos_set(unsigned char reg,unsigned char value);
 
 //RTC STRUCTURES
 struct rtc_time
@@ -98,4 +100,9 @@ struct rtc_time
 //RTC FUNCTIONS
 extern void rtc_init();
 extern void rtc_tickseccond();
+extern struct rtc_time* rtc_gettime();
+extern void rtc_setclockhandler(void (*handler)());
+
+//POWER FUNCTIONS
+void power_init();
 #endif

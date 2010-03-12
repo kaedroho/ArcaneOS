@@ -88,6 +88,9 @@ void ui_tab_programs_runprogram(unsigned int programid)
 //Set keyboard handler
     kb_setkeyboardhandler(ui_tab_program_programlist[programid].kbhandler);
 
+//Set clock handler
+    rtc_setclockhandler(0);
+
 //Call start function
     ui_tab_program_programlist[programid].start();
 }

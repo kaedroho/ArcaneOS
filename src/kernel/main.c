@@ -5,6 +5,7 @@
 #include "video/video.h"
 #include "mm.h"
 #include "paging.h"
+#include "acpi.h"
 
 extern void start();
 extern void kernel_end();
@@ -29,6 +30,10 @@ int main()
     mm_init(); // Must be called before pg_init()
     pg_init();
     cpuid_init();
+    cmos_init();
+    rtc_init();
+    acpi_init();
+    power_init();
 
 //Start interrupts
     __asm__ __volatile__ ("sti");

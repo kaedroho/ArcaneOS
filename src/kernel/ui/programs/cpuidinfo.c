@@ -8,7 +8,7 @@ void program_cpuidinfo_start()
 //Print message
     cli_puts("Welcome to the ArcaneOS CPUID info program!\n\n");
     cli_puts("This program shows all the information returned by CPUID\n");
-    cli_puts("Press esc to quit the program\n\n\n");
+    cli_puts("Press Esc to quit the program\n\n\n");
 
 //Put main CPU ID info
     struct cpuid_struct* cpuidstruct=cpuid_getstruct();

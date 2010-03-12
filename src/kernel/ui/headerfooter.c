@@ -5,7 +5,7 @@
 void ui_drawheaderandfooter()
 {
 //Header
-    cli_puts("ArcaneOS\n");
+    cli_puts("ArcaneOS                                                           XX : XX : XX\n");
     cli_puts("================================================================================\n");
 
 //Footer

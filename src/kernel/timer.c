@@ -9,8 +9,8 @@ void timer_handler(struct regs *r)
     timer_ticks++;
 
 //If ticks are a factor of 1000 then 1 seccond has passed
-    //if(timer_ticks%1000==0)
-        //rtc_tickseccond();
+    if(timer_ticks%1000==0)
+        rtc_tickseccond();
 }
 
 void timer_phase(int hz)

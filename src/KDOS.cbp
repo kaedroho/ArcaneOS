@@ -22,6 +22,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="kernel/acpi.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="kernel/boot.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -40,6 +43,7 @@
 		<Unit filename="kernel/gdt.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="kernel/h/acpi.h" />
 		<Unit filename="kernel/h/boot.h" />
 		<Unit filename="kernel/h/cli.h" />
 		<Unit filename="kernel/h/libs/memory.h" />

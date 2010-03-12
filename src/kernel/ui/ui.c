@@ -11,6 +11,8 @@ struct ui_tab
     void (*kbhandler)(unsigned char scancode);
 };
 
+void ui_clockhandler();
+
 unsigned int ui_tabcount;
 struct ui_tab ui_tablist[5];
 
@@ -75,6 +77,9 @@ void ui_start()
 
 //Set tab
     ui_settab(0);
+
+//Set clock handler
+    rtc_setclockhandler(ui_clockhandler);
 }
 
 void ui_drawtabs(unsigned char tabid)
@@ -116,4 +121,30 @@ void ui_settab(unsigned char tabid)
 
 //Call start function
     ui_tablist[tabid].start();
+}
+
+void ui_clockhandler()
+{
+//Get time
+    struct rtc_time* time=rtc_gettime();
+
+//Draw time
+    cli_setrect(0);
+    cli_positioncursor(67,0);
+    cli_puts("            ");
+    cli_positioncursor(67,0);
+    cli_putu32(time->hour,10);
+    cli_positioncursor(70,0);
+    cli_putch(':');
+    cli_positioncursor(72,0);
+    cli_putu32(time->minute,10);
+    cli_positioncursor(75,0);
+    cli_putch(':');
+    cli_positioncursor(77,0);
+    cli_putu32(time->seccond,10);
+
+    cli_setrect(&ui_CLIRect);
+    cli_positioncursor(0,0);
+
+
 }
