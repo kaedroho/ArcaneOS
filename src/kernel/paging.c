@@ -1,6 +1,8 @@
 #include "paging.h"
 #include "mm.h"
 #include "libs/memory.h"
+#include "boot.h"
+#include "cli.h"
 
 struct pg_directory* pg_kernel_directory = 0;
 
@@ -12,6 +14,34 @@ void pg_init()
     unsigned int ptr;
     for (ptr = 0; ptr < mm_reserved_end; ptr += 4096)
         pg_map_page(pg_kernel_directory,ptr,ptr,1,1);
+
+    struct multiboot_information* boot_info = get_multiboot_info();
+
+    unsigned int page_index;
+
+    if (boot_info->flags & 64)
+    {
+        struct multiboot_mmap* mmap = boot_info->mmap_addr;
+        while(mmap < boot_info->mmap_addr + boot_info->mmap_length)
+        {
+            if ((mmap->type != 1) && (mmap->type != 5) && (mmap->base_addr_high == 0) && (mmap->length_high == 0))
+            {
+                unsigned int page_start = (mmap->base_addr_low)/mm_page_size;
+                unsigned int page_end = (mmap->base_addr_low + mmap->length_low + mm_page_size - 1)/mm_page_size;
+
+                if (page_start < mm_reserved_end/mm_page_size)
+                    page_start = mm_reserved_end/mm_page_size;
+
+                //cli_puts("\nReserving pages "); cli_putu32(page_start,10);
+                //cli_puts(" to "); cli_putu32(page_end,10);
+
+                for (page_index = page_start; page_index < page_end; page_index++)
+                    pg_map_page(pg_kernel_directory,page_index*mm_page_size,page_index*mm_page_size,0,1);
+            }
+
+            mmap = (struct multiboot_mmap*) ( (unsigned int)mmap + mmap->size + sizeof(unsigned int) );
+        }
+    }
 
     // Enable paging
     pg_set_directory(pg_kernel_directory);

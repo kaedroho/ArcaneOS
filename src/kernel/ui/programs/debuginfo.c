@@ -57,7 +57,7 @@ void program_debuginfo_start()
     if (multiboot_info->flags & 64)
     {
         cli_puts("\n\nMEMORY MAP:");
-        cli_puts("\nMMap address: 0x"); cli_putu32(multiboot_info->mmap_addr,16);
+        cli_puts("\nMMap address: 0x"); cli_putu32((unsigned int)multiboot_info->mmap_addr,16);
         cli_puts("\nMMap length: "); cli_putu32(multiboot_info->mmap_length,10);
     }
     if (multiboot_info->flags & 128)

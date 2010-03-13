@@ -59,6 +59,16 @@ struct multiboot_apmtable
     unsigned short dseg_len;
 } __attribute__((packed));
 
+struct multiboot_mmap
+{
+    unsigned long size;
+    unsigned long base_addr_low;
+    unsigned long base_addr_high;
+    unsigned long length_low;
+    unsigned long length_high;
+    unsigned long type;
+};
+
 struct multiboot_information
 {
     unsigned int flags;
@@ -79,7 +89,7 @@ struct multiboot_information
     } __attribute__((packed));
     // ---------------------------------------------------------
     unsigned int mmap_length; //present if flags[6] is set
-    unsigned int mmap_addr; //present if flags[6] is set
+    struct multiboot_mmap* mmap_addr; //present if flags[6] is set
     // ---------------------------------------------------------
     unsigned int drives_length; //present if flags[7] is set
     struct multiboot_drive* drives_addr; //present if flags[7] is set

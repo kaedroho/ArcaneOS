@@ -102,8 +102,32 @@ void mm_init_stack_page_allocator()
     unsigned int page_index;
     spa_stack_ptr = spa_stack_base-1; // Set the stack pointer to the element before the first element in the stack
 
-    for (page_index = mem_bottom; page_index < mem_top; page_index++)
-        *(++spa_stack_ptr) = page_index;
+    if (boot_info->flags & 64)
+    {
+        struct multiboot_mmap* mmap = boot_info->mmap_addr;
+        while(mmap < boot_info->mmap_addr + boot_info->mmap_length)
+        {
+            if ((mmap->type == 1) && (mmap->base_addr_high == 0) && (mmap->length_high == 0))
+            {
+                unsigned int page_start = (mmap->base_addr_low + mm_page_size - 1)/mm_page_size;
+                unsigned int page_end = (mmap->base_addr_low + mmap->length_low)/mm_page_size;
+
+                if (page_start < mm_reserved_end/mm_page_size)
+                    page_start = mm_reserved_end/mm_page_size;
+
+                //cli_puts("\nAdding pages "); cli_putu32(page_start,10);
+                //cli_puts(" to "); cli_putu32(page_end,10);
+
+                for (page_index = page_start; page_index < page_end; page_index++)
+                    *(++spa_stack_ptr) = page_index;
+            }
+
+            mmap = (struct multiboot_mmap*) ( (unsigned int)mmap + mmap->size + sizeof(unsigned int) );
+        }
+    }
+    else
+        for (page_index = mem_bottom; page_index < mem_top; page_index++)
+            *(++spa_stack_ptr) = page_index;
 
     g_memory_manager.page_allocator.alloc = mm_stack_page_allocator_alloc;
     g_memory_manager.page_allocator.free = mm_stack_page_allocator_free;
