@@ -14,7 +14,7 @@ int main()
 {
 //Start video driver (must always be before loading message)
     video_init();
-    video_setdriver(video_text_getdriver());
+    video_setdriver(video_vgatext_getdriver(),0);
 
 //Put loading message
     cli_puts("ArcaneOS Loading...\n");
@@ -27,8 +27,6 @@ int main()
     timer_init();
     kb_init();
     ui_init();
-    acpi_init();
-    power_init();
     mm_init(); // Must be called before pg_init()
     pg_init();
     cpuid_init();

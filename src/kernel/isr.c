@@ -115,7 +115,7 @@ void exception_handler(struct regs *r)
     if (r->int_no < 32)
     {
     //Red screen of death!
-        video_setdriver(video_text_getdriver());
+        video_setdriver(video_vgatext_getdriver(),0);
         cli_setrect(0);
         cli_settextcolour(0x4F);cli_cls();
         cli_positioncursor(0,0);

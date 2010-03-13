@@ -3,7 +3,7 @@
 
 struct video_driver video_driverlist[2];
 struct video_driver* video_currentdriver;
-
+unsigned int video_currentdisplaymode;
 
 void video_init()
 {
@@ -14,11 +14,11 @@ void video_init()
     memset((unsigned char*)video_driverlist,0,sizeof(struct video_driver)*2);
 
 //Setup driver list
-    video_text_init(&video_driverlist[0]);
-    video_vga_init(&video_driverlist[1]);
+    video_vgatext_init(&video_driverlist[0]);
+    video_vgagraphics_init(&video_driverlist[1]);
 }
 
-void video_setdriver(struct video_driver* Driver)
+void video_setdriver(struct video_driver* Driver,unsigned int mode)
 {
 //Check if the driver has changed
     if(Driver!=video_currentdriver)
@@ -30,7 +30,7 @@ void video_setdriver(struct video_driver* Driver)
 
     //Start new driver
         if(Driver->start!=0)
-            Driver->start();
+            Driver->start(mode);
 
     //Set current driver
         video_currentdriver=Driver;
@@ -83,41 +83,21 @@ unsigned int video_getpixel(unsigned int x,unsigned int y)
     return 0;
 }
 
-unsigned int video_getgraphicsrows()
-{
-//Get graphics rows
-    if(video_currentdriver!=0)
-        return video_currentdriver->GraphicsRows;
-
-//Return nothing
-    return 0;
-}
-
-unsigned int video_getgraphicscollumns()
-{
-//Get graphics collumns
-    if(video_currentdriver!=0)
-        return video_currentdriver->GraphicsCols;
-
-//Return nothing
-    return 0;
-}
-
-unsigned int video_gettextrows()
+unsigned int video_getrows()
 {
 //Get text rows
     if(video_currentdriver!=0)
-        return video_currentdriver->TextRows;
+        return video_currentdriver->displaymode[video_currentdisplaymode].Rows;
 
 //Return nothing
     return 0;
 }
 
-unsigned int video_gettextcollumns()
+unsigned int video_getcollumns()
 {
 //Get text collumns
     if(video_currentdriver!=0)
-        return video_currentdriver->TextCols;
+        return video_currentdriver->displaymode[video_currentdisplaymode].Cols;
 
 //Return nothing
     return 0;

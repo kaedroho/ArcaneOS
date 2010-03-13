@@ -141,8 +141,8 @@ void cli_cls()
     unsigned short y;
 
 //Clear the screen
-    for(x=0;x<video_gettextcollumns();x++)
-        for(y=0;y<video_gettextrows();y++)
+    for(x=0;x<video_getcollumns();x++)
+        for(y=0;y<video_getrows();y++)
         {
             video_putpixel(x,y,g_CLI_DrawColour);
             video_putchar(x,y,0);

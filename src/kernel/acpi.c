@@ -87,8 +87,4 @@ void acpi_init()
 //Find SDT pointers
     unsigned int *sdtptr=(unsigned int*)(rsdt+sizeof(struct acpi_rsdtheader));
     unsigned int sdtcount=(rsdt->header.Length-sizeof(struct acpi_rsdtheader))/4;
-
-cli_putch('\n');
-    cli_putu32(sdtcount,10);
-cli_putch('\n');
 }

@@ -4,6 +4,10 @@
 //SYSTEM FUNCTIONS
 extern unsigned char inb(unsigned short port);
 extern void outb(unsigned short port,unsigned char data);
+unsigned char peekb(unsigned short seg,unsigned short off);
+void pokeb(unsigned short seg,unsigned short off,unsigned char val);
+unsigned short peekw(unsigned short seg,unsigned short off);
+void pokew(unsigned short seg,unsigned short off,unsigned short val);
 
 //GDT FUNCTIONS
 extern void gdt_init();

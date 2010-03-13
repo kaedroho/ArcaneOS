@@ -98,7 +98,7 @@ void ui_tab_programs_runprogram(unsigned int programid)
 void ui_tab_programs_endprogram()
 {
 //Set to text mode
-    video_setdriver(video_text_getdriver());
+    video_setdriver(video_vgatext_getdriver(),0);
 
 //Restart UI
     ui_start();

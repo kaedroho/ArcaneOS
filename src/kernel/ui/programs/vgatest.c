@@ -14,7 +14,7 @@ void program_vgatest_start()
 void program_vgatest_runtest()
 {
 //Start VGA driver
-    video_setdriver(video_vga_getdriver());
+    video_setdriver(video_vgagraphics_getdriver(),0);
 
 //Plot a pixel
     video_putpixel(10,10,0x0F);

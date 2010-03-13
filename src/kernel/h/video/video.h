@@ -2,16 +2,24 @@
 #define _VIDEO_H
 
 #include "libs/rect.h"
+#include "video/vgabase.h"
+
+struct video_displaymode
+{
+    unsigned char Type; //1=text, 2=text with background, 3=graphics
+    unsigned int Cols;
+    unsigned int Rows;
+    unsigned char Depth;
+};
 
 struct video_driver
 {
-    unsigned int TextCols;
-    unsigned int TextRows;
-    unsigned int GraphicsCols;
-    unsigned int GraphicsRows;
+//Display mode list
+    struct video_displaymode* displaymode;
+    unsigned int displaymodecount;
 
 //Main functions
-    void(*start)();
+    void(*start)(unsigned int mode);
     void(*end)();
 
 //Text functions
@@ -26,23 +34,13 @@ struct video_driver
 
 //Main functions
 void video_init();
-void video_setdriver(struct video_driver* Driver);
+void video_setdriver(struct video_driver* Driver,unsigned int mode);
 void video_putchar(unsigned int x,unsigned int y,char character);
 char video_getchar(unsigned int x,unsigned int y);
 void video_positioncursor(unsigned int x,unsigned int y);
 void video_putpixel(unsigned int x,unsigned int y,unsigned int colour);
 unsigned int video_getpixel(unsigned int x,unsigned int y);
-unsigned int video_getgraphicsrows();
-unsigned int video_getgraphicscolumns();
-unsigned int video_gettextrows();
-unsigned int video_gettextcollumns();
-
-//Text functions
-struct video_driver* video_text_getdriver();
-void video_text_init(struct video_driver* Driver);
-
-//VGA functions
-struct video_driver* video_vga_getdriver();
-void video_vga_init(struct video_driver* Driver);
+unsigned int video_getrows();
+unsigned int video_getcollumns();
 
 #endif
