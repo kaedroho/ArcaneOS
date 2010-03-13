@@ -2,7 +2,7 @@
 #include "boot.h"
 #include "cli.h"
 #include "paging.h"
-#include "libs\memory.h"
+#include "libs/memory.h"
 
 extern void start();
 
