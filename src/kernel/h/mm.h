@@ -25,8 +25,8 @@ extern void mm_init_pool_block_allocator();
 
 extern void* mm_block_alloc(unsigned int size);
 extern void mm_block_free(void* ptr);
-extern void* mm_page_alloc();
-extern void mm_page_free(void* ptr);
+extern void* mm_page_alloc(unsigned int count);
+extern void mm_page_free(void* ptr, unsigned int count);
 extern void* mm_physical_page_alloc();
 extern void mm_physical_page_free(void* ptr);
 extern void* mm_block_alloc(unsigned int size);

@@ -90,4 +90,90 @@ void pg_map_page(struct pg_directory* directory, unsigned int physical_address, 
     if (paging_enabled)
         pg_set_enabled(1);
 }
+unsigned int pg_find_virtual_pages(struct pg_directory* directory, unsigned int count)
+{
+    int paging_enabled = pg_get_enabled();
+
+    if (paging_enabled)
+        pg_set_enabled(0);
+
+    unsigned int dir_index;
+    unsigned int pag_index;
+    unsigned int num_continuous = 0;
+    unsigned int dir_item;
+
+    // Find free pages in an existing table
+    for (dir_index = 1; dir_index < 0x3FF; dir_index++)
+    {
+        dir_item = directory->tables[dir_index];
+        if (dir_item & 1)
+        {
+            struct pg_table* table = (struct pg_table*)(dir_item & 0xFFFFF000);
+            for (pag_index = 0; pag_index < 0x3FF; pag_index++)
+            {
+                if (!(table->pages[pag_index] & 1))
+                {
+                    num_continuous++;
+                    if (num_continuous >= count)
+                    {
+                        if (paging_enabled)
+                            pg_set_enabled(1);
+
+                        return (dir_index << 22) | ((pag_index+1-count) << 12);
+                    }
+                }
+                else
+                    num_continuous = 0;
+            }
+        }
+        else
+            num_continuous = 0;
+    }
+
+    // Create a new table
+    unsigned int dir_count = (count+0x3FF)/0x400;
+    num_continuous = 0;
+    for (dir_index = 1; dir_index < 0x3FF; dir_index++)
+    {
+        dir_item = directory->tables[dir_index];
+        if (!(dir_item & 1))
+        {
+            num_continuous++;
+            if (num_continuous >= dir_count)
+            {
+                if (paging_enabled)
+                    pg_set_enabled(1);
+
+                return ((dir_index+1-dir_count) << 22);
+            }
+        }
+        else
+            num_continuous = 0;
+    }
+
+    if (paging_enabled)
+        pg_set_enabled(1);
+
+    return 0;
+}
+unsigned int pg_virtual_to_physical(struct pg_directory* directory, unsigned int virtual_address)
+{
+    int paging_enabled = pg_get_enabled();
+
+    if (paging_enabled)
+        pg_set_enabled(0);
+
+    unsigned int dir_index = (virtual_address >> 22) & 0x3FF;
+    unsigned int pag_index = (virtual_address >> 12) & 0x3FF;
+    unsigned int offset = virtual_address & 0xFFF;
+
+    struct pg_table* table = (struct pg_table*)((directory->tables[dir_index]) & 0xFFFFF000);
+
+    unsigned int physical_address = ((table->pages[pag_index]) & 0xFFFFF000) + offset;
+
+    if (paging_enabled)
+        pg_set_enabled(1);
+
+    return physical_address;
+}
 

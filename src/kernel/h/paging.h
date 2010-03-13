@@ -25,4 +25,7 @@ extern void pg_free_table(struct pg_table* table);
 
 extern void pg_map_page(struct pg_directory* directory, unsigned int physical_address, unsigned int virtual_address, unsigned int writable, unsigned int present);
 
+extern unsigned int pg_find_virtual_pages(struct pg_directory* directory, unsigned int count);
+extern unsigned int pg_virtual_to_physical(struct pg_directory* directory, unsigned int virtual_address);
+
 #endif // PAGING_H_INCLUDED

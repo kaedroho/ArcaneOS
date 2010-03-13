@@ -19,21 +19,35 @@ void mm_init()
     // Use a pool based block allocator
     mm_init_pool_block_allocator();
 }
-void* mm_page_alloc()
+void* mm_page_alloc(unsigned int count)
 {
-    void* ptr = g_memory_manager.page_allocator.alloc();
+    unsigned int virtual_address = pg_find_virtual_pages(pg_kernel_directory,count);
 
     // Map page as present
-    pg_map_page(pg_kernel_directory,(unsigned int)ptr,(unsigned int)ptr,1,1);
+    unsigned int i;
 
-    return ptr;
+    for (i = 0; i < count; i++)
+    {
+        unsigned int physical_address = (unsigned int)g_memory_manager.page_allocator.alloc();
+        pg_map_page(pg_kernel_directory,physical_address,virtual_address + i*mm_page_size,1,1);
+    }
+
+    return (void*)virtual_address;
 }
-void mm_page_free(void* ptr)
+void mm_page_free(void* ptr, unsigned int count)
 {
-    // Map page as not present
-    pg_map_page(pg_kernel_directory,(unsigned int)ptr,(unsigned int)ptr,1,0);
+    unsigned int virtual_address = ((unsigned int)ptr) & 0xFFFFF000;
 
-    g_memory_manager.page_allocator.free(ptr);
+    // Map page as not present
+    unsigned int i;
+
+    for (i = 0; i < count; i++)
+    {
+        unsigned int physical_address = pg_virtual_to_physical(pg_kernel_directory,virtual_address + i*mm_page_size);
+
+        pg_map_page(pg_kernel_directory,physical_address,virtual_address,1,0);
+        g_memory_manager.page_allocator.free((void*)physical_address);
+    }
 }
 void* mm_physical_page_alloc()
 {
@@ -152,7 +166,7 @@ void pba_mark_block(struct pba_pool* cur_pool, unsigned int index, int used)
 
 struct pba_pool* pba_add_new_pool(unsigned int pool)
 {
-    struct pba_pool* cur_pool = (struct pba_pool*)mm_page_alloc();
+    struct pba_pool* cur_pool = (struct pba_pool*)mm_page_alloc(1);
     memset((unsigned char*)cur_pool,0,mm_page_size);
 
     cur_pool->pool = pool;
@@ -176,7 +190,7 @@ void pba_delete_pool(struct pba_pool* cur_pool)
     if (cur_pool->next)
         cur_pool->next->prev = cur_pool->prev;
 
-    mm_page_free(cur_pool);
+    mm_page_free(cur_pool,1);
 }
 
 struct pba_pool* pba_get_pool_from_ptr(void* ptr)
