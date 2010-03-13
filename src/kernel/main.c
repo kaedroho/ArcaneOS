@@ -27,6 +27,8 @@ int main()
     timer_init();
     kb_init();
     ui_init();
+    acpi_init();
+    power_init();
     mm_init(); // Must be called before pg_init()
     pg_init();
     cpuid_init();
