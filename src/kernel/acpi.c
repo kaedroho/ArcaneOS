@@ -6,10 +6,28 @@
 struct acpi_rsdp
 {
     char Signature[8];
-    char Checksum;
+    unsigned char Checksum;
     char OEMID[6];
-    char Revision;
+    unsigned char Revision;
     unsigned int RsdtAddress;
+};
+
+struct acpi_rsdtheader
+{
+    char Signature[4];
+    unsigned int Length;
+    unsigned char Revision;
+    unsigned char Checksum;
+    char OEMID[6];
+    char OEMTableID[8];
+    unsigned int OEMRevision;
+    unsigned int CreatorID;
+    unsigned int CreatorRevision;
+};
+
+struct acpi_rsdt
+{
+    struct acpi_rsdtheader header;
 };
 
 char acpi_rsdpcorrect(struct acpi_rsdp* rsdp)
@@ -60,11 +78,17 @@ void acpi_init()
 //Find RSDP
     struct acpi_rsdp* rsdp=acpi_findrsdp();
 
-//Print yay if its found
-    if(rsdp==0)
-    {
-        cli_puts("RSDP not found.\n");
-    }else{
-        cli_puts("RSDP found at: ");cli_putu32((unsigned int)rsdp,15);cli_putch('\n');
-    }
+//Print message if it doesnt exist
+    if(rsdp==0){cli_puts("Error: RSDP not found.\n");for(;;);}
+
+//Get RSDT address
+    struct acpi_rsdt* rsdt=(struct acpi_rsdt*)rsdp->RsdtAddress;
+
+//Find SDT pointers
+    unsigned int *sdtptr=(unsigned int*)(rsdt+sizeof(struct acpi_rsdtheader));
+    unsigned int sdtcount=(rsdt->header.Length-sizeof(struct acpi_rsdtheader))/4;
+
+cli_putch('\n');
+    cli_putu32(sdtcount,10);
+cli_putch('\n');
 }
