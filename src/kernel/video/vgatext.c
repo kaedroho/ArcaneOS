@@ -130,7 +130,7 @@ struct video_driver* video_vgatext_getdriver()
 
 void video_vgatext_start(unsigned int mode)
 {
-
+vga_writeregs(g_vgatext_80x25);
 }
 
 void video_vgatext_end()

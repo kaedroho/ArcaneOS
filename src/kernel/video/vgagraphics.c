@@ -1,6 +1,84 @@
 #include "video/video.h"
+#include "sys.h"
 
 struct video_driver* video_vgagraphics_driver;
+
+static void vpokeb(unsigned off, unsigned val)
+{
+	pokeb(vga_getframebuffersegment(), off, val);
+}
+
+static unsigned vpeekb(unsigned off)
+{
+	return peekb(vga_getframebuffersegment(), off);
+}
+static unsigned g_vgabase_wd;
+
+void vga_write_pixel1(unsigned x, unsigned y, unsigned c)
+{
+	unsigned wd_in_bytes;
+	unsigned off, mask;
+
+	c = (c & 1) * 0xFF;
+	wd_in_bytes = g_vgabase_wd / 8;
+	off = wd_in_bytes * y + x / 8;
+	x = (x & 7) * 1;
+	mask = 0x80 >> x;
+	vpokeb(off, (vpeekb(off) & ~mask) | (c & mask));
+}
+
+void vga_write_pixel2(unsigned x, unsigned y, unsigned c)
+{
+	unsigned wd_in_bytes, off, mask;
+
+	c = (c & 3) * 0x55;
+	wd_in_bytes = g_vgabase_wd / 4;
+	off = wd_in_bytes * y + x / 4;
+	x = (x & 3) * 2;
+	mask = 0xC0 >> x;
+	vpokeb(off, (vpeekb(off) & ~mask) | (c & mask));
+}
+
+void vga_write_pixel4p(unsigned x, unsigned y, unsigned c)
+{
+	unsigned wd_in_bytes, off, mask, p, pmask;
+
+	wd_in_bytes = g_vgabase_wd / 8;
+	off = wd_in_bytes * y + x / 8;
+	x = (x & 7) * 1;
+	mask = 0x80 >> x;
+	pmask = 1;
+	for(p = 0; p < 4; p++)
+	{
+		vga_setplane(p);
+		if(pmask & c)
+			vpokeb(off, vpeekb(off) | mask);
+		else
+			vpokeb(off, vpeekb(off) & ~mask);
+		pmask <<= 1;
+	}
+}
+
+void vga_write_pixel8(unsigned x, unsigned y, unsigned c)
+{
+	unsigned wd_in_bytes;
+	unsigned off;
+
+	wd_in_bytes = g_vgabase_wd;
+	off = wd_in_bytes * y + x;
+	vpokeb(off, c);
+}
+
+void vga_write_pixel8x(unsigned x, unsigned y, unsigned c)
+{
+	unsigned wd_in_bytes;
+	unsigned off;
+
+	wd_in_bytes = g_vgabase_wd / 4;
+	off = wd_in_bytes * y + x / 4;
+	vga_setplane(x & 3);
+	vpokeb(off, c);
+}
 
 unsigned char g_vgagraphics_640x480x1[] =
 {
@@ -129,7 +207,8 @@ struct video_driver* video_vgagraphics_getdriver()
 
 void video_vgagraphics_start(unsigned int mode)
 {
-
+    vga_writeregs(g_vgagraphics_320x200x8);
+    g_vgabase_wd=320;
 }
 
 void video_vgagraphics_end()
@@ -140,6 +219,7 @@ void video_vgagraphics_end()
 void video_vgagraphics_putpixel(unsigned int x,unsigned int y,unsigned int colour)
 {
 
+vga_write_pixel8(x,y,colour&0xFF);
 }
 
 unsigned int video_vgagraphics_getpixel(unsigned int x,unsigned int y)
@@ -167,82 +247,3 @@ void video_vgagraphics_init(struct video_driver* Driver)
 //Set driver
     video_vgagraphics_driver=Driver;
 }
-
-/*
-static void vpokeb(unsigned off, unsigned val)
-{
-	pokeb(vga_getframebuffersegment(), off, val);
-}
-
-static unsigned vpeekb(unsigned off)
-{
-	return peekb(vga_getframebuffersegment(), off);
-}static void (*g_write_pixel)(unsigned x, unsigned y, unsigned c);
-static unsigned g_vgabase_wd, g_vgabase_ht;
-
-static void write_pixel1(unsigned x, unsigned y, unsigned c)
-{
-	unsigned wd_in_bytes;
-	unsigned off, mask;
-
-	c = (c & 1) * 0xFF;
-	wd_in_bytes = g_vgabase_wd / 8;
-	off = wd_in_bytes * y + x / 8;
-	x = (x & 7) * 1;
-	mask = 0x80 >> x;
-	vpokeb(off, (vpeekb(off) & ~mask) | (c & mask));
-}
-
-static void write_pixel2(unsigned x, unsigned y, unsigned c)
-{
-	unsigned wd_in_bytes, off, mask;
-
-	c = (c & 3) * 0x55;
-	wd_in_bytes = g_vgabase_wd / 4;
-	off = wd_in_bytes * y + x / 4;
-	x = (x & 3) * 2;
-	mask = 0xC0 >> x;
-	vpokeb(off, (vpeekb(off) & ~mask) | (c & mask));
-}
-
-static void write_pixel4p(unsigned x, unsigned y, unsigned c)
-{
-	unsigned wd_in_bytes, off, mask, p, pmask;
-
-	wd_in_bytes = g_vgabase_wd / 8;
-	off = wd_in_bytes * y + x / 8;
-	x = (x & 7) * 1;
-	mask = 0x80 >> x;
-	pmask = 1;
-	for(p = 0; p < 4; p++)
-	{
-		vga_setplane(p);
-		if(pmask & c)
-			vpokeb(off, vpeekb(off) | mask);
-		else
-			vpokeb(off, vpeekb(off) & ~mask);
-		pmask <<= 1;
-	}
-}
-
-static void write_pixel8(unsigned x, unsigned y, unsigned c)
-{
-	unsigned wd_in_bytes;
-	unsigned off;
-
-	wd_in_bytes = g_vgabase_wd;
-	off = wd_in_bytes * y + x;
-	vpokeb(off, c);
-}
-
-static void write_pixel8x(unsigned x, unsigned y, unsigned c)
-{
-	unsigned wd_in_bytes;
-	unsigned off;
-
-	wd_in_bytes = g_vgabase_wd / 4;
-	off = wd_in_bytes * y + x / 4;
-	vga_setplane(x & 3);
-	vpokeb(off, c);
-}
-*/
