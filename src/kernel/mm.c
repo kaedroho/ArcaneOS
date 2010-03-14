@@ -19,9 +19,17 @@ void mm_init()
     // Use a pool based block allocator
     mm_init_pool_block_allocator();
 }
-void* mm_page_alloc(unsigned int count)
+void* mm_page_kalloc(unsigned int count)
 {
-    unsigned int virtual_address = pg_find_virtual_pages(pg_kernel_directory,count);
+    return mm_page_alloc(pg_kernel_directory,count);
+}
+void mm_page_kfree(void* ptr, unsigned int count)
+{
+    mm_page_free(pg_kernel_directory,ptr,count);
+}
+void* mm_page_alloc(struct pg_directory* directory, unsigned int count)
+{
+    unsigned int virtual_address = pg_find_virtual_pages(directory,count);
 
     // Map page as present
     unsigned int i;
@@ -29,12 +37,12 @@ void* mm_page_alloc(unsigned int count)
     for (i = 0; i < count; i++)
     {
         unsigned int physical_address = (unsigned int)g_memory_manager.page_allocator.alloc();
-        pg_map_page(pg_kernel_directory,physical_address,virtual_address + i*mm_page_size,1,1);
+        pg_map_page(directory,physical_address,virtual_address + i*mm_page_size,1,1);
     }
 
     return (void*)virtual_address;
 }
-void mm_page_free(void* ptr, unsigned int count)
+void mm_page_free(struct pg_directory* directory, void* ptr, unsigned int count)
 {
     unsigned int virtual_address = ((unsigned int)ptr) & 0xFFFFF000;
 
@@ -43,9 +51,9 @@ void mm_page_free(void* ptr, unsigned int count)
 
     for (i = 0; i < count; i++)
     {
-        unsigned int physical_address = pg_virtual_to_physical(pg_kernel_directory,virtual_address + i*mm_page_size);
+        unsigned int physical_address = pg_virtual_to_physical(directory,virtual_address + i*mm_page_size);
 
-        pg_map_page(pg_kernel_directory,physical_address,virtual_address,1,0);
+        pg_map_page(directory,physical_address,virtual_address,1,0);
         g_memory_manager.page_allocator.free((void*)physical_address);
     }
 }
@@ -190,7 +198,7 @@ void pba_mark_block(struct pba_pool* cur_pool, unsigned int index, int used)
 
 struct pba_pool* pba_add_new_pool(unsigned int pool)
 {
-    struct pba_pool* cur_pool = (struct pba_pool*)mm_page_alloc(1);
+    struct pba_pool* cur_pool = (struct pba_pool*)mm_page_kalloc(1);
     memset((unsigned char*)cur_pool,0,mm_page_size);
 
     cur_pool->pool = pool;
@@ -214,7 +222,7 @@ void pba_delete_pool(struct pba_pool* cur_pool)
     if (cur_pool->next)
         cur_pool->next->prev = cur_pool->prev;
 
-    mm_page_free(cur_pool,1);
+    mm_page_kfree(cur_pool,1);
 }
 
 struct pba_pool* pba_get_pool_from_ptr(void* ptr)

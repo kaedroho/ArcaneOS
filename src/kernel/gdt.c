@@ -19,9 +19,10 @@ struct gdt_ptr
     unsigned int base;
 } __attribute__((packed));
 
+#define GDT_COUNT 6
 
-//Allocate 3 GDT entries. NULL, CS and DS.
-struct gdt_entry gdt[4];
+//Allocate 4 GDT entries. NULL, CS, DS, TSS.
+struct gdt_entry gdt[GDT_COUNT];
 
 //GDT Pointer
 struct gdt_ptr gdtp;
@@ -47,7 +48,7 @@ void gdt_set_gate(int num,unsigned long base,unsigned long limit,unsigned char a
 void gdt_init()
 {
 //Setup GDT pointer
-    gdtp.limit=(sizeof(struct gdt_entry)*3)-1;
+    gdtp.limit=(sizeof(struct gdt_entry)*GDT_COUNT)-1;
     gdtp.base=(unsigned int)&gdt;
 
 //NULL Descriptor
@@ -59,8 +60,14 @@ void gdt_init()
 //Data segment
     gdt_set_gate(2,0,0xFFFFFFFF,0x92,0xCF);
 
-    //Task state segment
-    gdt_set_gate(3,(unsigned int)&mt_task_state_segment,(unsigned int)&mt_task_state_segment + sizeof(mt_task_state_segment),0x89,0x40);
+//Code segment
+    gdt_set_gate(3,0,0xFFFFFFFF,0xFA,0xCF);
+
+//Data segment
+    gdt_set_gate(4,0,0xFFFFFFFF,0xF2,0xCF);
+
+//Task state segment
+    gdt_set_gate(5,(unsigned int)&mt_task_state_segment,(unsigned int)&mt_task_state_segment + sizeof(mt_task_state_segment) + 1,0x89,0x40);
 
 //Setup GDT
     gdt_setup();

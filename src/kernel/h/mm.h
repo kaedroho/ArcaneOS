@@ -20,17 +20,20 @@ struct memory_manager
     struct memory_block_allocator block_allocator;
 };
 
+struct pg_directory;
+
 extern void mm_init_stack_page_allocator();
 extern void mm_init_pool_block_allocator();
 
 extern void* mm_block_alloc(unsigned int size);
 extern void mm_block_free(void* ptr);
-extern void* mm_page_alloc(unsigned int count);
-extern void mm_page_free(void* ptr, unsigned int count);
+extern void* mm_page_kalloc(unsigned int count);
+extern void mm_page_kfree(void* ptr, unsigned int count);
+
+extern void* mm_page_alloc(struct pg_directory* directory, unsigned int count);
+extern void mm_page_free(struct pg_directory* directory, void* ptr, unsigned int count);
 extern void* mm_physical_page_alloc();
 extern void mm_physical_page_free(void* ptr);
-extern void* mm_block_alloc(unsigned int size);
-extern void mm_block_free(void* ptr);
 extern void mm_init();
 
 extern unsigned int mm_reserved_end;

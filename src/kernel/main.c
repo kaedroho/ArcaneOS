@@ -35,13 +35,13 @@ int main()
     rtc_init();
     acpi_init();
     power_init();
-    //mt_init();
+    mt_init();
 
 //Start interrupts
     __asm__ __volatile__ ("sti");
 
-    void* ptr1 = mm_page_alloc(1);
-    void* ptr2 = mm_page_alloc(1);
+    void* ptr1 = mm_page_kalloc(1);
+    void* ptr2 = mm_page_kalloc(1);
 
     unsigned int* block_ptr = (unsigned int*)mm_block_alloc(16);
     block_ptr[0] = 1;
@@ -49,7 +49,7 @@ int main()
     block_ptr[2] = 3;
     block_ptr[3] = 4;
 
-    mm_page_free(ptr1,1);
+    mm_page_kfree(ptr1,1);
 
     //*(unsigned int*)ptr1 = 1; // UNCOMMENT THIS LINE TO CAUSE A PAGE FAULT!
     *(unsigned int*)ptr2 = 1;
