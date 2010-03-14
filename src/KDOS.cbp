@@ -55,6 +55,7 @@
 		<Unit filename="kernel/h/sys.h" />
 		<Unit filename="kernel/h/ui/programs.h" />
 		<Unit filename="kernel/h/ui/ui.h" />
+		<Unit filename="kernel/h/video/drawer.h" />
 		<Unit filename="kernel/h/video/vgabase.h" />
 		<Unit filename="kernel/h/video/video.h" />
 		<Unit filename="kernel/idt.asm" />
@@ -134,6 +135,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="kernel/ui/ui.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/video/drawer.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="kernel/video/vga.asm" />

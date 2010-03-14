@@ -17,6 +17,14 @@ void program_vgatest_runtest()
     video_setdriver(video_vgagraphics_getdriver(),0);
 
 //Plot a pixel
+    unsigned int x,y;
+    for(x=0;x<320;x++)
+    {
+        for(y=0;y<200;y++)
+        {
+            video_putpixel(x,y,0x00);
+        }
+    }
     video_putpixel(10,10,0x0F);
 }
 

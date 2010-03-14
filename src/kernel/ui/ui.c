@@ -2,6 +2,7 @@
 #include "cli.h"
 #include "ui/ui.h"
 #include "libs/rect.h"
+#include "video/video.h"
 
 struct ui_tab
 {
@@ -22,9 +23,9 @@ void ui_init()
 {
 //Setup rect
     ui_CLIRect.left=1;
-    ui_CLIRect.right=79;
+    ui_CLIRect.right=video_getcollumns()-1;
     ui_CLIRect.top=3;
-    ui_CLIRect.bottom=20;
+    ui_CLIRect.bottom=video_getrows()-5;
 
 //Setup tabs
     ui_tabcount=5;
@@ -130,17 +131,17 @@ void ui_clockhandler()
 
 //Draw time
     cli_setrect(0);
-    cli_positioncursor(67,0);
+    cli_positioncursor(video_getcollumns()-13,0);
     cli_puts("            ");
-    cli_positioncursor(67,0);
+    cli_positioncursor(video_getcollumns()-13,0);
     cli_putu32(time->hour,10);
-    cli_positioncursor(70,0);
+    cli_positioncursor(video_getcollumns()-10,0);
     cli_putch(':');
-    cli_positioncursor(72,0);
+    cli_positioncursor(video_getcollumns()-8,0);
     cli_putu32(time->minute,10);
-    cli_positioncursor(75,0);
+    cli_positioncursor(video_getcollumns()-5,0);
     cli_putch(':');
-    cli_positioncursor(77,0);
+    cli_positioncursor(video_getcollumns()-3,0);
     cli_putu32(time->seccond,10);
 
     cli_setrect(&ui_CLIRect);

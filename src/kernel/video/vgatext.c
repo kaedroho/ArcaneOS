@@ -2,6 +2,7 @@
 #include "sys.h"
 
 struct video_driver* video_vgatext_driver;
+unsigned int video_vgatext_width;
 
 unsigned char g_vgatext_40x25[] =
 {
@@ -131,6 +132,7 @@ struct video_driver* video_vgatext_getdriver()
 void video_vgatext_start(unsigned int mode)
 {
 vga_writeregs(g_vgatext_80x25);
+video_vgatext_width=80;
 }
 
 void video_vgatext_end()
@@ -141,7 +143,7 @@ void video_vgatext_end()
 void video_vgatext_putchar(unsigned int x,unsigned int y,char character)
 {
 //Calculate position
-    unsigned char* position=(unsigned char*)0xB8000+(x+y*80)*2;
+    unsigned char* position=(unsigned char*)0xB8000+(x+y*video_vgatext_width)*2;
 
 //Put character
     *position=character;
@@ -155,7 +157,7 @@ char video_vgatext_getchar(unsigned int x,unsigned int y)
 void video_vgatext_positioncursor(unsigned int x,unsigned int y)
 {
 //Get cursor postion
-    unsigned short position=x+y*80;
+    unsigned short position=x+y*video_vgatext_width;
 
 //Send the position to the VGA controller
     outb(0x3D4,14);
@@ -167,7 +169,7 @@ void video_vgatext_positioncursor(unsigned int x,unsigned int y)
 void video_vgatext_putpixel(unsigned int x,unsigned int y,unsigned int colour)
 {
 //Calculate position
-    unsigned char* position=(unsigned char*)0xB8000+(x+y*80)*2+1;
+    unsigned char* position=(unsigned char*)0xB8000+(x+y*video_vgatext_width)*2+1;
 
 //Put character
     *position=colour;
