@@ -2,6 +2,7 @@
 #include "ui/ui.h"
 #include "ui/programs.h"
 #include "video/video.h"
+#include "video/drawer.h"
 
 void program_vgatest_start()
 {
@@ -25,7 +26,7 @@ void program_vgatest_runtest()
             video_putpixel(x,y,0x00);
         }
     }
-    video_putpixel(10,10,0x0F);
+    draw_filledboxcolour(100,100,150,150,0x0F);
 }
 
 void program_vgatest_kbhandler(unsigned char scancode)
