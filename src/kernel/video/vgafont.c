@@ -562,14 +562,6 @@ void vga_writefont(unsigned char *buf, unsigned font_height)
 		memcpy((unsigned char*)(vga_getframebuffersegment()*16+i*32),buf,font_height);
 		buf+=font_height;
 	}
-	/*
-#if 0
-	for(i = 0; i < 256; i++)
-	{
-		vmemwr(16384u * 1 + i * 32, buf, font_height);
-		buf += font_height;
-	}
-#endif*/
 
 //Restore registers
 	outb(0x3C4,2);
