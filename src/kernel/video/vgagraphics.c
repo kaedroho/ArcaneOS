@@ -2,6 +2,9 @@
 #include "sys.h"
 
 struct video_driver* video_vgagraphics_driver;
+unsigned int video_vgagraphics_framebuffersegment;
+
+
 
 static void vpokeb(unsigned off, unsigned val)
 {
@@ -208,6 +211,7 @@ struct video_driver* video_vgagraphics_getdriver()
 void video_vgagraphics_start(unsigned int mode)
 {
     vga_writeregs(g_vgagraphics_320x200x8);
+    video_vgagraphics_framebuffersegment=vga_getframebuffersegment();
     g_vgabase_wd=320;
 }
 
@@ -218,8 +222,7 @@ void video_vgagraphics_end()
 
 void video_vgagraphics_putpixel(unsigned int x,unsigned int y,unsigned int colour)
 {
-
-vga_write_pixel8(x,y,colour&0xFF);
+pokeb(video_vgagraphics_framebuffersegment,320*y+x,colour&0xFF);
 }
 
 unsigned int video_vgagraphics_getpixel(unsigned int x,unsigned int y)

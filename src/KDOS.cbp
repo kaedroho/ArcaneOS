@@ -88,6 +88,9 @@
 		<Unit filename="kernel/mm.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="kernel/mouse.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="kernel/mt.c">
 			<Option compilerVar="CC" />
 		</Unit>
