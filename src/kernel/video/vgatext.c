@@ -1,4 +1,5 @@
 #include "video/video.h"
+#include "video/vgabase.h"
 #include "sys.h"
 
 struct video_driver* video_vgatext_driver;
@@ -133,6 +134,7 @@ void video_vgatext_start(unsigned int mode)
 {
 vga_writeregs(g_vgatext_80x25);
 video_vgatext_width=80;
+vga_writefont(g_8x16_font,16);
 }
 
 void video_vgatext_end()

@@ -77,10 +77,10 @@ void vga_setplane(unsigned int p)
 	outb(0x3C5,pmask);
 }
 
-unsigned vga_getframebuffersegment()
+unsigned int vga_getframebuffersegment()
 {
 //Variables
-	unsigned seg;
+	unsigned int seg;
 
 //Get seg from GC
 	outb(0x3CE,6);
