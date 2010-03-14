@@ -24,13 +24,13 @@ void draw_dot(unsigned int x,unsigned int y)
     draw_dotcolour(x,y,g_drawcolour);
 }
 
-void draw_line(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int colour)
+void draw_linecolour(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int colour)
 {
 
 }
 
 void draw_line(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
 {
-//Call draw_line
-    draw_line(x1,y1,x2,y2,g_drawcolour)
+//Call draw_linecolour
+    draw_linecolour(x1,y1,x2,y2,g_drawcolour);
 }
