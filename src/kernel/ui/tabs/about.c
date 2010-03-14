@@ -9,7 +9,7 @@ void ui_tab_about_init()
 
 void ui_tab_about_start()
 {
-    cli_puts("\nArcaneOS version 0.01\n\nProgrammers:\nKarl Hobley\nDiggory Blake");
+    cli_puts("\nArcaneOS version 0.02\n\nProgrammers:\nKarl Hobley\nDiggory Blake");
 }
 
 void ui_tab_about_kbhandler(unsigned char scancode)
