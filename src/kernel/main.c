@@ -6,6 +6,7 @@
 #include "mm.h"
 #include "paging.h"
 #include "acpi.h"
+#include "mt.h"
 
 extern void start();
 extern void kernel_end();
@@ -34,6 +35,7 @@ int main()
     rtc_init();
     acpi_init();
     power_init();
+    //mt_init();
 
 //Start interrupts
     __asm__ __volatile__ ("sti");

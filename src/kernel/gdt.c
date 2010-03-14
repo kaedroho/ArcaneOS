@@ -1,4 +1,5 @@
 #include "sys.h"
+#include "mt.h"
 
 //GDT entry structure
 struct gdt_entry
@@ -20,7 +21,7 @@ struct gdt_ptr
 
 
 //Allocate 3 GDT entries. NULL, CS and DS.
-struct gdt_entry gdt[3];
+struct gdt_entry gdt[4];
 
 //GDT Pointer
 struct gdt_ptr gdtp;
@@ -57,6 +58,9 @@ void gdt_init()
 
 //Data segment
     gdt_set_gate(2,0,0xFFFFFFFF,0x92,0xCF);
+
+    //Task state segment
+    gdt_set_gate(3,(unsigned int)&mt_task_state_segment,(unsigned int)&mt_task_state_segment + sizeof(mt_task_state_segment),0x89,0x40);
 
 //Setup GDT
     gdt_setup();
