@@ -14,13 +14,6 @@ extern void kernel_end();
 unsigned int esp;
 unsigned int correct_esp;
 
-void test()
-{
-    cli_puts("\nIf multitasking wasn't working, this message wouldn't even be here!");
-
-    for(;;);
-}
-
 int main()
 {
 //Start video driver (must always be before loading message)
@@ -49,11 +42,6 @@ int main()
 
 //Start interrupts
     __asm__ __volatile__ ("sti");
-
-    mt_create_thread(mt_kernel_process,test,2);
-
-    // Wait for the other thread to take control
-    for (;;);
 
     void* ptr1 = mm_page_kalloc(1);
     void* ptr2 = mm_page_kalloc(1);
