@@ -19,6 +19,8 @@ void program_crashtest_kbhandler(unsigned char scancode)
         ui_tab_programs_endprogram();
 
 //Enter crashes the kernel
+    int a = 20;
+    int b = 0;
     if(scancode==0x1C)
-        cli_positioncursor(20/0,20);
+        cli_positioncursor(a/b,20);
 }
