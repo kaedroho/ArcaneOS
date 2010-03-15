@@ -96,6 +96,15 @@ void cli_puts(char* string)
     }
 }
 
+void cli_putm(char* string,unsigned short length)
+{
+//Print the string
+    unsigned int i;
+    for(i=0;i<length;i++)
+        cli_putch(string[i]);
+}
+
+
 void cli_putu32(unsigned int i, unsigned int base)
 {
     char buffer[33] = {0};

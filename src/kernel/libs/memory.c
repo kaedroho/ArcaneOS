@@ -38,3 +38,16 @@ unsigned short *memsetw(unsigned short *dest, unsigned short val, int count)
 //Return destination
     return dest;
 }
+
+char memcmp(char* stra,char* strb,unsigned int length)
+{
+//Test strings
+    unsigned int i;
+    for(i=0;i<length;i++)
+        if(stra[i]!=strb[i])
+            return 0;
+
+//Return true
+    return 1;
+}
+
