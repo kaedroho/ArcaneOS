@@ -559,7 +559,7 @@ void vga_writefont(unsigned char *buf, unsigned font_height)
 //Write font
 	for(i=0;i<256;i++)
 	{
-		memcpy((unsigned char*)(vga_getframebuffersegment()*16+i*32),buf,font_height);
+		memcpy((unsigned char*)(vga_getframebuffersegment()+i*32),buf,font_height);
 		buf+=font_height;
 	}
 

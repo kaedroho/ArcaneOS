@@ -230,6 +230,19 @@ unsigned int video_vgagraphics_getpixel(unsigned int x,unsigned int y)
     return 0;
 }
 
+void video_vgagraphics_cls()
+{
+    unsigned int i;
+    for(i=0;i<4000;i++)
+    {
+        *(unsigned int*)(video_vgagraphics_framebuffersegment+(i<<4))=0;
+        *(unsigned int*)(video_vgagraphics_framebuffersegment+(i<<4)+4)=0;
+        *(unsigned int*)(video_vgagraphics_framebuffersegment+(i<<4)+8)=0;
+        *(unsigned int*)(video_vgagraphics_framebuffersegment+(i<<4)+12)=0;
+    }
+}
+
+
 struct video_displaymode video_vgagraphics_displaymodes[1] =
 {
     {3,320,200,8}
@@ -246,6 +259,7 @@ void video_vgagraphics_init(struct video_driver* Driver)
     Driver->positioncursor=0;
     Driver->putpixel=video_vgagraphics_putpixel;
     Driver->getpixel=video_vgagraphics_getpixel;
+    Driver->cls=video_vgagraphics_cls;
 
 //Set driver
     video_vgagraphics_driver=Driver;

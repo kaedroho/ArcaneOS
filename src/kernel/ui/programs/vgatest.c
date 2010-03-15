@@ -17,7 +17,8 @@ void program_vgatest_runtest()
 //Start VGA driver
     video_setdriver(video_vgagraphics_getdriver(),0);
 
-//Plot a pixel
+//Clear the screen and draw a box
+/*
     unsigned int x,y;
     for(x=0;x<320;x++)
     {
@@ -26,6 +27,8 @@ void program_vgatest_runtest()
             video_putpixel(x,y,0x00);
         }
     }
+*/
+    video_cls();
     draw_filledboxcolour(100,100,150,150,0x0F);
 }
 

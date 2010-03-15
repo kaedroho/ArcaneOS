@@ -11,6 +11,7 @@ char (*video_getchar)(unsigned int x,unsigned int y);
 void (*video_positioncursor)(unsigned int x,unsigned int y);
 void (*video_putpixel)(unsigned int x,unsigned int y,unsigned int colour);
 unsigned int (*video_getpixel)(unsigned int x,unsigned int y);
+void (*video_cls)();
 
 void video_init()
 {
@@ -45,6 +46,7 @@ void video_setdriver(struct video_driver* Driver,unsigned int mode)
         video_positioncursor=Driver->positioncursor;
         video_putpixel=Driver->putpixel;
         video_getpixel=Driver->getpixel;
+        video_cls=Driver->cls;
 
     //Set current driver
         video_currentdriver=Driver;

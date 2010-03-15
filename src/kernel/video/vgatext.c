@@ -153,7 +153,11 @@ void video_vgatext_putchar(unsigned int x,unsigned int y,char character)
 
 char video_vgatext_getchar(unsigned int x,unsigned int y)
 {
-    return 0;
+//Calculate position
+    unsigned char* position=(unsigned char*)0xB8000+(x+y*video_vgatext_width)*2;
+
+//Return character
+    return *position;
 }
 
 void video_vgatext_positioncursor(unsigned int x,unsigned int y)
@@ -173,13 +177,22 @@ void video_vgatext_putpixel(unsigned int x,unsigned int y,unsigned int colour)
 //Calculate position
     unsigned char* position=(unsigned char*)0xB8000+(x+y*video_vgatext_width)*2+1;
 
-//Put character
+//Put pixel
     *position=colour;
 }
 
 unsigned int video_vgatext_getpixel(unsigned int x,unsigned int y)
 {
-    return 0;
+//Calculate position
+    unsigned char* position=(unsigned char*)0xB8000+(x+y*video_vgatext_width)*2+1;
+
+//Return pixel
+    return *position;
+}
+
+void video_vgatext_cls()
+{
+
 }
 
 struct video_displaymode video_vgatext_displaymodes[1] =
@@ -198,6 +211,7 @@ void video_vgatext_init(struct video_driver* Driver)
     Driver->positioncursor=video_vgatext_positioncursor;
     Driver->putpixel=video_vgatext_putpixel;
     Driver->getpixel=video_vgatext_getpixel;
+    Driver->cls=video_vgatext_cls;
 
 //Set driver
     video_vgatext_driver=Driver;

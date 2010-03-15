@@ -30,6 +30,7 @@ struct video_driver
 //Graphics functions
     void(*putpixel)(unsigned int x,unsigned int y,unsigned int colour);
     unsigned int(*getpixel)(unsigned int x,unsigned int y);
+    void(*cls)();
 };
 
 //Main functions
@@ -44,4 +45,5 @@ extern char (*video_getchar)(unsigned int x,unsigned int y);
 extern void (*video_positioncursor)(unsigned int x,unsigned int y);
 extern void (*video_putpixel)(unsigned int x,unsigned int y,unsigned int colour);
 extern unsigned int (*video_getpixel)(unsigned int x,unsigned int y);
+extern void (*video_cls)();
 #endif
