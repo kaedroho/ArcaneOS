@@ -133,6 +133,21 @@ void exception_handler(struct regs *r)
         cli_puts("\n             ECX: ");cli_putu32(r->ecx,16);
         cli_puts("\n             EDX: ");cli_putu32(r->edx,16);
 
+        cli_puts("\n             ESI: ");cli_putu32(r->esi,16);
+        cli_puts("\n             EDI: ");cli_putu32(r->edi,16);
+
+        cli_puts("\n             ESP: ");cli_putu32(r->esp,16);
+        cli_puts("\n             EBP: ");cli_putu32(r->ebp,16);
+
+        cli_puts("\n              CS: ");cli_putu32(r->cs,16);
+        cli_puts("\n              DS: ");cli_putu32(r->ds,16);
+        cli_puts("\n              ES: ");cli_putu32(r->es,16);
+        cli_puts("\n              FS: ");cli_putu32(r->fs,16);
+        cli_puts("\n              GS: ");cli_putu32(r->gs,16);
+        cli_puts("\n              SS: ");cli_putu32(r->ss,16);
+
+        cli_puts("\n             EIP: ");cli_putu32(r->eip,16);
+
         //Endless loop
         for(;;);
     }

@@ -1,5 +1,6 @@
 #include "sys.h"
 #include "cli.h"
+#include "mt.h"
 
 unsigned int timer_ticks = 0;
 unsigned int timer_ticksperseccond;
@@ -12,6 +13,10 @@ void timer_handler(struct regs *r)
 //If ticks are a factor of 1000 then 1 seccond has passed
     if(timer_ticks%timer_ticksperseccond==0)
         rtc_tickseccond();
+
+    // Context switch
+    if (timer_ticks%50==0)
+        mt_switch(r);
 }
 
 void timer_phase(int hz)

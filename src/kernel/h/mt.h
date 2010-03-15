@@ -73,18 +73,22 @@ struct mt_thread
 {
     struct mt_thread* prev_thread;
     struct mt_thread* next_thread;
-    struct regs state;
     unsigned int stack_base;
+    unsigned int stack_ptr;
 };
 
 extern struct mt_tss mt_task_state_segment;
 extern unsigned int mt_syscall_stack;
+extern unsigned int mt_thread_stack_ptr;
 extern struct mt_process* mt_first_process;
 extern struct mt_process* mt_last_process;
+extern struct mt_process* mt_kernel_process;
 
 extern void mt_init();
 
 extern struct mt_thread* mt_create_thread(struct mt_process* process, void* eip, int stack_pages);
 extern struct mt_process* mt_create_process(void* eip, struct pg_directory* directory, int stack_pages);
+
+extern void mt_switch(struct regs* state);
 
 #endif // PROCESS_H_INCLUDED
