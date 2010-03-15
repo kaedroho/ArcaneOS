@@ -93,13 +93,13 @@ unsigned int vga_getframebuffersegment()
 	{
 	case 0:
 	case 1:
-		seg=0xA000;
+		seg=0xA0000;
 		break;
 	case 2:
-		seg=0xB000;
+		seg=0xB0000;
 		break;
 	case 3:
-		seg=0xB800;
+		seg=0xB8000;
 		break;
 	}
 	return seg;

@@ -222,7 +222,7 @@ void video_vgagraphics_end()
 
 void video_vgagraphics_putpixel(unsigned int x,unsigned int y,unsigned int colour)
 {
-pokeb(video_vgagraphics_framebuffersegment,320*y+x,colour&0xFF);
+*(unsigned char*)(video_vgagraphics_framebuffersegment+320*y+x)=colour&0xFF;
 }
 
 unsigned int video_vgagraphics_getpixel(unsigned int x,unsigned int y)

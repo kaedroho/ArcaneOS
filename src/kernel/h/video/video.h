@@ -33,14 +33,15 @@ struct video_driver
 };
 
 //Main functions
-void video_init();
-void video_setdriver(struct video_driver* Driver,unsigned int mode);
-void video_putchar(unsigned int x,unsigned int y,char character);
-char video_getchar(unsigned int x,unsigned int y);
-void video_positioncursor(unsigned int x,unsigned int y);
-void video_putpixel(unsigned int x,unsigned int y,unsigned int colour);
-unsigned int video_getpixel(unsigned int x,unsigned int y);
-unsigned int video_getrows();
-unsigned int video_getcollumns();
+extern void video_init();
+extern void video_setdriver(struct video_driver* Driver,unsigned int mode);
+extern unsigned int video_getrows();
+extern unsigned int video_getcollumns();
 
+//Function pointers
+extern void (*video_putchar)(unsigned int x,unsigned int y,char character);
+extern char (*video_getchar)(unsigned int x,unsigned int y);
+extern void (*video_positioncursor)(unsigned int x,unsigned int y);
+extern void (*video_putpixel)(unsigned int x,unsigned int y,unsigned int colour);
+extern unsigned int (*video_getpixel)(unsigned int x,unsigned int y);
 #endif
