@@ -149,6 +149,7 @@ void exception_handler(struct regs *r)
         cli_puts("\n             EIP: ");cli_putu32(r->eip,16);
 
         //Endless loop
-        for(;;);
+        for(;;)
+            __asm__ __volatile__ ("hlt");
     }
 }
