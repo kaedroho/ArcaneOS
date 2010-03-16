@@ -9,29 +9,29 @@ void outb(unsigned short port,unsigned char data)
 {
     __asm__ __volatile__ ("outb %1, %0" : : "d" (port), "a" (data));
 }
-/* DOESNT WORK
+
 unsigned short inw(unsigned short port)
 {
     unsigned short rv;
-    __asm__ __volatile__ ("inw %1, %0" : "=ax" (rv) : "d" (port));
+    __asm__ __volatile__ ("inw %1, %0" : "=a" (rv) : "d" (port));
     return rv;
 }
-*/
+
 void outw(unsigned short port,unsigned short data)
 {
-    __asm__ __volatile__ ("outw %1, %0" : : "d" (port), "ax" (data));
+    __asm__ __volatile__ ("outw %1, %0" : : "d" (port), "a" (data));
 }
 
 unsigned long inl(unsigned short port)
 {
     unsigned long rv;
-    __asm__ __volatile__ ("inl %1, %0" : "=eax" (rv) : "d" (port));
+    __asm__ __volatile__ ("inl %1, %0" : "=a" (rv) : "d" (port));
     return rv;
 }
 
 void outl(unsigned short port,unsigned long data)
 {
-    __asm__ __volatile__ ("outl %1, %0" : : "d" (port), "eax" (data));
+    __asm__ __volatile__ ("outl %1, %0" : : "d" (port), "a" (data));
 }
 
 unsigned char peekb(unsigned short seg,unsigned short off)
