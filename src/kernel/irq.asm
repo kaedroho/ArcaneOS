@@ -83,3 +83,18 @@ irq_common_stub:
     popa
     add esp, 8
     iret
+
+global irq_lock
+global irq_unlock
+
+irq_lock:
+    pushf
+    pop eax
+    cli
+    ret
+
+irq_unlock:
+    mov eax, [esp+4]
+    push eax
+    popf;
+    ret;

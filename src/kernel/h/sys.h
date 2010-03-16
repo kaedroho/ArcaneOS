@@ -40,6 +40,9 @@ extern void irq_init();
 extern void irq_install_handler(int irq,void (*handler)(struct regs *r));
 extern void irq_uninstall_handler(int irq);
 
+extern unsigned int irq_lock();
+extern void irq_unlock(unsigned int handle);
+
 //TIMER FUNCTIONS
 extern void timer_init();
 

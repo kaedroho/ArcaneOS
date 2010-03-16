@@ -15,7 +15,7 @@ void timer_handler(struct regs *r)
         rtc_tickseccond();
 
     // Context switch
-    if (timer_ticks%50==0)
+    if (timer_ticks%mt_context_switch_delay==0 || mt_first_process->first_thread->sleep_time)
         mt_switch(r);
 }
 

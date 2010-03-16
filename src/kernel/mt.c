@@ -14,6 +14,7 @@ struct mt_process* mt_last_process;
 struct mt_process* mt_kernel_process;
 
 int mt_has_started = 0;
+unsigned int mt_context_switch_delay = 50;
 
 void mt_init()
 {
@@ -43,11 +44,13 @@ void mt_init()
 
     // Create the main kernel thread
     struct mt_thread* thread = (struct mt_thread*)mm_block_alloc(sizeof(struct mt_thread));
-    thread->stack_base = (unsigned int)mm_page_alloc(mt_kernel_process->directory,stack_size) + mm_page_size*stack_size - 8;
+    thread->stack_base = (unsigned int)mm_page_alloc(mt_kernel_process->directory,stack_size) + mm_page_size*stack_size;
     thread->stack_ptr = thread->stack_base;
 
     thread->prev_thread = 0;
     thread->next_thread = 0;
+
+    thread->process = mt_kernel_process;
 
     mt_kernel_process->first_thread = thread;
     mt_kernel_process->last_thread = thread;
@@ -56,6 +59,8 @@ void mt_init()
 
 struct mt_thread* mt_create_thread(struct mt_process* process, void* eip, int stack_pages)
 {
+    unsigned int handle = irq_lock();
+
     struct mt_thread* thread = (struct mt_thread*)mm_block_alloc(sizeof(struct mt_thread));
     thread->stack_base = (unsigned int)mm_page_alloc(process->directory,stack_pages) + mm_page_size*stack_pages;
 
@@ -91,10 +96,16 @@ struct mt_thread* mt_create_thread(struct mt_process* process, void* eip, int st
         process->first_thread = thread;
     process->last_thread = thread;
 
+    thread->process = process;
+
+    irq_unlock(handle);
+
     return thread;
 }
 struct mt_process* mt_create_process(void* eip, struct pg_directory* directory, int stack_pages)
 {
+    unsigned int handle = irq_lock();
+
     struct mt_process* process = (struct mt_process*)mm_block_alloc(sizeof(struct mt_process));
     process->directory = directory;
     process->first_thread = 0;
@@ -110,15 +121,18 @@ struct mt_process* mt_create_process(void* eip, struct pg_directory* directory, 
 
     mt_create_thread(process,eip,stack_pages);
 
+    irq_unlock(handle);
+
     return process;
 }
 void mt_switch(struct regs* state)
 {
     struct mt_process* process = mt_first_process;
-    if (process)
-    {
-        struct mt_thread* old_thread = mt_first_process->first_thread;
+    struct mt_thread* thread = process->first_thread;
+    struct mt_thread* old_thread = thread;
 
+    do
+    {
         if (process->next_process)
         {
             mt_first_process = mt_first_process->next_process;
@@ -128,24 +142,48 @@ void mt_switch(struct regs* state)
             mt_last_process->next_process = process;
             process->prev_process = mt_last_process;
             mt_last_process = process;
+
+            process = mt_first_process;
         }
 
-        struct mt_thread* thread = mt_first_process->first_thread;
+        thread = process->first_thread;
         if (thread->next_thread)
         {
-            mt_first_process->first_thread = thread->next_thread;
+            process->first_thread = thread->next_thread;
             thread->next_thread = 0;
-            mt_first_process->first_thread->prev_thread = 0;
+            process->first_thread->prev_thread = 0;
 
-            mt_first_process->last_thread->next_thread = thread;
-            thread->prev_thread = mt_first_process->last_thread;
-            mt_first_process->last_thread = thread;
+            process->last_thread->next_thread = thread;
+            thread->prev_thread = process->last_thread;
+            process->last_thread = thread;
+
+            thread = process->first_thread;
         }
 
-        struct mt_thread* new_thread = mt_first_process->first_thread;
+    } while (thread->sleep_time);
 
+    if (thread != old_thread)
+    {
         old_thread->stack_ptr = mt_thread_stack_ptr;
-        pg_set_directory(mt_first_process->directory);
-        mt_thread_stack_ptr = new_thread->stack_ptr;
+        pg_set_directory(thread->process->directory);
+        mt_thread_stack_ptr = thread->stack_ptr;
     }
+
+    for (process = mt_first_process; process; process = process->next_process)
+        for (thread = process->first_thread; thread; thread = thread->next_thread)
+            if (thread->sleep_time)
+                thread->sleep_time -= mt_context_switch_delay;
+}
+extern void irq_raise(unsigned int i);
+
+void mt_sleep(struct mt_thread* thread, unsigned int duration)
+{
+    duration = (duration / mt_context_switch_delay)*mt_context_switch_delay;
+
+    unsigned int handle = irq_lock();
+
+    if (thread->sleep_time < duration)
+        thread->sleep_time = duration;
+
+    irq_unlock(handle);
 }

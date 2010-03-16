@@ -14,6 +14,15 @@ extern void kernel_end();
 unsigned int esp;
 unsigned int correct_esp;
 
+struct mt_thread* other_thread;
+void test()
+{
+    while (1)
+    {
+        cli_puts("Testing...\n");
+        mt_sleep(other_thread,1000);
+    }
+}
 int main()
 {
 //Start video driver (must always be before loading message)
@@ -43,9 +52,9 @@ int main()
 //Start interrupts
     __asm__ __volatile__ ("sti");
 
-//Start ui
-    ui_start();
+//Create thread for ui
+    other_thread = mt_create_thread(mt_kernel_process,test,2);
 
-//Endless loop
+//Endless loop to prevent bugs when all threads are sleeping
     for(;;);
 }
