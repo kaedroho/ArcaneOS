@@ -45,6 +45,8 @@ extern void irq_unlock(unsigned int handle);
 
 //TIMER FUNCTIONS
 extern void timer_init();
+extern unsigned int timer_getticks();
+extern unsigned int timer_getticksperseccond();
 
 //KEYBOARD FUNCTIONS
 extern void kb_init();
@@ -117,5 +119,6 @@ extern struct rtc_time* rtc_gettime();
 extern void rtc_setclockhandler(void (*handler)());
 
 //POWER FUNCTIONS
-void power_init();
+extern void power_init();
+extern void power_shutdown();
 #endif

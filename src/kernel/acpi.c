@@ -3,85 +3,11 @@
 #include "libs/memory.h"
 #include "cli.h"
 
-struct acpi_rsdp
-{
-    char Signature[8];
-    unsigned char Checksum;
-    char OEMID[6];
-    unsigned char Revision;
-    unsigned int RsdtAddress;
-};
-
-struct acpi_rsdtheader
-{
-    char Signature[4];
-    unsigned int Length;
-    unsigned char Revision;
-    unsigned char Checksum;
-    char OEMID[6];
-    char OEMTableID[8];
-    unsigned int OEMRevision;
-    unsigned int CreatorID;
-    unsigned int CreatorRevision;
-};
-
-struct acpi_rsdt
-{
-    struct acpi_rsdtheader header;
-};
-
-struct acpi_facp
-{
-    char Signature[4];
-    unsigned int Length;
-    unsigned char Revision;
-    unsigned char Checksum;
-    char OEMID[6];
-    char OEMTableID[8];
-    unsigned int OEMRevision;
-    unsigned int CreatorID;
-    unsigned int CreatorRevision;
-    unsigned int FirmwareCtrlPtr;
-    unsigned int DSDTPtr;
-    unsigned char INT_MODEL;
-    char reserved1;
-    unsigned short SCI_INT;
-    unsigned int SMI_CMD;
-    unsigned char ACPI_ENABLE;
-    unsigned char ACPI_DISABLE;
-    unsigned char S4BIOS_REQ;
-    char reserved2;
-    unsigned int PM1a_EVT_BLK;
-    unsigned int PM1b_EVT_BLK;
-    unsigned int PM1a_CNT_BLK;
-    unsigned int PM1b_CNT_BLK;
-    unsigned int PM2_CNT_BLK;
-    unsigned int PM_TMR_BLK;
-    unsigned int GPE0_BLK;
-    unsigned int GPE1_BLK;
-    unsigned char PM1_EVT_LEN;
-    unsigned char PM1_CNT_LEN;
-    unsigned char PM2_CNT_LEN;
-    unsigned char PM_TM_LEN;
-    unsigned char GPE0_BLK_LEN;
-    unsigned char GPE1_BLK_LEN;
-    unsigned char GPE0_BASE;
-    char reserved3;
-    unsigned short P_LVL2_LAT;
-    unsigned short P_LVL3_LAT;
-    unsigned short FLUSH_SIZE;
-    unsigned short FLUSH_STRIDE;
-    unsigned char DUTY_OFFSET;
-    unsigned char DUTY_WIDTH;
-    unsigned char DAY_ALRM;
-    unsigned char MON_ALRM;
-    unsigned char CENTURY;
-    char reserved4[3];
-    unsigned int Flags;
-};
-
 struct acpi_rsdt* acpi_rsdtptr;
 struct acpi_facp* acpi_facpptr;
+struct acpi_dsdt* acpi_dsdtptr;
+
+struct acpi_main acpi_main;
 
 char acpi_rsdpcorrect(struct acpi_rsdp* rsdp)
 {
@@ -152,11 +78,78 @@ void acpi_init()
 //Check if facp exists
     if(acpi_facpptr==0){cli_puts("Error: FACP not found.\n");for(;;);}
 
-    //for(;;);
+//Get DSDT
+    acpi_dsdtptr=(struct acpi_dsdt*)acpi_facpptr->DSDTPtr;
+
+//Find \_S5
+    unsigned int DSDTLength=acpi_dsdtptr->header.Length-36;
+    char *S5Ptr=(char*)acpi_dsdtptr+36;
+    while(0<DSDTLength)
+    {
+    //Check if this is the S5 Pointer
+        if(memcmp(S5Ptr,"_S5_",4))
+            break;
+
+    //Next byte
+        S5Ptr++;
+    }
+
+//Check if \_S5 was found and parse it
+    if(DSDTLength>0)
+    {
+        if((*(S5Ptr-1)==0x08 || (*(S5Ptr-2)==0x08 && *(S5Ptr-1)=='\\')) && *(S5Ptr+4)==0x12)
+        {
+        //Calculate pkglength size
+            S5Ptr+=5;
+            S5Ptr+=((*S5Ptr&0xC0)>>6)+2;
+
+        //Get SLP_TYPa
+            if(*S5Ptr==0x0A)
+                S5Ptr++;
+            acpi_main.SLP_TYPa=*(S5Ptr)<<10;
+
+        //Next byte
+            S5Ptr++;
+
+        //Get SLP_TYPb
+            if(*S5Ptr==0x0A)
+                S5Ptr++;
+            acpi_main.SLP_TYPb=*(S5Ptr)<<10;
+        }
+    }
+
+//Set some other variables
+    acpi_main.SLP_EN=1<<13;
+    acpi_main.SCI_EN=1;
 }
 
+char acpi_checkenabled()
+{
+    return inw(acpi_facpptr->PM1a_CNT_BLK)&acpi_main.SCI_EN;
+}
 
 void acpi_enable()
 {
+//Check that ACPI isnt already enabled
+    if(acpi_checkenabled()==0)
+    {
+    //Check if ACPI can be enabled
+        if(acpi_facpptr->SMI_CMD!=0&&acpi_facpptr->ACPI_ENABLE!=0)
+        {
+        //Enable ACPI
+            outb(acpi_facpptr->SMI_CMD,acpi_facpptr->ACPI_ENABLE);
 
+        //Wait for 3 secconds
+            unsigned int starttime=timer_getticks();
+            while(starttime+timer_getticksperseccond()*3>timer_getticks())
+            {
+                if((timer_getticks()-starttime)%50)
+                    if(acpi_checkenabled())
+                        break;
+            }
+
+        //Check if ACPI has been enabled
+            if (acpi_checkenabled()==0){cli_puts("Error: ACPI cannot be enabled.\n");for(;;);}
+        }
+    }
 }

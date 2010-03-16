@@ -17,11 +17,16 @@ unsigned int correct_esp;
 struct mt_thread* other_thread;
 void test()
 {
+    /*
     while (1)
     {
         cli_puts("Testing...\n");
         mt_sleep(other_thread,1000);
     }
+    */
+    ui_start();
+    for(;;);
+        __asm__ __volatile__ ("hlt");
 }
 int main()
 {
@@ -52,9 +57,13 @@ int main()
 //Start interrupts
     __asm__ __volatile__ ("sti");
 
+//Enable ACPI
+    acpi_enable();
+
 //Create thread for ui
     other_thread = mt_create_thread(mt_kernel_process,test,2);
 
 //Endless loop to prevent bugs when all threads are sleeping
-    for(;;);
+    for(;;)
+        __asm__ __volatile__ ("hlt");
 }

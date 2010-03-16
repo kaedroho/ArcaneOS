@@ -35,6 +35,15 @@ void timer_phase(int hz)
     outb(0x40,divisor>>8);
 }
 
+unsigned int timer_getticks()
+{
+    return timer_ticks;
+}
+
+unsigned int timer_getticksperseccond()
+{
+    return timer_ticksperseccond;
+}
 
 void timer_init()
 {

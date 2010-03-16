@@ -21,14 +21,14 @@ void outw(unsigned short port,unsigned short data)
 {
     __asm__ __volatile__ ("outw %1, %0" : : "d" (port), "a" (data));
 }
-
+/*
 unsigned long inl(unsigned short port)
 {
     unsigned long rv;
     __asm__ __volatile__ ("inl %1, %0" : "=a" (rv) : "d" (port));
     return rv;
 }
-
+*/
 void outl(unsigned short port,unsigned long data)
 {
     __asm__ __volatile__ ("outl %1, %0" : : "d" (port), "a" (data));
