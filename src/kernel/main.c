@@ -17,15 +17,8 @@ unsigned int correct_esp;
 
 void test()
 {
-    //*
-    while (1)
-    {
-        cli_puts("Testing...\n");
-        syscall(syscall_sleep_id,5000);
-    }
-    //*/
     ui_start();
-    for(;;);
+    for(;;)
         __asm__ __volatile__ ("hlt");
 }
 int main()

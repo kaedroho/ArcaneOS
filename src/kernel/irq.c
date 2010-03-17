@@ -83,6 +83,14 @@ void irq_handler(struct regs *r)
     if (handler)
         handler(r);
 
+    if (r->int_no-32 == 7)
+    {
+        // Workaround for bug where IRQ7 fires for no apparant reason
+        outb(0x20, 0x0B); unsigned char irr = inb(0x20);
+        if ((irr & 0x80) == 0)
+            return;
+    }
+
 //If interrupt is greater than 40, send EOI to the slave controller
     if (r->int_no>=40)
     {
