@@ -13,3 +13,9 @@ void power_shutdown()
     if(acpi_facpptr->PM1b_CNT_BLK!=0)
         outw(acpi_facpptr->PM1b_CNT_BLK,acpi_main.SLP_TYPb|acpi_main.SLP_EN);
 }
+
+void power_reboot()
+{
+//Send reset command to keyboard controller
+    outb(0x64,0xFE);
+}
