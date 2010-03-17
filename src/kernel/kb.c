@@ -49,8 +49,9 @@ void kb_handler(struct regs *r)
 //Variables
     unsigned char scancode;
 
-    //Read scancode
-        scancode = inb(0x60);
+//Read scancode
+    scancode = inb(0x60);
+
 //Check if there is a keyboard handler
     if(g_kb_handler!=0)
     {
