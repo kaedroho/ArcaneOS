@@ -121,4 +121,5 @@ extern void rtc_setclockhandler(void (*handler)());
 //POWER FUNCTIONS
 extern void power_init();
 extern void power_shutdown();
+extern void power_reboot();
 #endif
