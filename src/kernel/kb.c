@@ -42,7 +42,7 @@ char KB_Layout[128] =
     0,	/* All other keys are undefined */
 };
 
-void (*g_kb_handler)(unsigned char scancode);
+void (*g_kb_handler)(unsigned char scancode) = 0;
 
 void kb_handler(struct regs *r)
 {

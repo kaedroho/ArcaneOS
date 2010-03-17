@@ -7,6 +7,7 @@
 #include "paging.h"
 #include "acpi.h"
 #include "mt.h"
+#include "syscall.h"
 
 extern void start();
 extern void kernel_end();
@@ -14,16 +15,15 @@ extern void kernel_end();
 unsigned int esp;
 unsigned int correct_esp;
 
-struct mt_thread* other_thread;
 void test()
 {
-    /*
+    //*
     while (1)
     {
         cli_puts("Testing...\n");
-        mt_sleep(other_thread,1000);
+        syscall(syscall_sleep_id,5000);
     }
-    */
+    //*/
     ui_start();
     for(;;);
         __asm__ __volatile__ ("hlt");
@@ -53,6 +53,7 @@ int main()
     acpi_init();
     power_init();
     mt_init();
+    syscall_init();
 
 //Start interrupts
     __asm__ __volatile__ ("sti");
@@ -61,7 +62,7 @@ int main()
     acpi_enable();
 
 //Create thread for ui
-    other_thread = mt_create_thread(mt_kernel_process,test,2);
+    mt_create_thread(mt_kernel_process,test,2);
 
 //Endless loop to prevent bugs when all threads are sleeping
     for(;;)

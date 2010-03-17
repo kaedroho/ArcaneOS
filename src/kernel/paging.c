@@ -197,9 +197,17 @@ unsigned int pg_virtual_to_physical(struct pg_directory* directory, unsigned int
     unsigned int pag_index = (virtual_address >> 12) & 0x3FF;
     unsigned int offset = virtual_address & 0xFFF;
 
-    struct pg_table* table = (struct pg_table*)((directory->tables[dir_index]) & 0xFFFFF000);
+    unsigned int dir_entry = directory->tables[dir_index];
+    if ((dir_entry & 1) == 0)
+        return 0;
 
-    unsigned int physical_address = ((table->pages[pag_index]) & 0xFFFFF000) + offset;
+    struct pg_table* table = (struct pg_table*)(dir_entry & 0xFFFFF000);
+
+    unsigned int pag_entry = table->pages[pag_index];
+    if ((pag_entry & 1) == 0)
+        return 0;
+
+    unsigned int physical_address = (pag_entry & 0xFFFFF000) + offset;
 
     if (paging_enabled)
         pg_set_enabled(1);
