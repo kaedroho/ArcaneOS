@@ -16,5 +16,5 @@ void ui_tab_about_kbhandler(unsigned char scancode)
 {
 //Change tab with left and right keys
     if(scancode==0x4B)
-        ui_settab(3);
+        ui_settab(4);
 }

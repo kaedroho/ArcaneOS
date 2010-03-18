@@ -15,7 +15,7 @@ struct ui_tab
 void ui_clockhandler();
 
 unsigned int ui_tabcount;
-struct ui_tab ui_tablist[5];
+struct ui_tab ui_tablist[6];
 
 struct Rect ui_CLIRect;
 
@@ -28,7 +28,7 @@ void ui_init()
     ui_CLIRect.bottom=video_getrows()-5;
 
 //Setup tabs
-    ui_tabcount=5;
+    ui_tabcount=6;
     ui_tablist[0].name="Programs";
     ui_tablist[0].namelength=sizeof("Programs");
     ui_tablist[0].start=ui_tab_programs_start;
@@ -49,16 +49,22 @@ void ui_init()
     ui_tablist[3].start=ui_tab_terminal_start;
     ui_tablist[3].kbhandler=ui_tab_terminal_kbhandler;
 
-    ui_tablist[4].name="About";
-    ui_tablist[4].namelength=sizeof("About");
-    ui_tablist[4].start=ui_tab_about_start;
-    ui_tablist[4].kbhandler=ui_tab_about_kbhandler;
+    ui_tablist[4].name="Power";
+    ui_tablist[4].namelength=sizeof("Power");
+    ui_tablist[4].start=ui_tab_power_start;
+    ui_tablist[4].kbhandler=ui_tab_power_kbhandler;
+
+    ui_tablist[5].name="About";
+    ui_tablist[5].namelength=sizeof("About");
+    ui_tablist[5].start=ui_tab_about_start;
+    ui_tablist[5].kbhandler=ui_tab_about_kbhandler;
 
 //Init tabs
     ui_tab_programs_init();
     ui_tab_folders_init();
     ui_tab_settings_init();
     ui_tab_terminal_init();
+    ui_tab_power_init();
     ui_tab_about_init();
 }
 
