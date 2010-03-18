@@ -8,6 +8,7 @@
 #include "acpi.h"
 #include "mt.h"
 #include "syscall.h"
+#include "real.h"
 
 extern void start();
 extern void kernel_end();
@@ -47,6 +48,7 @@ int main()
     power_init();
     mt_init();
     syscall_init();
+    real_init();
 
 //Start interrupts
     __asm__ __volatile__ ("sti");
