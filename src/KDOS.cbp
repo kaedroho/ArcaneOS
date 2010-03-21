@@ -55,9 +55,6 @@
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\end.asm">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Unit filename="kernel\gdt.asm">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -107,6 +104,7 @@
 		<Unit filename="kernel\h\ui\ui.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="kernel\h\vesa.h" />
 		<Unit filename="kernel\h\video\drawer.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -249,6 +247,9 @@
 		<Unit filename="kernel\ui\ui.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="kernel\vesa.c">
+			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="kernel\video\drawer.c">
 			<Option compilerVar="CC" />

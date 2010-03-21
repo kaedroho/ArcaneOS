@@ -68,6 +68,16 @@ int pg_get_enabled()
     __asm__ __volatile__ ("mov %%cr0, %0" : "=a" (cr0));
     return (cr0 & 0x80000000) != 0;
 }
+int pg_lock()
+{
+    int result = pg_get_enabled();
+    pg_set_enabled(0);
+    return result;
+}
+void pg_unlock(int handle)
+{
+    pg_set_enabled(handle);
+}
 void pg_set_directory(struct pg_directory* directory)
 {
     __asm__ __volatile__ ("mov %0, %%cr3" : : "a" (directory));

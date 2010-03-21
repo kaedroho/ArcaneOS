@@ -27,5 +27,7 @@ extern void pg_map_page(struct pg_directory* directory, unsigned int physical_ad
 
 extern unsigned int pg_find_virtual_pages(struct pg_directory* directory, unsigned int count);
 extern unsigned int pg_virtual_to_physical(struct pg_directory* directory, unsigned int virtual_address);
+extern int pg_lock();
+extern void pg_unlock(int handle);
 
 #endif // PAGING_H_INCLUDED

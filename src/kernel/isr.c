@@ -119,9 +119,11 @@ void exception_handler(struct regs *r)
         cli_setrect(0);
         cli_settextcolour(0x4F);cli_cls();
         cli_positioncursor(0,0);
-        cli_puts("An exception has occurred.\nException: ");
+        cli_puts("An exception has occurred.\nException: (");
+        cli_putu32(r->int_no, 10);
+        cli_puts(") - ");
         cli_puts(exception_messages[r->int_no]);
-        cli_puts("\n\nSystem Halted.\n\n\n\n");
+        cli_puts("\n\nSystem Halted.\n\n");
 
         //Put error code
         cli_puts("Technical Information:\n\nError Code:  ");

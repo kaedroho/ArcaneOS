@@ -39,6 +39,8 @@ extern void isr_init();
 extern void irq_init();
 extern void irq_install_handler(int irq,void (*handler)(struct regs *r));
 extern void irq_uninstall_handler(int irq);
+extern void irq_remap(void);
+extern void irq_unmap(void);
 
 extern unsigned int irq_lock();
 extern void irq_unlock(unsigned int handle);

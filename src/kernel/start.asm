@@ -44,7 +44,14 @@ stublet:
     jmp $
 
 
+SECTION .data
 
+global real_start
+global real_end
+
+real_start:
+    incbin "bin/real.bin"
+real_end:
 
 ;Store stack in BSS section
 SECTION .bss

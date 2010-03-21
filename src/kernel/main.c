@@ -9,12 +9,10 @@
 #include "mt.h"
 #include "syscall.h"
 #include "real.h"
+#include "vesa.h"
 
 extern void start();
 extern void kernel_end();
-
-unsigned int esp;
-unsigned int correct_esp;
 
 void test()
 {
@@ -49,8 +47,8 @@ int main()
     mt_init();
     syscall_init();
     real_init();
+    vesa_init();
 
-//Start interrupts
     __asm__ __volatile__ ("sti");
 
 //Enable ACPI

@@ -3,16 +3,14 @@
 #include "libs/memory.h"
 #include "paging.h"
 
-#define real_offset 0x9000 // 36 KB
-#define real_size 172
-#define real_dest 0x7C00
+extern void real_start();
+extern void real_end();
 
-unsigned int (*real_call)(unsigned int id, ...) = (unsigned int (*)(unsigned int id, ...))real_dest;
+unsigned int (*real_call)(unsigned short id, ...) = (unsigned int (*)(unsigned short id, ...))0x7C00;
 
 void real_init()
 {
-    pg_set_enabled(0);
-    memcpy((unsigned char*)real_dest, (unsigned char*)real_offset, real_size);
-    pg_set_enabled(1);
+    // Load the real mode library
+    memcpy((unsigned char*)0x7C00, (unsigned char*)&real_start, (unsigned int)&real_end - (unsigned int)&real_start);
 }
 
