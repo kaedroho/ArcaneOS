@@ -18,7 +18,7 @@ void test()
 {
     ui_start();
     for(;;)
-        __asm__ __volatile__ ("hlt");
+        syscall_sleep(10000); // Better than HLT since this doesn't waste CPU time
 }
 
 int main()
@@ -54,7 +54,6 @@ int main()
 
 //Enable ACPI
     acpi_enable();
-    //vesa_init();
 
 //Create thread for ui
     mt_create_thread(mt_kernel_process,test,2);
