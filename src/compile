@@ -60,6 +60,9 @@ gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -no
 echo "Compiling... kb.c"
 gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/kb.o kernel/kb.c
 
+echo "Compiling... floppy.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/floppy.o kernel/floppy.c
+
 echo "Compiling... cli.c"
 gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/cli.o kernel/cli.c
 
@@ -129,6 +132,9 @@ gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -no
 echo "Compiling... ui/programs/cpuidinfo.c"
 gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/ui/programs/cpuidinfo.o kernel/ui/programs/cpuidinfo.c
 
+echo "Compiling... ui/programs/floppytest.c"
+gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/ui/programs/floppytest.o kernel/ui/programs/floppytest.c
+
 echo "Assembling... cpuid.asm"
 nasm -f aout -o obj/cpuid.asm.o kernel/cpuid.asm
 
@@ -151,7 +157,7 @@ echo "Compiling... main.c"
 gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./kernel/h -c -o obj/main.o kernel/main.c
 
 echo "Linking... kernel.bin"
-ld -T link.ld -o bin/kernel.bin obj/start.asm.o obj/syscall.asm.o obj/sys.o obj/syscall.o obj/real.o obj/boot.o obj/mm.o obj/mt.o obj/paging.o obj/gdt.asm.o obj/gdt.o obj/idt.asm.o obj/idt.o obj/isr.asm.o obj/isr.o obj/irq.asm.o obj/irq.o obj/timer.o obj/kb.o obj/cli.o obj/libs/memory.o obj/libs/string.o obj/libs/rect.o obj/video/video.o obj/video/vgafont.o obj/video/vgatext.o obj/video/vgagraphics.o obj/video/vgabase.o obj/video/vesa.o obj/video/drawer.o obj/ui/ui.o obj/ui/headerfooter.o obj/ui/tabs/programs.o obj/ui/tabs/folders.o obj/ui/tabs/settings.o obj/ui/tabs/terminal.o obj/ui/tabs/power.o obj/ui/tabs/about.o obj/ui/programs/crashtest.o obj/ui/programs/debuginfo.o obj/ui/programs/vgatest.o obj/ui/programs/cpuidinfo.o obj/cpuid.asm.o obj/cpuid.o obj/cmos.o obj/rtc.o obj/acpi.o obj/power.o obj/main.o obj/end.asm.o > ld.txt
+ld -T link.ld -o bin/kernel.bin obj/start.asm.o obj/syscall.asm.o obj/sys.o obj/syscall.o obj/real.o obj/boot.o obj/mm.o obj/mt.o obj/paging.o obj/gdt.asm.o obj/gdt.o obj/idt.asm.o obj/idt.o obj/isr.asm.o obj/isr.o obj/irq.asm.o obj/irq.o obj/timer.o obj/kb.o obj/floppy.o obj/cli.o obj/libs/memory.o obj/libs/string.o obj/libs/rect.o obj/video/video.o obj/video/vgafont.o obj/video/vgatext.o obj/video/vgagraphics.o obj/video/vgabase.o obj/video/vesa.o obj/video/drawer.o obj/ui/ui.o obj/ui/headerfooter.o obj/ui/tabs/programs.o obj/ui/tabs/folders.o obj/ui/tabs/settings.o obj/ui/tabs/terminal.o obj/ui/tabs/power.o obj/ui/tabs/about.o obj/ui/programs/crashtest.o obj/ui/programs/debuginfo.o obj/ui/programs/vgatest.o obj/ui/programs/cpuidinfo.o obj/ui/programs/floppytest.o obj/cpuid.asm.o obj/cpuid.o obj/cmos.o obj/rtc.o obj/acpi.o obj/power.o obj/main.o obj/end.asm.o > ld.txt
 
 echo "Updating floppy image... floppy.img"
 sudo /sbin/losetup /dev/loop0 img/floppy.img

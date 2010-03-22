@@ -1,5 +1,6 @@
 #include "syscall.h"
 #include "mt.h"
+#include "floppy.h"
 
 void* syscall_ptrs[SYSCALL_COUNT];
 unsigned int syscall_stack_sizes[SYSCALL_COUNT];
@@ -13,7 +14,8 @@ void syscall_init()
 {
     idt_set_gate(0x80,(unsigned)syscall_receiver,0x08,0x8E);
 
-    syscall_register(syscall_sleep_id, syscall_sleep, 4);
+    syscall_register(syscall_sleep_id, _syscall_sleep, 4);
+    syscall_register(syscall_floppy_id, _syscall_floppy, 32);
 }
 
 void syscall_register(unsigned int id, void* function_ptr, unsigned int parameter_bytes)
@@ -46,8 +48,39 @@ void syscall_handler(struct regs *r)
     r->eax = syscall_return_value;
 }
 
-void syscall_sleep(unsigned int duration)
+// THESE SHOULD NOT BE CALLED DIRECTLY
+void _syscall_sleep(unsigned int duration)
 {
     mt_sleep(mt_first_process->first_thread, duration);
     mt_switch(syscall_regs);
+}
+void _syscall_floppy(unsigned int id, unsigned int cylinder, unsigned int head, unsigned int sector, unsigned int offset, unsigned int size, unsigned char* buffer, unsigned int* error)
+{
+    floppy_push_command(id, cylinder, head, sector, offset, size, buffer, error);
+}
+struct mt_thread* _syscall_create_thread(struct mt_process* process, void* eip, int stack_pages)
+{
+    return mt_create_thread(process, eip, stack_pages);
+}
+
+// THESE SHOULD BE CALLED DIRECTLY
+void syscall_sleep(unsigned int duration)
+{
+    syscall(syscall_sleep_id, duration);
+}
+void syscall_floppy_read(unsigned int cylinder, unsigned int head, unsigned int sector, unsigned int offset, unsigned int size, unsigned char* buffer, unsigned int* error)
+{
+    syscall(syscall_floppy_id, floppy_command_read, cylinder, head, sector, offset, size, buffer, error);
+}
+void syscall_floppy_write(unsigned int cylinder, unsigned int head, unsigned int sector, unsigned int offset, unsigned int size, const unsigned char* buffer, unsigned int* error)
+{
+    syscall(syscall_floppy_id, floppy_command_write, cylinder, head, sector, offset, size, (unsigned char*)buffer, error);
+}
+void syscall_floppy_flush(unsigned int* error)
+{
+    syscall(syscall_floppy_id, floppy_command_flush, 0, 0, 0, 0, 0, 0, error);
+}
+struct mt_thread* syscall_create_thread(struct mt_process* process, void* eip, int stack_pages)
+{
+    return (struct mt_thread*)syscall(syscall_create_thread_id, process, eip, stack_pages);
 }

@@ -14,6 +14,8 @@ SECTIONS
   {
     data = .;
     *(.data)
+	floppy_dmabuf = ALIGN(0x8000);
+	. = floppy_dmabuf + 0x4800;
     . = ALIGN(4096);
   }
   .bss : AT(phys + (bss - code))

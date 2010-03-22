@@ -18,13 +18,11 @@ unsigned int video_vesa_currentmode;
 struct vesa_vbe_info* vesa_get_vbe_info()
 {
     unsigned int handle_irq = irq_lock();
-    unsigned int handle_pg = pg_lock();
     irq_unmap();
 
     struct vesa_vbe_info* result = (struct vesa_vbe_info*)real_call(real_get_vbe_info_id);
 
     irq_remap();
-    pg_unlock(handle_pg);
     irq_unlock(handle_irq);
 
     return result;
@@ -33,13 +31,11 @@ struct vesa_vbe_info* vesa_get_vbe_info()
 struct vesa_vbe_mode_info* vesa_get_vbe_mode_info(unsigned short mode)
 {
     unsigned int handle_irq = irq_lock();
-    unsigned int handle_pg = pg_lock();
     irq_unmap();
 
     struct vesa_vbe_mode_info* result = (struct vesa_vbe_mode_info*)real_call(real_get_vbe_mode_info_id, mode);
 
     irq_remap();
-    pg_unlock(handle_pg);
     irq_unlock(handle_irq);
 
     return result;
@@ -48,13 +44,11 @@ struct vesa_vbe_mode_info* vesa_get_vbe_mode_info(unsigned short mode)
 int vesa_set_vbe_mode(unsigned short mode)
 {
     unsigned int handle_irq = irq_lock();
-    unsigned int handle_pg = pg_lock();
     irq_unmap();
 
     int result = real_call(real_set_vbe_mode_id, mode);
 
     irq_remap();
-    pg_unlock(handle_pg);
     irq_unlock(handle_irq);
 
     return result;
@@ -99,7 +93,7 @@ void video_vesa_cls()
 unsigned int video_vesa_getdisplaymodes()
 {
     unsigned int modes=0;
-    int handle_pg = pg_lock();
+    //int handle_pg = pg_lock();
     video_vesa_info = vesa_get_vbe_info();
     if (!video_vesa_info)
         return 0;
@@ -141,7 +135,7 @@ unsigned int video_vesa_getdisplaymodes()
         }
     }
 
-    pg_unlock(handle_pg);
+    //pg_unlock(handle_pg);
 
     return 0;//modes;
 }

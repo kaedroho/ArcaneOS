@@ -1,5 +1,6 @@
 #include "video/video.h"
 #include "libs/memory.h"
+#include "sys.h"
 
 struct video_driver video_driverlist[3];
 struct video_driver* video_currentdriver;

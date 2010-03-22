@@ -3,6 +3,7 @@
 #include "cli.h"
 #include "paging.h"
 #include "libs/memory.h"
+#include "sys.h"
 
 extern void start();
 
@@ -169,7 +170,7 @@ unsigned int pba_pools_count[9] = {
 struct pba_pool* pba_find_free_pool(unsigned int pool)
 {
     struct pba_pool* cur_pool;
-    for (cur_pool = pba_pools[pool]; cur_pool && (cur_pool->used < pba_pools_count[pool]); cur_pool = cur_pool->next);
+    for (cur_pool = pba_pools[pool]; cur_pool && (cur_pool->used == pba_pools_count[pool]); cur_pool = cur_pool->next);
     return cur_pool;
 }
 

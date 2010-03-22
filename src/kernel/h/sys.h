@@ -1,6 +1,8 @@
 #ifndef _SYSTEM_H
 #define _SYSTEM_H
 
+#define MAGIC_BREAKPOINT __asm__ ("XCHG %BX, %BX");
+
 //SYSTEM FUNCTIONS
 extern unsigned char inb(unsigned short port);
 extern void outb(unsigned short port,unsigned char data);

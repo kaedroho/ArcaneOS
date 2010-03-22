@@ -14,12 +14,12 @@ struct ui_tab_program_program
 
 unsigned int ui_tab_program_programcount;
 unsigned int ui_tab_program_currentselectedprogram;
-struct ui_tab_program_program ui_tab_program_programlist[4];
+struct ui_tab_program_program ui_tab_program_programlist[5];
 
 void ui_tab_programs_init()
 {
 //Zero variables
-    ui_tab_program_programcount=4;
+    ui_tab_program_programcount=5;
     ui_tab_program_currentselectedprogram=0;
 
 //Add crashtest
@@ -45,6 +45,12 @@ void ui_tab_programs_init()
     ui_tab_program_programlist[3].namelength=sizeof("CPUID Info");
     ui_tab_program_programlist[3].start=program_cpuidinfo_start;
     ui_tab_program_programlist[3].kbhandler=program_cpuidinfo_kbhandler;
+
+//Add floppy test
+    ui_tab_program_programlist[4].name="Floppy Test";
+    ui_tab_program_programlist[4].namelength=sizeof("Floppy Test");
+    ui_tab_program_programlist[4].start=program_floppytest_start;
+    ui_tab_program_programlist[4].kbhandler=program_floppytest_kbhandler;
 }
 
 void ui_tab_programs_drawlist()

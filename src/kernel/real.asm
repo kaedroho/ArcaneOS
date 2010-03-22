@@ -26,7 +26,12 @@ call_real:
 
    push ebx
 
-   mov   [saved_esp], esp
+   mov  [saved_esp], esp
+
+   mov  eax, cr0
+   mov  [saved_cr0], eax
+   and  eax,0x7FFFFFFF
+   mov  cr0, eax
 
    lgdt  [gdtr]                ; Load the GDT descriptor
 
@@ -249,6 +254,9 @@ activate_pm:
 
    mov   esp,[saved_esp]
 
+   mov eax, [saved_cr0]
+   mov cr0, eax
+
    pop ebx
 
    lidt   [saved_idt]
@@ -319,6 +327,9 @@ saved_esp:
 
 saved_gdtr:
    dw   0
+
+saved_cr0:
+    dd 0
 
 param_list:
     times 4 dd 0

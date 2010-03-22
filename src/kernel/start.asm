@@ -48,6 +48,7 @@ SECTION .data
 
 global real_start
 global real_end
+global _paging_stack
 
 real_start:
     incbin "bin/real.bin"
@@ -57,3 +58,5 @@ real_end:
 SECTION .bss
     resb 8192 ;Reserve 8 KB of memory
 _sys_stack:
+    resb 4096 ;Reserve 4 KB of memory
+_paging_stack:

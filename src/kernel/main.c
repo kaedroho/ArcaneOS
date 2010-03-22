@@ -9,6 +9,7 @@
 #include "mt.h"
 #include "syscall.h"
 #include "real.h"
+#include "floppy.h"
 
 extern void start();
 extern void kernel_end();
@@ -47,11 +48,13 @@ int main()
     power_init();
     mt_init();
     syscall_init();
+    floppy_init();
 
     __asm__ __volatile__ ("sti");
 
 //Enable ACPI
     acpi_enable();
+    //vesa_init();
 
 //Create thread for ui
     mt_create_thread(mt_kernel_process,test,2);

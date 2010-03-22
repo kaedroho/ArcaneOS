@@ -62,6 +62,7 @@ struct mt_thread* mt_create_thread(struct mt_process* process, void* eip, int st
     unsigned int handle = irq_lock();
 
     struct mt_thread* thread = (struct mt_thread*)mm_block_alloc(sizeof(struct mt_thread));
+
     thread->stack_base = (unsigned int)mm_page_alloc(process->directory,stack_pages) + mm_page_size*stack_pages;
 
     unsigned int* stack_ptr = (unsigned int*)thread->stack_base;

@@ -55,6 +55,11 @@
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+
+		<Unit filename="kernel/floppy.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="kernel/gdt.asm">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -69,6 +74,9 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="kernel/h/cli.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="kernel/h/floppy.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="kernel/h/libs/memory.h">
