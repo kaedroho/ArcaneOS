@@ -1,7 +1,7 @@
 #include "video/video.h"
 #include "libs/memory.h"
 
-struct video_driver video_driverlist[2];
+struct video_driver video_driverlist[3];
 struct video_driver* video_currentdriver;
 unsigned int video_currentdisplaymode;
 
@@ -19,11 +19,12 @@ void video_init()
     video_currentdriver=0;
 
 //Zero driver list
-    memset((unsigned char*)video_driverlist,0,sizeof(struct video_driver)*2);
+    memset((unsigned char*)video_driverlist,0,sizeof(struct video_driver)*3);
 
 //Setup driver list
     video_vgatext_init(&video_driverlist[0]);
     video_vgagraphics_init(&video_driverlist[1]);
+    video_vesa_init(&video_driverlist[2]);
 }
 
 void video_setdriver(struct video_driver* Driver,unsigned int mode)

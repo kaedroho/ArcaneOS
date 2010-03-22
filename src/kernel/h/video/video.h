@@ -3,6 +3,7 @@
 
 #include "libs/rect.h"
 #include "video/vgabase.h"
+#include "video/vesa.h"
 
 struct video_displaymode
 {

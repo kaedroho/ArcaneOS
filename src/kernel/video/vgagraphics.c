@@ -252,6 +252,7 @@ void video_vgagraphics_init(struct video_driver* Driver)
 {
 //Set variables
     Driver->displaymode=video_vgagraphics_displaymodes;
+    Driver->displaymodecount=1;
     Driver->start=video_vgagraphics_start;
     Driver->end=video_vgagraphics_end;
     Driver->putchar=0;

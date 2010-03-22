@@ -13,9 +13,9 @@
 		</MakeCommands>
 		<Build>
 			<Target title="Release">
-				<Option output="bin\Release\KDOS" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/KDOS" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="obj\Release\" />
+				<Option object_output="obj/Release/" />
 				<Option type="5" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -32,249 +32,249 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="kernel\acpi.c">
+		<Unit filename="kernel/acpi.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\boot.c">
+		<Unit filename="kernel/boot.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\cli.c">
+		<Unit filename="kernel/cli.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\cmos.c">
+		<Unit filename="kernel/cmos.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\cpuid.asm">
+		<Unit filename="kernel/cpuid.asm">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\cpuid.c">
+		<Unit filename="kernel/cpuid.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\gdt.asm">
+		<Unit filename="kernel/gdt.asm">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\gdt.c">
+		<Unit filename="kernel/gdt.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\acpi.h">
+		<Unit filename="kernel/h/acpi.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\boot.h">
+		<Unit filename="kernel/h/boot.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\cli.h">
+		<Unit filename="kernel/h/cli.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\libs\memory.h">
+		<Unit filename="kernel/h/libs/memory.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\libs\rect.h">
+		<Unit filename="kernel/h/libs/rect.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\libs\string.h">
+		<Unit filename="kernel/h/libs/string.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\mm.h">
+		<Unit filename="kernel/h/mm.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\mt.h">
+		<Unit filename="kernel/h/mt.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\paging.h">
+		<Unit filename="kernel/h/paging.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\real.h">
+		<Unit filename="kernel/h/real.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\sys.h">
+		<Unit filename="kernel/h/sys.h">
 			<Option link="1" />
 		</Unit>
-		<Unit filename="kernel\h\syscall.h">
+		<Unit filename="kernel/h/syscall.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\ui\programs.h">
+		<Unit filename="kernel/h/ui/programs.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\ui\ui.h">
+		<Unit filename="kernel/h/ui/ui.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\vesa.h" />
-		<Unit filename="kernel\h\video\drawer.h">
+		<Unit filename="kernel/h/video/drawer.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\video\vgabase.h">
+		<Unit filename="kernel/h/video/vesa.h" />
+		<Unit filename="kernel/h/video/vgabase.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\h\video\video.h">
+		<Unit filename="kernel/h/video/video.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\idt.asm">
+		<Unit filename="kernel/idt.asm">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\idt.c">
+		<Unit filename="kernel/idt.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\irq.asm">
+		<Unit filename="kernel/irq.asm">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\irq.c">
+		<Unit filename="kernel/irq.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\isr.asm">
+		<Unit filename="kernel/isr.asm">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\isr.c">
+		<Unit filename="kernel/isr.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\kb.c">
+		<Unit filename="kernel/kb.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\libs\memory.c">
+		<Unit filename="kernel/libs/memory.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\libs\rect.c">
+		<Unit filename="kernel/libs/rect.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\libs\string.c">
+		<Unit filename="kernel/libs/string.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\main.c">
+		<Unit filename="kernel/main.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\mm.c">
+		<Unit filename="kernel/mm.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\mouse.c">
+		<Unit filename="kernel/mouse.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\mt.c">
+		<Unit filename="kernel/mt.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\paging.c">
+		<Unit filename="kernel/paging.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\power.c">
+		<Unit filename="kernel/power.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\real.asm" />
-		<Unit filename="kernel\real.c">
+		<Unit filename="kernel/real.asm" />
+		<Unit filename="kernel/real.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="kernel\rtc.c">
-			<Option compilerVar="CC" />
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="kernel\start.asm">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="kernel\sys.c">
+		<Unit filename="kernel/rtc.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\syscall.asm">
+		<Unit filename="kernel/start.asm">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\syscall.c">
+		<Unit filename="kernel/sys.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\timer.c">
+		<Unit filename="kernel/syscall.asm">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="kernel/syscall.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\headerfooter.c">
+		<Unit filename="kernel/timer.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\programs\cpuidinfo.c">
+		<Unit filename="kernel/ui/headerfooter.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\programs\crashtest.c">
+		<Unit filename="kernel/ui/programs/cpuidinfo.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\programs\debuginfo.c">
+		<Unit filename="kernel/ui/programs/crashtest.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\programs\vgatest.c">
+		<Unit filename="kernel/ui/programs/debuginfo.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\about.c">
+		<Unit filename="kernel/ui/programs/vgatest.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\folders.c">
+		<Unit filename="kernel/ui/tabs/about.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\power.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="kernel\ui\tabs\programs.c">
+		<Unit filename="kernel/ui/tabs/folders.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\settings.c">
+		<Unit filename="kernel/ui/tabs/power.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/ui/tabs/programs.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\tabs\terminal.c">
+		<Unit filename="kernel/ui/tabs/settings.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\ui\ui.c">
+		<Unit filename="kernel/ui/tabs/terminal.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\vesa.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="kernel\video\drawer.c">
+		<Unit filename="kernel/ui/ui.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\video\vga.asm">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="kernel\video\vgabase.c">
+		<Unit filename="kernel/video/drawer.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\video\vgafont.c">
+		<Unit filename="kernel/video/vesa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/video/vga.asm">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="kernel/video/vgabase.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\video\vgagraphics.c">
+		<Unit filename="kernel/video/vgafont.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\video\vgatext.c">
+		<Unit filename="kernel/video/vgagraphics.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="kernel\video\video.c">
+		<Unit filename="kernel/video/vgatext.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="kernel/video/video.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

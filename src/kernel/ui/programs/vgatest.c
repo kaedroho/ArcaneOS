@@ -15,21 +15,12 @@ void program_vgatest_start()
 void program_vgatest_runtest()
 {
 //Start VGA driver
-    video_setdriver(video_vgagraphics_getdriver(),0);
+    video_setdriver(video_vesa_getdriver(),0);
 
 //Clear the screen and draw a box
-/*
-    unsigned int x,y;
-    for(x=0;x<320;x++)
-    {
-        for(y=0;y<200;y++)
-        {
-            video_putpixel(x,y,0x00);
-        }
-    }
-*/
-    video_cls();
-    draw_filledboxcolour(100,100,150,150,0x0F);
+    //video_cls();
+    //draw_filledboxcolour(100,100,150,150,0x0F);
+    //cli_puts(
 }
 
 void program_vgatest_kbhandler(unsigned char scancode)

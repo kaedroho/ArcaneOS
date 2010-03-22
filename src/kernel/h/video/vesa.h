@@ -47,4 +47,8 @@ extern struct vesa_vbe_info* vesa_get_vbe_info();
 extern struct vesa_vbe_mode_info* vesa_get_vbe_mode_info(unsigned short mode);
 extern int vesa_set_vbe_mode(unsigned short mode);
 
+//Video driver functions
+struct video_driver* video_vesa_getdriver();
+void video_vesa_init(struct video_driver* Driver);
+
 #endif // VESA_H_INCLUDED

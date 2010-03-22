@@ -204,6 +204,7 @@ void video_vgatext_init(struct video_driver* Driver)
 {
 //Set variables
     Driver->displaymode=video_vgatext_displaymodes;
+    Driver->displaymodecount=1;
     Driver->start=video_vgatext_start;
     Driver->end=video_vgatext_end;
     Driver->putchar=video_vgatext_putchar;

@@ -9,7 +9,6 @@
 #include "mt.h"
 #include "syscall.h"
 #include "real.h"
-#include "vesa.h"
 
 extern void start();
 extern void kernel_end();
@@ -20,9 +19,13 @@ void test()
     for(;;)
         __asm__ __volatile__ ("hlt");
 }
+
 int main()
 {
 //Start video driver (must always be before loading message)
+    mm_init();
+    pg_init();
+    real_init();
     video_init();
     video_setdriver(video_vgatext_getdriver(),0);
 
@@ -37,8 +40,6 @@ int main()
     timer_init();
     kb_init();
     ui_init();
-    mm_init(); // Must be called before pg_init()
-    pg_init();
     cpuid_init();
     cmos_init();
     rtc_init();
@@ -46,8 +47,6 @@ int main()
     power_init();
     mt_init();
     syscall_init();
-    real_init();
-    vesa_init();
 
     __asm__ __volatile__ ("sti");
 
