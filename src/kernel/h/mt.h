@@ -76,6 +76,7 @@ struct mt_thread
     struct mt_thread* next_thread;
     unsigned int stack_base;
     unsigned int stack_ptr;
+    unsigned int stack_size; // pages
     unsigned int sleep_time; // ms
 };
 
@@ -91,6 +92,7 @@ extern unsigned int mt_context_switch_delay;
 extern void mt_init();
 
 extern struct mt_thread* mt_create_thread(struct mt_process* process, void* eip, int stack_pages);
+extern void mt_destroy_thread(struct mt_thread* thread);
 extern struct mt_process* mt_create_process(void* eip, struct pg_directory* directory, int stack_pages);
 
 extern void mt_switch(struct regs* state);

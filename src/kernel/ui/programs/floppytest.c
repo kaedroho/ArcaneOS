@@ -44,8 +44,6 @@ void run_floppy_test()
         else
             cli_puts("\n");
     }
-
-    for(;;) syscall_sleep(10000); // Can't delete threads yet :(
 }
 
 void program_floppytest_start()

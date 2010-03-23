@@ -257,7 +257,6 @@ void floppy_try_seek(int base, unsigned cyli, int head)
     floppy_check_interrupt(base, &st0, &cyl);
     if (floppy_last_error)
         return;
-    cli_puts("Done...\n");
 
 
     if(st0 & 0xC0) {

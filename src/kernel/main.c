@@ -17,8 +17,8 @@ extern void kernel_end();
 void test()
 {
     ui_start();
-    for(;;)
-        syscall_sleep(10000); // Better than HLT since this doesn't waste CPU time
+
+    // Threads are now automatically deleted when they end :D
 }
 
 int main()

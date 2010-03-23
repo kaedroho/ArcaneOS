@@ -21,13 +21,15 @@ enum syscall_id
 {
     syscall_sleep_id = 0,
     syscall_floppy_id,
-    syscall_create_thread_id
+    syscall_create_thread_id,
+    syscall_end_thread_id
 };
 
 // INTERNAL
 extern void _syscall_sleep(unsigned int duration);
 extern void _syscall_floppy(unsigned int id, unsigned int cylinder, unsigned int head, unsigned int sector, unsigned int offset, unsigned int size, unsigned char* buffer, unsigned int* error);
 extern struct mt_thread* _syscall_create_thread(struct mt_process* process, void* eip, int stack_pages);
+extern void _syscall_end_thread();
 
 // EXTERNAL
 extern void syscall_sleep(unsigned int duration);
@@ -35,5 +37,6 @@ extern void syscall_floppy_read(unsigned int cylinder, unsigned int head, unsign
 extern void syscall_floppy_write(unsigned int cylinder, unsigned int head, unsigned int sector, unsigned int offset, unsigned int size, const unsigned char* buffer, unsigned int* error);
 extern void syscall_floppy_flush(unsigned int* error);
 extern struct mt_thread* syscall_create_thread(struct mt_process* process, void* eip, int stack_pages);
+extern void syscall_end_thread();
 
 #endif // SYSCALL_H_INCLUDED

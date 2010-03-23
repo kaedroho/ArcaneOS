@@ -16,6 +16,8 @@ void syscall_init()
 
     syscall_register(syscall_sleep_id, _syscall_sleep, 4);
     syscall_register(syscall_floppy_id, _syscall_floppy, 32);
+    syscall_register(syscall_create_thread_id, _syscall_create_thread, 12);
+    syscall_register(syscall_end_thread_id, _syscall_end_thread, 0);
 }
 
 void syscall_register(unsigned int id, void* function_ptr, unsigned int parameter_bytes)
@@ -62,6 +64,12 @@ struct mt_thread* _syscall_create_thread(struct mt_process* process, void* eip, 
 {
     return mt_create_thread(process, eip, stack_pages);
 }
+void _syscall_end_thread()
+{
+    struct mt_thread* thread = mt_first_process->first_thread;
+    mt_switch(syscall_regs);
+    mt_destroy_thread(thread);
+}
 
 // THESE SHOULD BE CALLED DIRECTLY
 void syscall_sleep(unsigned int duration)
@@ -83,4 +91,8 @@ void syscall_floppy_flush(unsigned int* error)
 struct mt_thread* syscall_create_thread(struct mt_process* process, void* eip, int stack_pages)
 {
     return (struct mt_thread*)syscall(syscall_create_thread_id, process, eip, stack_pages);
+}
+void syscall_end_thread()
+{
+    syscall(syscall_end_thread_id);
 }

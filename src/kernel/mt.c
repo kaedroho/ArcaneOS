@@ -3,6 +3,7 @@
 #include "libs/memory.h"
 #include "libs/rect.h"
 #include "paging.h"
+#include "syscall.h"
 
 extern void gdt_setup();
 
@@ -64,11 +65,14 @@ struct mt_thread* mt_create_thread(struct mt_process* process, void* eip, int st
     struct mt_thread* thread = (struct mt_thread*)mm_block_alloc(sizeof(struct mt_thread));
 
     thread->stack_base = (unsigned int)mm_page_alloc(process->directory,stack_pages) + mm_page_size*stack_pages;
+    thread->stack_size = stack_pages;
 
     unsigned int* stack_ptr = (unsigned int*)thread->stack_base;
 
-    *--stack_ptr = 2 << 3;
-    *--stack_ptr = 0;
+    // Automatically end the thread when it returns
+    *--stack_ptr = (unsigned int)&syscall_end_thread;
+    //*--stack_ptr = 2 << 3;
+    //*--stack_ptr = 0;
     *--stack_ptr = 0x202;
     *--stack_ptr = 1 << 3;
     *--stack_ptr = (unsigned int)eip;
@@ -102,6 +106,30 @@ struct mt_thread* mt_create_thread(struct mt_process* process, void* eip, int st
     irq_unlock(handle);
 
     return thread;
+}
+void mt_destroy_thread(struct mt_thread* thread)
+{
+    unsigned int handle = irq_lock();
+
+    struct mt_process* process = thread->process;
+
+    if (thread->prev_thread)
+        thread->prev_thread->next_thread = thread->next_thread;
+    else
+        process->first_thread = thread->next_thread;
+
+    if (thread->next_thread)
+        thread->next_thread->prev_thread = thread->prev_thread;
+    else
+        process->last_thread = thread->prev_thread;
+
+    unsigned int stack_size = mm_page_size*thread->stack_size;
+    unsigned int stack_ptr = thread->stack_base - stack_size;
+    mm_page_free(process->directory, (void*)stack_ptr, thread->stack_size);
+
+    mm_block_free(thread);
+
+    irq_unlock(handle);
 }
 struct mt_process* mt_create_process(void* eip, struct pg_directory* directory, int stack_pages)
 {
