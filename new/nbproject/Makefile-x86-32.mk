@@ -78,11 +78,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-x86-32.mk dist/x86-32/GNU-Linux-x86/arcaneos
+	"${MAKE}"  -f nbproject/Makefile-x86-32.mk dist/x86-32/GNU-Linux-x86/new
 
-dist/x86-32/GNU-Linux-x86/arcaneos: ${OBJECTFILES}
+dist/x86-32/GNU-Linux-x86/new: ${OBJECTFILES}
 	${MKDIR} -p dist/x86-32/GNU-Linux-x86
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/arcaneos ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/new ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/src/kernel/all/kmain.o: src/kernel/all/kmain.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/all
@@ -209,7 +209,7 @@ ${OBJECTDIR}/src/loader/all/boot.o: src/loader/all/boot.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/x86-32
-	${RM} dist/x86-32/GNU-Linux-x86/arcaneos
+	${RM} dist/x86-32/GNU-Linux-x86/new
 
 # Subprojects
 .clean-subprojects:
