@@ -35,14 +35,14 @@ bin/o/console.c.o: src/drivers/all/console.c
 	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/console.c.o src/drivers/all/console.c
 
 
-bin/o/kb.c.o: src/drivers/x86/kb.c
+bin/o/kb.c.o: src/drivers/x86/ibmpc/kb.c
 	rm -f bin/o/kb.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/kb.c.o src/drivers/x86/kb.c
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/kb.c.o src/drivers/x86/ibmpc/kb.c
 
 
-bin/o/screen.c.o: src/drivers/x86/screen.c
+bin/o/screen.c.o: src/drivers/x86/ibmpc/screen.c
 	rm -f bin/o/screen.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/screen.c.o src/drivers/x86/screen.c
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/screen.c.o src/drivers/x86/ibmpc/screen.c
 
 
 
