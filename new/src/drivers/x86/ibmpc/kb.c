@@ -6,84 +6,53 @@
 #define CAPS_SYMBOLSANDNUMBERS 1
 #define CAPS_LETTERS 2
 
+// Set these to unused value if use is required
+#define KB_KEY_ESC '\0'
+#define KB_KEY_BACKSPACE '\b'
+#define KB_KEY_TAB '\t'
+#define KB_KEY_HOME '\0'
+#define KB_KEY_UP '\0'
+#define KB_KEY_NPAGE '\0'
+#define KB_KEY_LEFT '\0'
+#define KB_KEY_RIGHT '\0'
+#define KB_KEY_END '\0'
+#define KB_KEY_DOWN '\0'
+#define KB_KEY_PPAGE '\0'
+#define KB_KEY_DC '\0'
+#define KB_OLPC_UP '\0'
+#define KB_OLPC_DOWN '\0'
+#define KB_OLPC_LEFT '\0'
+#define KB_OLPC_RIGHT '\0'
 
 //US keyboard layout
-char KB_DefaultLayout[256] =
-{
-    0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
-  '9', '0', '-', '=', '\b',	/* Backspace */
-  '\t',			/* Tab */
-  'q', 'w', 'e', 'r',	/* 19 */
-  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
-    0,			/* 29   - Control */
-  'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
- '\'', '`',   0,		/* Left shift */
- '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
-  'm', ',', '.', '/',   0,				/* Right shift */
-  '*',
-    0,	/* Alt */
-  ' ',	/* Space bar */
-    0,	/* Caps lock */
-    0,	/* 59 - F1 key ... > */
-    0,   0,   0,   0,   0,   0,   0,   0,
-    0,	/* < ... F10 */
-    0,	/* 69 - Num lock*/
-    0,	/* Scroll Lock */
-    0,	/* Home key */
-    0,	/* Up Arrow */
-    0,	/* Page Up */
-  '-',
-    0,	/* Left Arrow */
-    0,
-    0,	/* Right Arrow */
-  '+',
-    0,	/* 79 - End key*/
-    0,	/* Down Arrow */
-    0,	/* Page Down */
-    0,	/* Insert Key */
-    0,	/* Delete Key */
-    0,   0,   0,
-    0,	/* F11 Key */
-    0,	/* F12 Key */
-    0,	/* All other keys are undefined */
-
-    0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
-  '9', '0', '-', '=', '\b',	/* Backspace */
-  '\t',			/* Tab */
-  'Q', 'W', 'E', 'R',	/* 19 */
-  'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\n',	/* Enter key */
-    0,			/* 29   - Control */
-  'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';',	/* 39 */
- '\'', '`',   0,		/* Left shift */
- '\\', 'Z', 'X', 'C', 'V', 'B', 'N',			/* 49 */
-  'm', ',', '.', '/',   0,				/* Right shift */
-  '*',
-    0,	/* Alt */
-  ' ',	/* Space bar */
-    0,	/* Caps lock */
-    0,	/* 59 - F1 key ... > */
-    0,   0,   0,   0,   0,   0,   0,   0,
-    0,	/* < ... F10 */
-    0,	/* 69 - Num lock*/
-    0,	/* Scroll Lock */
-    0,	/* Home key */
-    0,	/* Up Arrow */
-    0,	/* Page Up */
-  '-',
-    0,	/* Left Arrow */
-    0,
-    0,	/* Right Arrow */
-  '+',
-    0,	/* 79 - End key*/
-    0,	/* Down Arrow */
-    0,	/* Page Down */
-    0,	/* Insert Key */
-    0,	/* Delete Key */
-    0,   0,   0,
-    0,	/* F11 Key */
-    0,	/* F12 Key */
-    0,	/* All other keys are undefined */
+struct KB_Layout KB_DefaultLayout = {
+{   // Without shift
+  '\0', KB_KEY_ESC, '1', '2', '3', '4', '5', '6',
+  '7', '8', '9', '0', '-', '=', KB_KEY_BACKSPACE, KB_KEY_TAB,
+  'q', 'w', 'e', 'r', 't', 'y', 'u', 'i',
+  'o', 'p', '[', ']', '\n', '\0', 'a', 's',
+  'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',
+  '\'', '`', '\0', '\\', 'z', 'x', 'c', 'v',
+  'b', 'n', 'm', ',', '.', '/', '\0', '*',
+  '\0', ' ', '\0', '\0', '\0', '\0', '\0', '\0',
+  '\0', '\0', '\0', '\0', '\0', '\0', '\0', KB_KEY_HOME,
+  KB_KEY_UP, KB_KEY_NPAGE, '-', KB_KEY_LEFT, '\0', KB_KEY_RIGHT, '+', KB_KEY_END,
+  KB_KEY_DOWN, KB_KEY_PPAGE, '\0', KB_KEY_DC, '\0', '\0', '\0', '\0',
+  '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0',
+  '\0', '\0', '\0', '\0', '\0', KB_OLPC_UP, KB_OLPC_DOWN, KB_OLPC_LEFT,
+  KB_OLPC_RIGHT, '\0'
+},
+{   // With shift
+  '\0', '\0', '!', '@', '#', '$', '%', '^',
+  '&', '*', '(', ')', '_', '+', '\0', '\0',
+  'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I',
+  'O', 'P', '{', '}', '\n', '\0', 'A', 'S',
+  'D', 'F', 'G', 'H', 'J', 'K', 'L', ':',
+  '\"', '~', '\0', '|', 'Z', 'X', 'C', 'V',
+  'B', 'N', 'M', '<', '>', '?', '\0'
+}
 };
+
 
 char g_KB_Keypress[128];
 char g_KB_CapsLock;
@@ -93,7 +62,7 @@ char g_KB_CapsLockNP;
 char g_KB_NumLockNP;
 char g_KB_ScrollLockNP;
 
-char* g_KB_Layout;
+struct KB_Layout* g_KB_Layout;
 
 void (*g_kb_handler)(unsigned char scancode) = 0;
 
@@ -109,7 +78,7 @@ void kb_init()
     irq_install_handler(1,kb_handler);
 
 //Set default layout
-    kb_setlayout(KB_DefaultLayout);
+    kb_setlayout(&KB_DefaultLayout);
 
 //Zero keystates
     memset((unsigned char*)g_KB_Keypress,0,128);
@@ -124,7 +93,7 @@ void kb_init()
 
 }
 
-void kb_setlayout(char* layout)
+void kb_setlayout(struct KB_Layout* layout)
 {
     g_KB_Layout=layout;
 }
@@ -213,7 +182,10 @@ void kb_setkeyboardhandler(void (*handler)(unsigned char scancode))
 char kb_convertscancodetoascii(unsigned char scancode,char caps)
 {
 //Return ASCII code
-    return g_KB_Layout[scancode+((caps&0x2)?90:0)];
+    if (caps&0x2)
+        return g_KB_Layout->shiftedMapping[scancode];
+    else
+        return g_KB_Layout->defaultMapping[scancode];
 }
 
 char kb_getkeystate(unsigned char scancode)

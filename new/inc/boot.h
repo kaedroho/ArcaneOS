@@ -112,5 +112,7 @@ struct multiboot_information
 
 extern struct multiboot_information* get_multiboot_info();
 
+#define MB_GET_FLAG(flag, index) (((flag >> index) & 1) != 0)
+
 #endif
 

@@ -39,7 +39,12 @@ mboot:
 stublet:
     ; Get multiboot info from bootloader
     extern g_multiboot_info
+
+    ; Check for multiboot magic number in EAX
+    cmp eax, 0x2BADB002
+    jne not_multiboot_compatible
     mov [g_multiboot_info], ebx
+not_multiboot_compatible:
 
     extern startup
     call startup

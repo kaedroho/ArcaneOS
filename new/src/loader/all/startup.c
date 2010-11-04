@@ -19,8 +19,15 @@ int startup()
     console_puts_protected("BOOT: ");
     console_puts_protected("ArcaneOS version ");
     console_puts_protected(ARCANE_VERSION_STRING);
-    console_puts_protected(". Booted by ");
-    console_puts_protected(mboot->boot_loader_name);
+    if (mboot) {
+        console_puts_protected(". Booted by ");
+        
+        // Not all multiboot boot loaders tell us their name
+        if (MB_GET_FLAG(mboot->flags, 9))
+            console_puts_protected(mboot->boot_loader_name);
+        else
+            console_puts_protected("unnamed multiboot boot loader");
+    }
     console_puts_protected(".\n");
 
 //Load the kernel
