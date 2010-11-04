@@ -43,6 +43,7 @@ stublet:
 
     extern startup
     call startup
+	hlt
     jmp $
 
 
