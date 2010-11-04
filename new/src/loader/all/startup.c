@@ -27,14 +27,9 @@ int startup()
     kload();
     kb_init();
 
-//Usermode return
-    console_putm_protected((char*)mboot->vbe_control_info,4);
-    //console_putu32_protected(mboot->mods_count,10);
     console_putc('\n');
 
 __asm__ __volatile__ ("sti");
-//Load drivers
-    //dload();
 
     return 0;
 }
