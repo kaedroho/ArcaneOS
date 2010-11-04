@@ -14,7 +14,7 @@ void kload()
     console_puts_protected(" CPUID");
     cpuid_init();
 
-    console_puts_protected(" [Finnished]\n");
+    console_puts_protected(" [Finished]\n");
 
     pg_init();
 }
