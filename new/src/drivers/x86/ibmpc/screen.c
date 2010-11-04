@@ -1,4 +1,4 @@
-#include <sys.h>
+#include <sys-x86.h>
 
 void screen_putc(unsigned short x,unsigned short y,unsigned short c)
 {

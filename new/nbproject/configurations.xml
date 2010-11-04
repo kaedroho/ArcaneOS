@@ -47,12 +47,6 @@
                      displayName="Kernel"
                      projectFiles="true"
                      kind="SOURCE_LOGICAL_FOLDER">
-        <logicalFolder name="f2"
-                       displayName="all"
-                       projectFiles="true"
-                       kind="SOURCE_LOGICAL_FOLDER">
-          <itemPath>inc/sys.h</itemPath>
-        </logicalFolder>
         <logicalFolder name="f1"
                        displayName="x86"
                        projectFiles="true"

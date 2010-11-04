@@ -1,4 +1,4 @@
-#include <sys.h>
+#include <sys-x86.h>
 
 //Functions from isr.asm
 extern void isr0();

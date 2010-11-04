@@ -1,4 +1,4 @@
-#include <sys.h>
+#include <sys-x86.h>
 
 //GDT entry structure
 struct gdt_entry
