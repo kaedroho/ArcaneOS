@@ -1,10 +1,10 @@
 x86-32: bin/arcane_x86-32.bin
-	echo Built ArcaneOS x86-32
+	@echo Built ArcaneOS x86-32
 
 bin/arcane_x86-32.bin: loader_x86-32 drivers_x86-32 kernel_x86-32 libraries_x86-32
 	rm -f bin/arcane_x86-32.bin
 	ld -T linkx86-32.ld -o bin/arcane_x86-32.bin bin/start/start32.asm.o bin/o/* > ld.txt
-
+	img/update
 
 
 loader_x86-32: bin/start/start32.asm.o bin/o/startup.c.o bin/o/boot.c.o
