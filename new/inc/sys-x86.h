@@ -4,18 +4,72 @@
 #define MAGIC_BREAKPOINT __asm__ ("XCHG %BX, %BX");
 
 //SYSTEM FUNCTIONS
-extern unsigned char inb(unsigned short port);
-extern void outb(unsigned short port,unsigned char data);
-extern unsigned short inw(unsigned short port);
-extern void outw(unsigned short port,unsigned short data);
-extern unsigned long inl(unsigned short port);
-extern void outl(unsigned short port,unsigned long data);
-extern unsigned char peekb(unsigned short seg,unsigned short off);
-extern void pokeb(unsigned short seg,unsigned short off,unsigned char val);
-extern unsigned short peekw(unsigned short seg,unsigned short off);
-extern void pokew(unsigned short seg,unsigned short off,unsigned short val);
-extern unsigned long peekl(unsigned short seg,unsigned short off);
-extern void pokel(unsigned short seg,unsigned short off,unsigned long val);
+static inline unsigned char inb(unsigned short port)
+{
+    unsigned char rv;
+    __asm__ __volatile__ ("inb %1, %0" : "=a" (rv) : "d" (port));
+    return rv;
+}
+
+static inline void outb(unsigned short port,unsigned char data)
+{
+    __asm__ __volatile__ ("outb %1, %0" : : "d" (port), "a" (data));
+}
+
+static inline unsigned short inw(unsigned short port)
+{
+    unsigned short rv;
+    __asm__ __volatile__ ("inw %1, %0" : "=a" (rv) : "d" (port));
+    return rv;
+}
+
+static inline void outw(unsigned short port,unsigned short data)
+{
+    __asm__ __volatile__ ("outw %1, %0" : : "d" (port), "a" (data));
+}
+/*
+static inline unsigned long inl(unsigned short port)
+{
+    unsigned long rv;
+    __asm__ __volatile__ ("inl %1, %0" : "=a" (rv) : "d" (port));
+    return rv;
+}
+*/
+static inline void outl(unsigned short port,unsigned long data)
+{
+    __asm__ __volatile__ ("outl %1, %0" : : "d" (port), "a" (data));
+}
+
+static inline unsigned char peekb(unsigned short seg,unsigned short off)
+{
+    return *(unsigned char*)(seg*16+off);
+}
+
+static inline void pokeb(unsigned short seg,unsigned short off,unsigned char val)
+{
+    *(unsigned char*)(seg*16+off)=val;
+}
+
+static inline unsigned short peekw(unsigned short seg,unsigned short off)
+{
+    return *(unsigned short*)(seg*16+off);
+}
+
+static inline void pokew(unsigned short seg,unsigned short off,unsigned short val)
+{
+    *(unsigned short*)(seg*16+off)=val;
+}
+
+static inline unsigned long peekl(unsigned short seg,unsigned short off)
+{
+    return *(unsigned long*)(seg*16+off);
+}
+
+static inline void pokel(unsigned short seg,unsigned short off,unsigned long val)
+{
+    *(unsigned long*)(seg*16+off)=val;
+}
+
 
 //GDT FUNCTIONS
 extern void gdt_init();

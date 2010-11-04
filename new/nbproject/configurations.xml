@@ -66,7 +66,6 @@
           <itemPath>src/kernel/x86/mm.c</itemPath>
           <itemPath>src/kernel/x86/paging.c</itemPath>
           <itemPath>inc/sys-x86.h</itemPath>
-          <itemPath>src/kernel/x86/sys.c</itemPath>
           <itemPath>src/kernel/x86/timer.c</itemPath>
         </logicalFolder>
       </logicalFolder>

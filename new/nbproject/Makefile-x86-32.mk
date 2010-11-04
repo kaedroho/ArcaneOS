@@ -45,7 +45,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/timer.o \
 	${OBJECTDIR}/src/kernel/x86/mm.o \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
-	${OBJECTDIR}/src/kernel/x86/sys.o \
 	${OBJECTDIR}/src/kernel/x86/irq32.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
 	${OBJECTDIR}/src/loader/all/startup.o \
@@ -138,11 +137,6 @@ ${OBJECTDIR}/src/kernel/x86/mm.o: src/kernel/x86/mm.c
 ${OBJECTDIR}/src/kernel/x86/idt32.o: src/kernel/x86/idt32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/idt32.o src/kernel/x86/idt32.asm
-
-${OBJECTDIR}/src/kernel/x86/sys.o: src/kernel/x86/sys.c 
-	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/sys.o src/kernel/x86/sys.c
 
 ${OBJECTDIR}/src/kernel/x86/irq32.o: src/kernel/x86/irq32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86

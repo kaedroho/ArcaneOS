@@ -46,7 +46,7 @@ bin/o/screen.c.o: src/drivers/x86/ibmpc/screen.c
 
 
 
-kernel_x86-32: bin/o/cmos.c.o bin/o/kload.c.o bin/o/cpuid32.asm.o bin/o/cpuid.c.o bin/o/gdt32.asm.o bin/o/gdt.c.o bin/o/idt32.asm.o bin/o/idt.c.o bin/o/irq32.asm.o bin/o/irq.c.o bin/o/isr32.asm.o bin/o/isr.c.o bin/o/mm.c.o bin/o/paging.c.o bin/o/sys.c.o bin/o/timer.c.o
+kernel_x86-32: bin/o/cmos.c.o bin/o/kload.c.o bin/o/cpuid32.asm.o bin/o/cpuid.c.o bin/o/gdt32.asm.o bin/o/gdt.c.o bin/o/idt32.asm.o bin/o/idt.c.o bin/o/irq32.asm.o bin/o/irq.c.o bin/o/isr32.asm.o bin/o/isr.c.o bin/o/mm.c.o bin/o/paging.c.o bin/o/timer.c.o
 
 bin/o/cmos.c.o: src/kernel/x86/cmos.c
 	rm -f bin/o/cmos.c.o
@@ -110,12 +110,6 @@ bin/o/mm.c.o: src/kernel/x86/mm.c
 bin/o/paging.c.o: src/kernel/x86/paging.c
 	rm -f bin/o/paging.c.o
 	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/paging.c.o src/kernel/x86/paging.c
-
-
-bin/o/sys.c.o: src/kernel/x86/sys.c
-	rm -f bin/o/sys.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/sys.c.o src/kernel/x86/sys.c
-
 
 bin/o/timer.c.o: src/kernel/x86/timer.c
 	rm -f bin/o/timer.c.o
