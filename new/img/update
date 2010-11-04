@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+echo "Updating floppy image"
+sudo /sbin/losetup /dev/loop0 floppy.img
+sudo mkdir Mount
+sudo mount /dev/loop0 Mount
+sudo cp ../bin/arcane_x86-32.bin Mount/kernel.bin
+sudo cp menu.lst Mount/boot/grub/menu.lst
+sudo umount /dev/loop0
+sudo /sbin/losetup -d /dev/loop0
+sudo rmdir Mount
+
+
+echo "Done!"
