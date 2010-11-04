@@ -51,8 +51,6 @@
                        displayName="all"
                        projectFiles="true"
                        kind="SOURCE_LOGICAL_FOLDER">
-          <itemPath>src/kernel/all/kload.c</itemPath>
-          <itemPath>src/kernel/all/kmain.c</itemPath>
           <itemPath>inc/sys.h</itemPath>
         </logicalFolder>
         <logicalFolder name="f1"
@@ -70,6 +68,7 @@
           <itemPath>src/kernel/x86/irq32.asm</itemPath>
           <itemPath>src/kernel/x86/isr.c</itemPath>
           <itemPath>src/kernel/x86/isr32.asm</itemPath>
+          <itemPath>src/kernel/x86/kload.c</itemPath>
           <itemPath>src/kernel/x86/mm.c</itemPath>
           <itemPath>src/kernel/x86/paging.c</itemPath>
           <itemPath>inc/sys-x86.h</itemPath>

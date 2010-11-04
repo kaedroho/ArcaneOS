@@ -46,22 +46,16 @@ bin/o/screen.c.o: src/drivers/x86/ibmpc/screen.c
 
 
 
-kernel_x86-32: bin/o/cmos.c.o bin/o/kload.c.o bin/o/kmain.c.o bin/o/cpuid32.asm.o bin/o/cpuid.c.o bin/o/gdt32.asm.o bin/o/gdt.c.o bin/o/idt32.asm.o bin/o/idt.c.o bin/o/irq32.asm.o bin/o/irq.c.o bin/o/isr32.asm.o bin/o/isr.c.o bin/o/mm.c.o bin/o/paging.c.o bin/o/sys.c.o bin/o/timer.c.o
+kernel_x86-32: bin/o/cmos.c.o bin/o/kload.c.o bin/o/cpuid32.asm.o bin/o/cpuid.c.o bin/o/gdt32.asm.o bin/o/gdt.c.o bin/o/idt32.asm.o bin/o/idt.c.o bin/o/irq32.asm.o bin/o/irq.c.o bin/o/isr32.asm.o bin/o/isr.c.o bin/o/mm.c.o bin/o/paging.c.o bin/o/sys.c.o bin/o/timer.c.o
 
 bin/o/cmos.c.o: src/kernel/x86/cmos.c
 	rm -f bin/o/cmos.c.o
 	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/cmos.c.o src/kernel/x86/cmos.c
 
 
-bin/o/kload.c.o: src/kernel/all/kload.c
+bin/o/kload.c.o: src/kernel/x86/kload.c
 	rm -f bin/o/kload.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/kload.c.o src/kernel/all/kload.c
-
-
-bin/o/kmain.c.o: src/kernel/all/kmain.c
-	rm -f bin/o/kmain.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/kmain.c.o src/kernel/all/kmain.c
-
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/kload.c.o src/kernel/x86/kload.c
 
 bin/o/cpuid32.asm.o: src/kernel/x86/cpuid32.asm
 	rm -f bin/o/cpuid32.asm.o

@@ -33,8 +33,8 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/kernel/all/kmain.o \
 	${OBJECTDIR}/src/kernel/x86/irq.o \
+	${OBJECTDIR}/src/kernel/x86/kload.o \
 	${OBJECTDIR}/src/kernel/x86/isr.o \
 	${OBJECTDIR}/src/kernel/x86/paging.o \
 	${OBJECTDIR}/src/kernel/x86/isr32.o \
@@ -42,7 +42,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/loader/x86/start32.o \
 	${OBJECTDIR}/src/kernel/x86/cpuid.o \
 	${OBJECTDIR}/src/kernel/x86/gdt32.o \
-	${OBJECTDIR}/src/kernel/all/kload.o \
 	${OBJECTDIR}/src/kernel/x86/timer.o \
 	${OBJECTDIR}/src/kernel/x86/mm.o \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
@@ -84,15 +83,15 @@ dist/x86-32/GNU-Linux-x86/new: ${OBJECTFILES}
 	${MKDIR} -p dist/x86-32/GNU-Linux-x86
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/new ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/src/kernel/all/kmain.o: src/kernel/all/kmain.c 
-	${MKDIR} -p ${OBJECTDIR}/src/kernel/all
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/kmain.o src/kernel/all/kmain.c
-
 ${OBJECTDIR}/src/kernel/x86/irq.o: src/kernel/x86/irq.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/irq.o src/kernel/x86/irq.c
+
+${OBJECTDIR}/src/kernel/x86/kload.o: src/kernel/x86/kload.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/kload.o src/kernel/x86/kload.c
 
 ${OBJECTDIR}/src/kernel/x86/isr.o: src/kernel/x86/isr.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
@@ -125,11 +124,6 @@ ${OBJECTDIR}/src/kernel/x86/cpuid.o: src/kernel/x86/cpuid.c
 ${OBJECTDIR}/src/kernel/x86/gdt32.o: src/kernel/x86/gdt32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/gdt32.o src/kernel/x86/gdt32.asm
-
-${OBJECTDIR}/src/kernel/all/kload.o: src/kernel/all/kload.c 
-	${MKDIR} -p ${OBJECTDIR}/src/kernel/all
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/kload.o src/kernel/all/kload.c
 
 ${OBJECTDIR}/src/kernel/x86/timer.o: src/kernel/x86/timer.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86

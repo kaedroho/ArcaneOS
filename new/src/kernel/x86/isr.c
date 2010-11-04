@@ -112,7 +112,7 @@ void exception_handler(struct regs *r)
 //Check if it is an exception
     if (r->int_no < 32)
     {
-       /*
+    /*
     //Red screen of death!
         video_setdriver(video_vgatext_getdriver(),0);
         cli_setrect(0);
@@ -148,7 +148,7 @@ void exception_handler(struct regs *r)
         cli_puts("\n              SS: ");cli_putu32(r->ss,16);
 
         cli_puts("\n             EIP: ");cli_putu32(r->eip,16);
-*/
+	*/
         //Endless loop
         for(;;)
             __asm__ __volatile__ ("hlt");
