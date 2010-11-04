@@ -34,7 +34,6 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/all/kmain.o \
-	${OBJECTDIR}/src/drivers/x86/kb.o \
 	${OBJECTDIR}/src/kernel/x86/irq.o \
 	${OBJECTDIR}/src/kernel/x86/isr.o \
 	${OBJECTDIR}/src/kernel/x86/paging.o \
@@ -48,15 +47,16 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/mm.o \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
 	${OBJECTDIR}/src/kernel/x86/sys.o \
-	${OBJECTDIR}/src/drivers/x86/screen.o \
 	${OBJECTDIR}/src/kernel/x86/irq32.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
 	${OBJECTDIR}/src/loader/all/startup.o \
 	${OBJECTDIR}/src/kernel/x86/gdt.o \
+	${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o \
 	${OBJECTDIR}/src/kernel/x86/cpuid32.o \
 	${OBJECTDIR}/src/kernel/x86/idt.o \
 	${OBJECTDIR}/src/kernel/x86/cmos.o \
 	${OBJECTDIR}/src/drivers/x86/clock.o \
+	${OBJECTDIR}/src/drivers/x86/ibmpc/kb.o \
 	${OBJECTDIR}/src/loader/all/boot.o
 
 
@@ -88,11 +88,6 @@ ${OBJECTDIR}/src/kernel/all/kmain.o: src/kernel/all/kmain.c
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/all
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/kmain.o src/kernel/all/kmain.c
-
-${OBJECTDIR}/src/drivers/x86/kb.o: src/drivers/x86/kb.c 
-	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/kb.o src/drivers/x86/kb.c
 
 ${OBJECTDIR}/src/kernel/x86/irq.o: src/kernel/x86/irq.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
@@ -155,11 +150,6 @@ ${OBJECTDIR}/src/kernel/x86/sys.o: src/kernel/x86/sys.c
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/sys.o src/kernel/x86/sys.c
 
-${OBJECTDIR}/src/drivers/x86/screen.o: src/drivers/x86/screen.c 
-	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/screen.o src/drivers/x86/screen.c
-
 ${OBJECTDIR}/src/kernel/x86/irq32.o: src/kernel/x86/irq32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/irq32.o src/kernel/x86/irq32.asm
@@ -179,6 +169,11 @@ ${OBJECTDIR}/src/kernel/x86/gdt.o: src/kernel/x86/gdt.c
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/gdt.o src/kernel/x86/gdt.c
 
+${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o: src/drivers/x86/ibmpc/screen.c 
+	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o src/drivers/x86/ibmpc/screen.c
+
 ${OBJECTDIR}/src/kernel/x86/cpuid32.o: src/kernel/x86/cpuid32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/cpuid32.o src/kernel/x86/cpuid32.asm
@@ -197,6 +192,11 @@ ${OBJECTDIR}/src/drivers/x86/clock.o: src/drivers/x86/clock.c
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/clock.o src/drivers/x86/clock.c
+
+${OBJECTDIR}/src/drivers/x86/ibmpc/kb.o: src/drivers/x86/ibmpc/kb.c 
+	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/kb.o src/drivers/x86/ibmpc/kb.c
 
 ${OBJECTDIR}/src/loader/all/boot.o: src/loader/all/boot.c 
 	${MKDIR} -p ${OBJECTDIR}/src/loader/all
