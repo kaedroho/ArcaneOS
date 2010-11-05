@@ -73,7 +73,7 @@ static inline void pokel(unsigned short seg,unsigned short off,unsigned long val
 
 //GDT FUNCTIONS
 extern void gdt_init();
-extern void gdt_set_gate(int num,unsigned long base,unsigned long limit,unsigned char access,unsigned char gran);
+extern void gdt_set_gate(int seg,unsigned long base,unsigned long limit,unsigned char access,unsigned char gran);
 
 //IDT FUNCTIONS
 extern void idt_init();

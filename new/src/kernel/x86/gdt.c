@@ -1,4 +1,5 @@
 #include <sys-x86.h>
+#include <gdt.h>
 
 //GDT entry structure
 struct gdt_entry
@@ -30,8 +31,10 @@ struct gdt_ptr g_gdtp;
 extern void gdt_setup();
 
 
-void gdt_set_gate(int num,unsigned long base,unsigned long limit,unsigned char access,unsigned char gran)
+void gdt_set_gate(int seg,unsigned long base,unsigned long limit,unsigned char access,unsigned char gran)
 {
+    int num = seg>>3;
+    
 //Set base address
     g_gdt[num].base_low =(base & 0xFFFF);
     g_gdt[num].base_middle =(base>>16) & 0xFF;
@@ -51,13 +54,35 @@ void gdt_init()
     g_gdtp.base=(unsigned int)&g_gdt;
 
 //NULL Descriptor
-    gdt_set_gate(0,0,0,0,0);
+    gdt_set_gate(GDT_NULL_SEG,0,0,0,0);
 
-//Code segment
-    gdt_set_gate(1,0,0xFFFFFFFF,0x9A,0xCF);
+//Kernal protected mode code segment
+    gdt_set_gate(
+        GDT_KERNEL_PROT_MODE_CSEG, 0, 0xFFFFFFFF,
+        GDT_ACCESS_PRESENT|GDT_ACCESS_KERNEL|GDT_ACCESS_CODE|GDT_ACCESS_CODE_READABLE,
+        GDT_GRAN_PAGES|GDT_GRAN_32BIT
+        );
 
-//Data segment
-    gdt_set_gate(2,0,0xFFFFFFFF,0x92,0xCF);
+//Kernal protected mode data segment
+    gdt_set_gate(
+        GDT_KERNEL_PROT_MODE_DSEG, 0, 0xFFFFFFFF,
+        GDT_ACCESS_PRESENT|GDT_ACCESS_KERNEL|GDT_ACCESS_DATA|GDT_ACCESS_DATA_WRITABLE,
+        GDT_GRAN_PAGES|GDT_GRAN_32BIT
+        );
+
+//Kernal real mode code segment
+    gdt_set_gate(
+        GDT_KERNEL_REAL_MODE_CSEG, 0, 0xFFFFFFFF,
+        GDT_ACCESS_PRESENT|GDT_ACCESS_KERNEL|GDT_ACCESS_CODE|GDT_ACCESS_CODE_READABLE,
+        GDT_GRAN_BYTES|GDT_GRAN_16BIT
+        );
+
+//Kernal real mode data segment
+    gdt_set_gate(
+        GDT_KERNEL_REAL_MODE_DSEG, 0, 0xFFFFFFFF,
+        GDT_ACCESS_PRESENT|GDT_ACCESS_KERNEL|GDT_ACCESS_DATA|GDT_ACCESS_DATA_WRITABLE,
+        GDT_GRAN_BYTES|GDT_GRAN_16BIT
+        );
 
 //Setup GDT
     gdt_setup();
