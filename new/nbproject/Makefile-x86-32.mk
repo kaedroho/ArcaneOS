@@ -36,6 +36,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/irq.o \
 	${OBJECTDIR}/src/kernel/x86/kload.o \
 	${OBJECTDIR}/src/kernel/x86/isr.o \
+	${OBJECTDIR}/src/drivers/x86/ibmpc/vbe_real.o \
 	${OBJECTDIR}/src/kernel/x86/paging.o \
 	${OBJECTDIR}/src/kernel/x86/isr32.o \
 	${OBJECTDIR}/src/libraries/all/string.o \
@@ -97,6 +98,10 @@ ${OBJECTDIR}/src/kernel/x86/isr.o: src/kernel/x86/isr.c
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/isr.o src/kernel/x86/isr.c
+
+${OBJECTDIR}/src/drivers/x86/ibmpc/vbe_real.o: src/drivers/x86/ibmpc/vbe_real.asm 
+	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
+	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/drivers/x86/ibmpc/vbe_real.o src/drivers/x86/ibmpc/vbe_real.asm
 
 ${OBJECTDIR}/src/kernel/x86/paging.o: src/kernel/x86/paging.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
