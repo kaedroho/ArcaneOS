@@ -1,8 +1,9 @@
-#include <boot.h>
+#include <x86/boot.h>
 #include <console.h>
-#include <kb.h>
-#include <boot.h>
+#include <x86/kb.h>
+#include <x86/boot.h>
 #include <screen.h>
+#include <x86/vbe_real.h>
 
 #define ARCANE_VERSION_STRING "0.01"
 

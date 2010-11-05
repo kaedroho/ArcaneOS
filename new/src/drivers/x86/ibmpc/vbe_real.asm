@@ -4,6 +4,9 @@ extern real_to_prot
 extern prot_to_real
 
 global vbe_get_controller_info
+global vbe_get_mode_info
+global vbe_set_mode
+global vbe_get_mode
 
 vbe_store_eax: dd 0
 vbe_store_addr: dd 0
