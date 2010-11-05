@@ -1,6 +1,6 @@
 [BITS 32]
 
-%include "gdt32.mac"
+%include "x86/gdt32.mac"
 
 ;This sets up the segment registers
 global gdt_setup

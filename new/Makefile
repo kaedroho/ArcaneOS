@@ -13,13 +13,13 @@ bin/start/start32.asm.o: src/loader/x86/start32.asm
 	rm -f bin/start/start32.asm.o
 	nasm -i ./inc/ -f aout -o bin/start/start32.asm.o src/loader/x86/start32.asm
 	
-bin/o/startup.c.o: src/loader/all/startup.c
+bin/o/startup.c.o: src/loader/x86/startup.c
 	rm -f bin/o/startup.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/startup.c.o src/loader/all/startup.c
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/startup.c.o src/loader/x86/startup.c
 
-bin/o/boot.c.o: src/loader/all/boot.c
+bin/o/boot.c.o: src/loader/x86/boot.c
 	rm -f bin/o/boot.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/boot.c.o src/loader/all/boot.c
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/boot.c.o src/loader/x86/boot.c
 
 
 

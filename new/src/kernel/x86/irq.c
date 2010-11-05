@@ -1,4 +1,4 @@
-#include <sys-x86.h>
+#include <x86/sys.h>
 
 //Functions from irq.asm
 extern void irq0();

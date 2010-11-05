@@ -1,6 +1,6 @@
 [BITS 32]
 
-%include "gdt32.mac"
+%include "x86/gdt32.mac"
 
 REAL_MODE_STACK_ADDR equ 0x2000
 

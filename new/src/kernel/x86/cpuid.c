@@ -1,4 +1,4 @@
-#include <sys-x86.h>
+#include <x86/sys.h>
 #include <string.h>
 
 struct cpuid_struct g_cpuid_info;

@@ -1,4 +1,4 @@
-#include <sys-x86.h>
+#include <x86/sys.h>
 #include <console.h>
 
 void kload()

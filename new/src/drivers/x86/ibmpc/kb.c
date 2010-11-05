@@ -1,5 +1,5 @@
-#include <sys-x86.h>
-#include <kb.h>
+#include <x86/sys.h>
+#include <x86/kb.h>
 #include <string.h>
 #include <console.h>
 

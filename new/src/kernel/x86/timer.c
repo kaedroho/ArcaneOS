@@ -1,4 +1,4 @@
-#include <sys-x86.h>
+#include <x86/sys.h>
 #include <clock.h>
 
 unsigned int timer_ticks = 0;

@@ -35,11 +35,11 @@
                          projectFiles="true"
                          kind="SOURCE_LOGICAL_FOLDER">
             <itemPath>src/drivers/x86/ibmpc/kb.c</itemPath>
-            <itemPath>inc/kb.h</itemPath>
+            <itemPath>inc/x86/kb.h</itemPath>
             <itemPath>src/drivers/x86/ibmpc/screen.c</itemPath>
             <itemPath>inc/screen.h</itemPath>
             <itemPath>src/drivers/x86/ibmpc/vbe_real.asm</itemPath>
-            <itemPath>inc/vbe_real.h</itemPath>
+            <itemPath>inc/x86/vbe_real.h</itemPath>
           </logicalFolder>
           <itemPath>src/drivers/x86/clock.c</itemPath>
           <itemPath>inc/clock.h</itemPath>
@@ -57,9 +57,9 @@
           <itemPath>src/kernel/x86/cpuid.c</itemPath>
           <itemPath>src/kernel/x86/cpuid32.asm</itemPath>
           <itemPath>src/kernel/x86/gdt.c</itemPath>
-          <itemPath>inc/gdt.h</itemPath>
+          <itemPath>inc/x86/gdt.h</itemPath>
           <itemPath>src/kernel/x86/gdt32.asm</itemPath>
-          <itemPath>inc/gdt32.mac</itemPath>
+          <itemPath>inc/x86/gdt32.mac</itemPath>
           <itemPath>src/kernel/x86/idt.c</itemPath>
           <itemPath>src/kernel/x86/idt32.asm</itemPath>
           <itemPath>src/kernel/x86/irq.c</itemPath>
@@ -70,7 +70,7 @@
           <itemPath>src/kernel/x86/mm.c</itemPath>
           <itemPath>src/kernel/x86/paging.c</itemPath>
           <itemPath>src/kernel/x86/realmode.asm</itemPath>
-          <itemPath>inc/sys-x86.h</itemPath>
+          <itemPath>inc/x86/sys.h</itemPath>
           <itemPath>src/kernel/x86/timer.c</itemPath>
         </logicalFolder>
       </logicalFolder>
@@ -95,19 +95,14 @@
                      displayName="Loader"
                      projectFiles="true"
                      kind="SOURCE_LOGICAL_FOLDER">
-        <logicalFolder name="f2"
-                       displayName="all"
-                       projectFiles="true"
-                       kind="SOURCE_LOGICAL_FOLDER">
-          <itemPath>src/loader/all/boot.c</itemPath>
-          <itemPath>inc/boot.h</itemPath>
-          <itemPath>src/loader/all/startup.c</itemPath>
-        </logicalFolder>
         <logicalFolder name="f1"
                        displayName="x86"
                        projectFiles="true"
                        kind="SOURCE_LOGICAL_FOLDER">
+          <itemPath>src/loader/x86/boot.c</itemPath>
+          <itemPath>inc/x86/boot.h</itemPath>
           <itemPath>src/loader/x86/start32.asm</itemPath>
+          <itemPath>src/loader/x86/startup.c</itemPath>
         </logicalFolder>
       </logicalFolder>
     </logicalFolder>
@@ -134,8 +129,6 @@
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="inc/gdt32.mac" ex="false" tool="3">
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>

@@ -1,5 +1,5 @@
-#include <sys-x86.h>
-#include <gdt.h>
+#include <x86/sys.h>
+#include <x86/gdt.h>
 
 //GDT entry structure
 struct gdt_entry
