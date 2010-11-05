@@ -46,6 +46,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/mm.o \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
 	${OBJECTDIR}/src/kernel/x86/irq32.o \
+	${OBJECTDIR}/src/kernel/x86/realmode.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
 	${OBJECTDIR}/src/loader/all/startup.o \
 	${OBJECTDIR}/src/kernel/x86/gdt.o \
@@ -141,6 +142,10 @@ ${OBJECTDIR}/src/kernel/x86/idt32.o: src/kernel/x86/idt32.asm
 ${OBJECTDIR}/src/kernel/x86/irq32.o: src/kernel/x86/irq32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/irq32.o src/kernel/x86/irq32.asm
+
+${OBJECTDIR}/src/kernel/x86/realmode.o: src/kernel/x86/realmode.asm 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
+	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/realmode.o src/kernel/x86/realmode.asm
 
 ${OBJECTDIR}/src/drivers/all/console.o: src/drivers/all/console.c 
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/all

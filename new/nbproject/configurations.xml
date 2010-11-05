@@ -55,7 +55,9 @@
           <itemPath>src/kernel/x86/cpuid.c</itemPath>
           <itemPath>src/kernel/x86/cpuid32.asm</itemPath>
           <itemPath>src/kernel/x86/gdt.c</itemPath>
+          <itemPath>inc/gdt.h</itemPath>
           <itemPath>src/kernel/x86/gdt32.asm</itemPath>
+          <itemPath>inc/gdt32.mac</itemPath>
           <itemPath>src/kernel/x86/idt.c</itemPath>
           <itemPath>src/kernel/x86/idt32.asm</itemPath>
           <itemPath>src/kernel/x86/irq.c</itemPath>
@@ -65,6 +67,7 @@
           <itemPath>src/kernel/x86/kload.c</itemPath>
           <itemPath>src/kernel/x86/mm.c</itemPath>
           <itemPath>src/kernel/x86/paging.c</itemPath>
+          <itemPath>src/kernel/x86/realmode.asm</itemPath>
           <itemPath>inc/sys-x86.h</itemPath>
           <itemPath>src/kernel/x86/timer.c</itemPath>
         </logicalFolder>
@@ -129,6 +132,8 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path="inc/gdt32.mac" ex="false" tool="3">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>
