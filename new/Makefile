@@ -11,7 +11,7 @@ loader_x86-32: bin/start/start32.asm.o bin/o/startup.c.o bin/o/boot.c.o
 
 bin/start/start32.asm.o: src/loader/x86/start32.asm
 	rm -f bin/start/start32.asm.o
-	nasm -f aout -o bin/start/start32.asm.o src/loader/x86/start32.asm
+	nasm -i ./inc/ -f aout -o bin/start/start32.asm.o src/loader/x86/start32.asm
 	
 bin/o/startup.c.o: src/loader/all/startup.c
 	rm -f bin/o/startup.c.o
@@ -59,16 +59,20 @@ bin/o/kload.c.o: src/kernel/x86/kload.c
 
 bin/o/cpuid32.asm.o: src/kernel/x86/cpuid32.asm
 	rm -f bin/o/cpuid32.asm.o
-	nasm -f aout -o bin/o/cpuid32.asm.o src/kernel/x86/cpuid32.asm
+	nasm -i ./inc/ -f aout -o bin/o/cpuid32.asm.o src/kernel/x86/cpuid32.asm
 
 bin/o/cpuid.c.o: src/kernel/x86/cpuid.c
 	rm -f bin/o/cpuid.c.o
 	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/cpuid.c.o src/kernel/x86/cpuid.c
 
 
+bin/o/realmode.asm.o: src/kernel/x86/realmode.asm
+	rm -f bin/o/realmode.asm.o
+	nasm -i ./inc/ -f aout -o bin/o/realmode.asm.o src/kernel/x86/realmode.asm
+
 bin/o/gdt32.asm.o: src/kernel/x86/gdt32.asm
 	rm -f bin/o/gdt32.asm.o
-	nasm -f aout -o bin/o/gdt32.asm.o src/kernel/x86/gdt32.asm
+	nasm -i ./inc/ -f aout -o bin/o/gdt32.asm.o src/kernel/x86/gdt32.asm
 
 bin/o/gdt.c.o: src/kernel/x86/gdt.c
 	rm -f bin/o/gdt.c.o
@@ -77,7 +81,7 @@ bin/o/gdt.c.o: src/kernel/x86/gdt.c
 
 bin/o/idt32.asm.o: src/kernel/x86/idt32.asm
 	rm -f bin/o/idt32.asm.o
-	nasm -f aout -o bin/o/idt32.asm.o src/kernel/x86/idt32.asm
+	nasm -i ./inc/ -f aout -o bin/o/idt32.asm.o src/kernel/x86/idt32.asm
 
 bin/o/idt.c.o: src/kernel/x86/idt.c
 	rm -f bin/o/idt.c.o
@@ -86,7 +90,7 @@ bin/o/idt.c.o: src/kernel/x86/idt.c
 
 bin/o/irq32.asm.o: src/kernel/x86/irq32.asm
 	rm -f bin/o/irq32.asm.o
-	nasm -f aout -o bin/o/irq32.asm.o src/kernel/x86/irq32.asm
+	nasm -i ./inc/ -f aout -o bin/o/irq32.asm.o src/kernel/x86/irq32.asm
 
 bin/o/irq.c.o: src/kernel/x86/irq.c
 	rm -f bin/o/irq.c.o
@@ -95,7 +99,7 @@ bin/o/irq.c.o: src/kernel/x86/irq.c
 
 bin/o/isr32.asm.o: src/kernel/x86/isr32.asm
 	rm -f bin/o/isr32.asm.o
-	nasm -f aout -o bin/o/isr32.asm.o src/kernel/x86/isr32.asm
+	nasm -i ./inc/ -f aout -o bin/o/isr32.asm.o src/kernel/x86/isr32.asm
 
 bin/o/isr.c.o: src/kernel/x86/isr.c
 	rm -f bin/o/isr.c.o

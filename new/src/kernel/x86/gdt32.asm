@@ -1,10 +1,6 @@
 [BITS 32]
 
-GDT_NULL_SEG                equ 0x00
-GDT_KERNEL_PROT_MODE_CSEG   equ 0x08
-GDT_KERNEL_PROT_MODE_DSEG   equ 0x10
-GDT_KERNEL_REAL_MODE_CSEG   equ 0x18
-GDT_KERNEL_REAL_MODE_DSEG   equ 0x20
+%include "gdt32.mac"
 
 ;This sets up the segment registers
 global gdt_setup
