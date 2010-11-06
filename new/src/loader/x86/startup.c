@@ -1,10 +1,11 @@
 #include <x86/boot.h>
 #include <console.h>
-#include <x86/kb.h>
 #include <screen.h>
 
 #define ARCANE_VERSION_STRING "0.01"
 
+
+void ibmpc_init();
 void kload();
 void* pg_physical_page_alloc();
 void pg_physical_page_free(void* ptr);
@@ -31,7 +32,7 @@ int startup()
 
 //Load the kernel
     kload();
-    kb_init();
+    ibmpc_init();
 
     console_putc('\n');
 

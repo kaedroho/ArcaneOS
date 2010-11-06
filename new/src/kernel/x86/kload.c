@@ -3,6 +3,8 @@
 
 extern unsigned char _low_start, _low_end;
 
+void mm_init();
+
 void kload()
 {
     console_puts_protected("KERNEL: Loading: GDT");
@@ -19,4 +21,5 @@ void kload()
     console_puts_protected(" [Finished]\n");
 
     pg_init();
+    mm_init();
 }

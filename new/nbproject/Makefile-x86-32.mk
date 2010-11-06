@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/isr.o \
 	${OBJECTDIR}/src/kernel/x86/paging.o \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/vbe_real.o \
+	${OBJECTDIR}/src/drivers/x86/ibmpc/ibmpc.o \
 	${OBJECTDIR}/src/kernel/x86/isr32.o \
 	${OBJECTDIR}/src/libraries/all/string.o \
 	${OBJECTDIR}/src/loader/x86/start32.o \
@@ -48,8 +49,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
 	${OBJECTDIR}/src/kernel/x86/irq32.o \
 	${OBJECTDIR}/src/loader/x86/startup.o \
-	${OBJECTDIR}/src/drivers/all/initrd.o \
 	${OBJECTDIR}/src/kernel/x86/realmode.o \
+	${OBJECTDIR}/src/drivers/all/initrd.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
 	${OBJECTDIR}/src/kernel/x86/gdt.o \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o \
@@ -111,6 +112,11 @@ ${OBJECTDIR}/src/drivers/x86/ibmpc/vbe_real.o: src/drivers/x86/ibmpc/vbe_real.as
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/drivers/x86/ibmpc/vbe_real.o src/drivers/x86/ibmpc/vbe_real.asm
 
+${OBJECTDIR}/src/drivers/x86/ibmpc/ibmpc.o: src/drivers/x86/ibmpc/ibmpc.c 
+	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/ibmpc.o src/drivers/x86/ibmpc/ibmpc.c
+
 ${OBJECTDIR}/src/kernel/x86/isr32.o: src/kernel/x86/isr32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/isr32.o src/kernel/x86/isr32.asm
@@ -156,14 +162,14 @@ ${OBJECTDIR}/src/loader/x86/startup.o: src/loader/x86/startup.c
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/loader/x86/startup.o src/loader/x86/startup.c
 
+${OBJECTDIR}/src/kernel/x86/realmode.o: src/kernel/x86/realmode.asm 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
+	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/realmode.o src/kernel/x86/realmode.asm
+
 ${OBJECTDIR}/src/drivers/all/initrd.o: src/drivers/all/initrd.c 
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/all
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/all/initrd.o src/drivers/all/initrd.c
-
-${OBJECTDIR}/src/kernel/x86/realmode.o: src/kernel/x86/realmode.asm 
-	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
-	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/realmode.o src/kernel/x86/realmode.asm
 
 ${OBJECTDIR}/src/drivers/all/console.o: src/drivers/all/console.c 
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/all
