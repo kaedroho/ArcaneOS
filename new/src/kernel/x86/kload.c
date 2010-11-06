@@ -1,6 +1,8 @@
 #include <x86/sys.h>
 #include <console.h>
 
+extern unsigned char _low_start, _low_end;
+
 void kload()
 {
     console_puts_protected("KERNEL: Loading: GDT");
