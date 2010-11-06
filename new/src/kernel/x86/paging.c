@@ -10,25 +10,62 @@ unsigned int pg_page_size;
 unsigned int pg_total_free_memory;
 
 struct pg_pagedirectory* pg_kernel_directory;
+struct pg_pagedirectory* pg_currentdirectory;
 
-void pg_findpages();
-void* pg_physical_page_alloc();
-void pg_physical_page_free(void* ptr);
+static void pg_findpages();
+static void pg_addpagetodirectory(struct pg_pagedirectory* directory,void* page);
+static void* pg_physical_page_alloc();
+static void pg_physical_page_free(void* ptr);
 
 void pg_init()
 {
-//Find free pages
-    pg_findpages();
-}
-
-void pg_findpages()
-{
-//Setup variables
+//Paging variables
     pg_kernelreserved=0x20000;
     pg_page_stack_ptr=(unsigned int*)(0x100000+pg_kernelreserved);
     pg_page_size=0x1000;
     pg_total_free_memory=0;
+    
+//Find free pages
+    pg_findpages();
+    
+//Allocate kernel directory
+    pg_kernel_directory=pg_alloc_directory();
 
+//Get kernel pages
+    unsigned int page;
+    for(page=0;page<(pg_kernelreserved/pg_page_size);page++){
+        void* address=(void*)0x100000+pg_page_size*page;
+        pg_addpagetodirectory(pg_kernel_directory,address);
+    }
+
+//Set to the kernel directory
+    pg_setdirectory(pg_kernel_directory);
+}
+
+void pg_enablepaging()
+{
+    unsigned int cr0;
+    asm volatile("mov %%cr0, %0": "=r"(cr0));
+    cr0|=0x80000000;
+    asm volatile("mov %0, %%cr0":: "r"(cr0));
+}
+
+void pg_disablepaging()
+{
+    unsigned int cr0;
+    asm volatile("mov %%cr0, %0": "=r"(cr0));
+    cr0&=0x7FFFFFFF;
+    asm volatile("mov %0, %%cr0":: "r"(cr0));
+}
+
+void pg_setdirectory(struct pg_pagedirectory* directory)
+{
+    pg_currentdirectory=directory;
+    asm volatile("mov %0, %%cr3":: "r"(directory));
+}
+
+static void pg_findpages()
+{
 //Get multiboot info
     struct multiboot_information* mboot=get_multiboot_info();
 
@@ -58,10 +95,6 @@ void pg_findpages()
     console_puts_protected(" pages allocated (");
     console_putu32_protected(pagecount*4096,10);
     console_puts_protected(" bytes).\n");
-
-//Allocate kernel memory
-    pg_kernel_directory=pg_alloc_directory();
-
 }
 
 
@@ -94,23 +127,26 @@ void* pg_alloc_page(struct pg_pagedirectory* directory)
 //Clean the page
     memset((unsigned char*)address,0,pg_page_size);
 
+//Add page to directory
+    pg_addpagetodirectory(directory,address);
+
 //Return the address
     return address;
 }
 
-void pg_addpagetodirectory(struct pg_pagedirectory* directory,void* page)
+static void pg_addpagetodirectory(struct pg_pagedirectory* directory,void* page)
 {
 
 }
 
-void* pg_physical_page_alloc()
+static void* pg_physical_page_alloc()
 {
     pg_total_free_memory-=pg_page_size;
     unsigned int ptr=*(pg_page_stack_ptr--);
     return (void*)(pg_page_size*ptr);
 }
 
-void pg_physical_page_free(void* ptr)
+static void pg_physical_page_free(void* ptr)
 {
     pg_total_free_memory+=pg_page_size;
     *(++pg_page_stack_ptr)=(unsigned int)ptr/pg_page_size;

@@ -21,5 +21,6 @@ void kload()
     console_puts_protected(" [Finished]\n");
 
     pg_init();
+    //pg_enablepaging();
     mm_init();
 }

@@ -161,16 +161,19 @@ extern void cmos_set(unsigned char reg,unsigned char value);
 //PAGING STRUCTURES
 struct pg_pagedirectory
 {
-    unsigned int* tables[1024];
+    unsigned int tables[1024];
 };
 
 struct pg_pagetable
 {
-    unsigned int* pages[1024];
+    unsigned int pages[1024];
 };
 
 //PAGING FUNCTIONS
 extern void pg_init();
+void pg_enablepaging();
+void pg_disablepaging();
+void pg_setdirectory(struct pg_pagedirectory* directory);
 struct pg_pagedirectory* pg_alloc_directory();
 void* pg_alloc_page(struct pg_pagedirectory* directory);
 
