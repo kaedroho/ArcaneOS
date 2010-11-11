@@ -112,6 +112,7 @@ void exception_handler(struct regs *r)
 //Check if it is an exception
     if (r->int_no < 32)
     {
+
     /*
     //Red screen of death!
         video_setdriver(video_vgatext_getdriver(),0);
