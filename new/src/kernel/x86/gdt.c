@@ -1,26 +1,6 @@
 #include <x86/sys.h>
 #include <x86/gdt.h>
 
-//GDT entry structure
-struct gdt_entry
-{
-    unsigned short limit_low;
-    unsigned short base_low;
-    unsigned char base_middle;
-    unsigned char access;
-    unsigned char granularity;
-    unsigned char base_high;
-} __attribute__((packed));
-
-//GDT pointer structure
-struct gdt_ptr
-{
-    unsigned short limit;
-    unsigned int base;
-} __attribute__((packed));
-
-#define GDT_COUNT 8
-
 //Allocate 4 GDT entries. NULL, CS, DS, TSS.
 struct gdt_entry g_gdt[GDT_COUNT];
 

@@ -1,7 +1,8 @@
 #include <x86/sys.h>
 #include <console.h>
-
-extern unsigned char _low_start, _low_end;
+#include <string.h>
+#include <x86/vbe_real.h>
+#include <x86/gdt.h>
 
 void mm_init();
 
@@ -17,8 +18,9 @@ void kload()
     irq_init();
     console_puts_protected(" CPUID");
     cpuid_init();
-
     console_puts_protected(" [Finished]\n");
+
+    lm_init();
 
     pg_init();
     //pg_enablepaging();

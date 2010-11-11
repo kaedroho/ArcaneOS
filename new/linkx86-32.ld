@@ -20,8 +20,8 @@ SECTIONS
     low_code_size = . - low_code_tmp;
   }
   . = low_code + low_code_size;
-  low_code_end = .;
   . = ALIGN(4096);
+  low_code_end = .;
 
   data = .;
   .data data : AT(data)

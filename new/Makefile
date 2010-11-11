@@ -60,7 +60,7 @@ bin/o/vbe_real.asm.o: src/drivers/x86/ibmpc/vbe_real.asm
 	nasm -i ./inc/ -f aout -o bin/o/vbe_real.asm.o src/drivers/x86/ibmpc/vbe_real.asm
 
 
-kernel_x86-32: bin/o/vfs.c.o bin/o/cmos.c.o bin/o/kload.c.o bin/o/cpuid32.asm.o bin/o/cpuid.c.o bin/o/realmode.asm.o bin/o/gdt32.asm.o bin/o/gdt.c.o bin/o/idt32.asm.o bin/o/idt.c.o bin/o/irq32.asm.o bin/o/irq.c.o bin/o/isr32.asm.o bin/o/isr.c.o bin/o/mm.c.o bin/o/paging.c.o bin/o/timer.c.o
+kernel_x86-32: bin/o/vfs.c.o bin/o/cmos.c.o bin/o/kload.c.o bin/o/cpuid32.asm.o bin/o/cpuid.c.o bin/o/realmode.asm.o bin/o/gdt32.asm.o bin/o/gdt.c.o bin/o/idt32.asm.o bin/o/idt.c.o bin/o/irq32.asm.o bin/o/irq.c.o bin/o/isr32.asm.o bin/o/isr.c.o bin/o/mm.c.o bin/o/paging.c.o bin/o/timer.c.o bin/o/lowmem.c.o
 
 bin/o/vfs.c.o: src/kernel/all/vfs/vfs.c
 	rm -f bin/o/vfs.c.o
@@ -136,6 +136,10 @@ bin/o/paging.c.o: src/kernel/x86/paging.c
 bin/o/timer.c.o: src/kernel/x86/timer.c
 	rm -f bin/o/timer.c.o
 	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/timer.c.o src/kernel/x86/timer.c
+
+bin/o/lowmem.c.o: src/kernel/x86/lowmem.c
+	rm -f bin/o/lowmem.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/lowmem.c.o src/kernel/x86/lowmem.c
 
 
 

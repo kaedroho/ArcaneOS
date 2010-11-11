@@ -48,7 +48,7 @@ vbe_get_controller_info:
     ; Function 00
     mov eax, 0x4F00
     ; Parameter 1 -> ES:DI
-    pop edi
+    mov edi, [esp+4]
     mov [vbe_store_addr], edi
     ; Call bios
     call vbe_call_bios
@@ -63,9 +63,9 @@ vbe_get_mode_info:
     ; Function 01
     mov eax, 0x4F01
     ; Parameter 1 -> CX
-    pop ecx
+    mov ecx, [esp+4]
     ; Parameter 2 -> ES:DI
-    pop edi
+    mov edi, [esp+8]
     mov [vbe_store_addr], edi
     ; Call bios
     call vbe_call_bios
@@ -79,9 +79,9 @@ vbe_set_mode:
     ; Function 02
     mov eax, 0x4F02
     ; Parameter 1 -> BX
-    pop ebx
+    mov ebx, [esp+4]
     ; Parameter 2 -> ES:DI
-    pop edi
+    mov edi, [esp+8]
     mov [vbe_store_addr], edi
     ; Call bios
     call vbe_call_bios
@@ -98,7 +98,7 @@ vbe_get_mode:
     ; Call bios
     call vbe_call_bios
     ; BX -> Parameter 1
-    pop ecx
+    mov ecx, [esp+4]
     mov [ecx], ebx
     ; Return
     mov ebx, [vbe_store_ebx]

@@ -3,12 +3,16 @@
 %include "x86/gdt32.mac"
 
 REAL_MODE_STACK_ADDR equ 0x2000
+GDT_COUNT equ 8
+GDT_SIZE equ (GDT_COUNT*8)
 
 extern g_gdtp
 extern g_idtp
+extern g_gdt
 
 global real_to_prot
 global prot_to_real
+global real_mode_gdt
 
 prot_mode_stack_ptr:
     dd 0
@@ -17,6 +21,10 @@ real_mode_idt:
     dw 0x03FF
     dd 0x00000000
 
+real_mode_gdt_ptr:
+    dw GDT_SIZE-1
+    dd g_gdt
+
 real_to_prot:
 	[BITS 16]
 	cli
@@ -24,7 +32,7 @@ real_to_prot:
 	; load the GDT register
 	xor	ax, ax
 	mov	ds, ax
-	lgdt	[dword g_gdtp]
+	lgdt	[real_mode_gdt_ptr]
 
 	; turn on protected mode
 	mov	eax, cr0
@@ -68,7 +76,7 @@ protcseg:
 
 prot_to_real:
 	; just in case, set GDT
-	lgdt	[g_gdtp]
+	lgdt	[real_mode_gdt_ptr]
 
 	; save the protected mode stack
 	mov	eax, esp
@@ -120,12 +128,11 @@ realcseg:
 	mov	ss, ax
 
 	; restore interrupts
-        lidt [dword real_mode_idt]
+        lidt [real_mode_idt]
+
 	sti
 
-	; 32 bit return on new stack!
-	db 0x66
-	db 0xC3
+        ret
 	[BITS 32]
 
 

@@ -177,4 +177,7 @@ void pg_setdirectory(struct pg_pagedirectory* directory);
 struct pg_pagedirectory* pg_alloc_directory();
 void* pg_alloc_page(struct pg_pagedirectory* directory);
 
+// LOWMEM FUNCTIONS
+void lm_init();
+
 #endif
