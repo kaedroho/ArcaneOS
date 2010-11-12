@@ -32,6 +32,7 @@ int startup()
 
 //Load the kernel
     kload();
+
     ibmpc_init();
 
     console_putc('\n');

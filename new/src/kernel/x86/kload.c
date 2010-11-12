@@ -21,8 +21,16 @@ void kload()
     console_puts_protected(" [Finished]\n");
 
     lm_init();
-
+    
     pg_init();
     //pg_enablepaging();
     mm_init();
+
+    // VBE Test
+    int mode = 0;
+    vbe_get_mode(&mode);
+    console_puts_protected("VBE Mode: ");
+    console_puti32(mode, 10);
+    console_puts_protected("\n");
+
 }

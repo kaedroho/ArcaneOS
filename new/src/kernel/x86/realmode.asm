@@ -63,7 +63,7 @@ protcseg:
 
 	; get return address onto the right stack
 	mov	eax, [REAL_MODE_STACK_ADDR]
-	mov	[esp], eax
+	mov	[esp+4], eax
 
 	; zero eax */
 	xor	eax, eax
@@ -71,10 +71,16 @@ protcseg:
         ; Restore IDT
         lidt [g_idtp]
 
+        ; Restore flags
+        popf
+
 	; return on the old (or initialized) stack!
 	ret
 
 prot_to_real:
+        ; Save flags
+        pushf
+
 	; just in case, set GDT
 	lgdt	[real_mode_gdt_ptr]
 
@@ -83,7 +89,7 @@ prot_to_real:
 	mov	[prot_mode_stack_ptr], eax
 
 	; get the return address
-	mov	eax, [esp]
+	mov	eax, [esp+4]
 	mov	[REAL_MODE_STACK_ADDR], eax
 
 	; set up new stack
