@@ -15,6 +15,19 @@ enum vbe_result {
     vbe_result_invalid_call = 3
 };
 
+enum vbe_state_op {
+    vbe_state_op_get_buffer_size = 0,
+    vbe_state_op_save = 1,
+    vbe_state_op_restore = 2
+};
+
+enum vbe_scan_length {
+    vbe_scan_length_set_pixels = 0,
+    vbe_scan_length_get = 1,
+    vbe_scan_length_set_bytes = 2,
+    vbe_scan_length_get_maximum = 3
+};
+
 struct vbe_info_block {
     char            vbe_signature[4];
     unsigned short  vbe_version;
@@ -110,10 +123,24 @@ struct vbe_crtc_info_block
     unsigned char reserved[40];
 } __attribute__ ((packed));
 
+struct vbe_palette_entry
+{
+    unsigned char blue;
+    unsigned char green;
+    unsigned char red;
+    unsigned char alignment;
+} __attribute__ ((packed));
+
 enum vbe_result vbe_get_controller_info(struct vbe_info_block* info);
 enum vbe_result vbe_get_mode_info(int mode, struct vbe_mode_info_block* mode_info);
 enum vbe_result vbe_set_mode(int mode, struct vbe_crtc_info_block* crtc_info);
 enum vbe_result vbe_get_mode(int* mode);
+enum vbe_result vbe_save_restore_state(enum vbe_state_op op, int states, unsigned char* buffer);
+enum vbe_result vbe_display_window_control(int window, unsigned* address);
+enum vbe_result vbe_scan_code_length(enum vbe_scan_length, unsigned* bytes, unsigned* pixels, unsigned* lines);
+enum vbe_result vbe_display_start(int func, int p1, int p2, unsigned* r1, unsigned r2);
+enum vbe_result vbe_dac_palette(int func, int* bitsperprimary);
+enum vbe_result vbe_palette_data(int func, int count, int first, struct vbe_palette_entry* table);
 
 #endif	/* VBE_REAL_H */
 

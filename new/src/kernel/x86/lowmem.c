@@ -15,10 +15,10 @@ void lm_init() {
     console_puts_protected("LOWMEM:");
     memcpy(code_dest, code_src, code_size);
     console_puts_protected(" Copied ");
-    console_putu32(code_size, 10);
+    console_putu32_protected(code_size, 10);
     console_puts_protected(" bytes from 0x");
-    console_putu32((unsigned)code_src, 16);
+    console_putu32_protected((unsigned)code_src, 16);
     console_puts_protected(" to 0x");
-    console_putu32((unsigned)code_dest, 16);
+    console_putu32_protected((unsigned)code_dest, 16);
     console_puts_protected("\n");
 }
