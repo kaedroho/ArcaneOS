@@ -180,4 +180,10 @@ void* pg_alloc_page(struct pg_pagedirectory* directory);
 // LOWMEM FUNCTIONS
 void lm_init();
 
+// MEMORY FUNCTIONS
+void mm_init();
+void mm_low_free(unsigned char* mem);
+unsigned char* mm_low_alloc_aligned(unsigned size, unsigned alignment);
+unsigned char* mm_low_alloc(unsigned size);
+
 #endif
