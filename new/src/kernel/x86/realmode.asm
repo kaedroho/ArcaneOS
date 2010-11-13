@@ -2,7 +2,7 @@
 
 %include "x86/gdt32.mac"
 
-REAL_MODE_STACK_ADDR equ 0x2000
+REAL_MODE_STACK_ADDR equ real_mode_stack
 GDT_COUNT equ 8
 GDT_SIZE equ (GDT_COUNT*8)
 
@@ -142,3 +142,7 @@ realcseg:
 	[BITS 32]
 
 
+
+    times 1024 db 0
+real_mode_stack:
+    times 16 db 0
