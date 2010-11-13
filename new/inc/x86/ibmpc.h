@@ -41,5 +41,10 @@ unsigned long screen_getframebuffer();
 
 void initrd_init();
 
+
+//CLOCK
+
+void ibmpc_initclock();
+
 #endif	/* KB_H */
 

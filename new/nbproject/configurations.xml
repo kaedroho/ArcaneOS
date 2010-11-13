@@ -23,6 +23,8 @@
                        displayName="all"
                        projectFiles="true"
                        kind="SOURCE_LOGICAL_FOLDER">
+          <itemPath>src/drivers/all/clock.c</itemPath>
+          <itemPath>inc/clock.h</itemPath>
           <itemPath>src/drivers/all/console.c</itemPath>
           <itemPath>inc/console.h</itemPath>
         </logicalFolder>
@@ -34,6 +36,7 @@
                          displayName="ibmpc"
                          projectFiles="true"
                          kind="SOURCE_LOGICAL_FOLDER">
+            <itemPath>src/drivers/x86/ibmpc/clock.c</itemPath>
             <itemPath>src/drivers/x86/ibmpc/ibmpc.c</itemPath>
             <itemPath>inc/x86/ibmpc.h</itemPath>
             <itemPath>src/drivers/x86/ibmpc/initrd.c</itemPath>
@@ -42,8 +45,6 @@
             <itemPath>src/drivers/x86/ibmpc/vbe_real.asm</itemPath>
             <itemPath>inc/x86/vbe_real.h</itemPath>
           </logicalFolder>
-          <itemPath>src/drivers/x86/clock.c</itemPath>
-          <itemPath>inc/clock.h</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="f1"

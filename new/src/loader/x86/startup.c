@@ -1,6 +1,7 @@
 #include <x86/boot.h>
 #include <x86/ibmpc.h>
 #include <console.h>
+#include <clock.h>
 
 #define ARCANE_VERSION_STRING "0.01"
 
@@ -32,6 +33,8 @@ int startup()
     kload();
 
     ibmpc_init();
+
+    clock_init();
 
     console_putc('\n');
 
