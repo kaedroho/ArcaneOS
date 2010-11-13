@@ -27,7 +27,6 @@ void kload()
     //     .=============================================.
     //     |                   VBE Test                  |
     //     `=============================================`
-
     // List VBE modes
     struct vbe_info_block* info = (struct vbe_info_block*)mm_low_alloc(sizeof(struct vbe_info_block));
 
@@ -55,7 +54,6 @@ void kload()
     console_puts_protected("\n");
 
     mm_low_free((unsigned char*)info);
-
 //#define VBE_TEST
 #ifdef VBE_TEST
 
@@ -82,9 +80,8 @@ void kload()
     }
 
     mm_low_free((unsigned char*)modeinfo);
-#endif
-    
     vbe_set_mode(0x3, 0);
+#endif
     //     .=============================================.
     //     |               End of VBE Test               |
     //     `=============================================`

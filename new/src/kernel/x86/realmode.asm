@@ -9,6 +9,7 @@ GDT_SIZE equ (GDT_COUNT*8)
 extern g_gdtp
 extern g_idtp
 extern g_gdt
+extern irq_remap
 
 global real_to_prot
 global prot_to_real
@@ -70,6 +71,14 @@ protcseg:
 
         ; Restore IDT
         lidt [g_idtp]
+
+        push eax
+        push ecx
+        push edx
+        call irq_remap
+        pop edx
+        pop ecx
+        pop eax
 
         ; Restore flags
         popf
