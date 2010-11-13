@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/ibmpc.o \
 	${OBJECTDIR}/src/libraries/all/string.o \
 	${OBJECTDIR}/src/loader/x86/start32.o \
+	${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o \
 	${OBJECTDIR}/src/kernel/x86/cpuid.o \
 	${OBJECTDIR}/src/kernel/x86/gdt32.o \
 	${OBJECTDIR}/src/kernel/x86/timer.o \
@@ -49,7 +50,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
 	${OBJECTDIR}/src/kernel/x86/irq32.o \
 	${OBJECTDIR}/src/loader/x86/startup.o \
-	${OBJECTDIR}/src/drivers/all/initrd.o \
 	${OBJECTDIR}/src/kernel/x86/realmode.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
 	${OBJECTDIR}/src/kernel/x86/gdt.o \
@@ -130,6 +130,11 @@ ${OBJECTDIR}/src/loader/x86/start32.o: src/loader/x86/start32.asm
 	${MKDIR} -p ${OBJECTDIR}/src/loader/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/loader/x86/start32.o src/loader/x86/start32.asm
 
+${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o: src/drivers/x86/ibmpc/initrd.c 
+	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o src/drivers/x86/ibmpc/initrd.c
+
 ${OBJECTDIR}/src/kernel/x86/cpuid.o: src/kernel/x86/cpuid.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	${RM} $@.d
@@ -161,11 +166,6 @@ ${OBJECTDIR}/src/loader/x86/startup.o: src/loader/x86/startup.c
 	${MKDIR} -p ${OBJECTDIR}/src/loader/x86
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/loader/x86/startup.o src/loader/x86/startup.c
-
-${OBJECTDIR}/src/drivers/all/initrd.o: src/drivers/all/initrd.c 
-	${MKDIR} -p ${OBJECTDIR}/src/drivers/all
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/all/initrd.o src/drivers/all/initrd.c
 
 ${OBJECTDIR}/src/kernel/x86/realmode.o: src/kernel/x86/realmode.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86

@@ -36,7 +36,7 @@
                          kind="SOURCE_LOGICAL_FOLDER">
             <itemPath>src/drivers/x86/ibmpc/ibmpc.c</itemPath>
             <itemPath>inc/x86/ibmpc.h</itemPath>
-            <itemPath>src/drivers/all/initrd.c</itemPath>
+            <itemPath>src/drivers/x86/ibmpc/initrd.c</itemPath>
             <itemPath>src/drivers/x86/ibmpc/kb.c</itemPath>
             <itemPath>src/drivers/x86/ibmpc/screen.c</itemPath>
             <itemPath>src/drivers/x86/ibmpc/vbe_real.asm</itemPath>
