@@ -33,7 +33,7 @@ void kload()
 
     vbe_get_controller_info(info);
     
-    console_puts_protected("VBE Modes: ");
+    console_puts_protected("VBE Modes:\n");
     unsigned short* modes = info->video_mode_ptr;
 
     while (*modes != 0xFFFF) {
@@ -56,7 +56,7 @@ void kload()
 
     mm_low_free((unsigned char*)info);
 
-#define VBE_TEST
+//#define VBE_TEST
 #ifdef VBE_TEST
 
     // Set mode to 24-bit 800x600
