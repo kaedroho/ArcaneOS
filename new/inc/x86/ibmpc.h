@@ -1,5 +1,12 @@
-#ifndef KB_H
-#define	KB_H
+#ifndef IBMPC_H
+#define	IBMPC_H
+
+//MAIN
+
+void ibmpc_init();
+
+
+//KEYBOARD
 
 struct KB_Layout {
     char defaultMapping[128];

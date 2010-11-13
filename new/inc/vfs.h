@@ -14,6 +14,7 @@ struct vfs_filesystem_driver
 
      * open fs
      * close fs
+     * list directory
      * open file
      * close file
      * read from file

@@ -20,19 +20,24 @@ struct initrd_file
 
 struct vfs_filesystem_driver initrd_fsdriver;
 
+void initrd_init()
+{
 
-void* initrd_openfs(void* data)
+}
+
+
+void* initrd_openfs(void* data)     //Callback function
 {
     return 0;
 }
 
-void initrd_closefs(void* fsdata)
+void initrd_closefs(void* fsdata)     //Callback function
 {
 
 }
 
 
-void* initrd_openfile(void* fsdata,char* name)
+void* initrd_openfile(void* fsdata,char* name)     //Callback function
 {
 //Get filesystem data
     struct initrd_filesystem* fs=(struct initrd_filesystem*)fsdata;
@@ -52,11 +57,16 @@ void* initrd_openfile(void* fsdata,char* name)
     return 0; //NOT FOUND
 }
 
-void initrd_closefile(void* filedata)
+void initrd_closefile(void* filedata)     //Callback function
 {
 //Get file data
     struct initrd_file* file=(struct initrd_file*)filedata;
 
 //Close the file
     file->isopen=0;
+}
+
+void initrd_readfile(void* file,void* buffer,int bytes)
+{
+
 }

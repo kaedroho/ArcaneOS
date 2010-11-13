@@ -52,14 +52,14 @@ void kload()
         console_puts_protected("\n");
     }
     console_puts_protected("\n");
-//#define VBE_TEST
+#define VBE_TEST
 #ifdef VBE_TEST
 
     // Set mode to 24-bit 800x600
-    vbe_set_mode(0xC115, 0);
+    vbe_set_mode(0x115, 0);
 
     struct vbe_mode_info_block* modeinfo = (struct vbe_mode_info_block*)0x80000;
-    vbe_get_mode_info(0x4115, modeinfo);
+    vbe_get_mode_info(0x115, modeinfo);
 
     // Draw cool effect!
     int x, y, i;

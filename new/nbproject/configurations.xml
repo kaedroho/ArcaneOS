@@ -36,8 +36,8 @@
                          projectFiles="true"
                          kind="SOURCE_LOGICAL_FOLDER">
             <itemPath>src/drivers/x86/ibmpc/ibmpc.c</itemPath>
+            <itemPath>inc/x86/ibmpc.h</itemPath>
             <itemPath>src/drivers/x86/ibmpc/kb.c</itemPath>
-            <itemPath>inc/x86/kb.h</itemPath>
             <itemPath>src/drivers/x86/ibmpc/screen.c</itemPath>
             <itemPath>inc/screen.h</itemPath>
             <itemPath>src/drivers/x86/ibmpc/vbe_real.asm</itemPath>
