@@ -11,25 +11,39 @@ unsigned char* mm_low_base = 0;
 unsigned char* mm_low_end = 0;
 
 void mm_low_init() {
+    // DESCRIPTION:
+    // The low memory allocator uses a linked list of 'blocks'. Each block
+    // starts with a 4 byte integer, the magnitude of which indicates the
+    // offset to the next block. If the integer is positive, the block is
+    // free; if it is negative, the block is used; and if it is zero, it
+    // is the end of the linked list. The list is singly linked, meaning
+    // that it can only be traversed from start to end.
+
     mm_low_base = &low_phys + (&low_code_end - &low_code);
     mm_low_end = &phys - sizeof(int);
     
+    // Set the first block to be the size of the available memory and free
     *(int*)mm_low_base = mm_low_end - mm_low_base;
+    // Set the last block to size zero
     *(int*)mm_low_end = 0;
 }
 
 void mm_low_free(unsigned char* mem) {
+    // Ignore null pointers
     if (!mem)
         return;
 
+    // Find start of block
     mem -= sizeof(int);
 
+    // Set up variable for traversal through list
     unsigned char* ptr = mm_low_base;
     unsigned char* prev_ptr = 0;
     int block_size = 0;
     
     // Keep looping until the last block
     while ((block_size = *(int*)ptr)) {
+        // If block is allocated
         if (block_size < 0) {
             unsigned char* next_ptr = ptr - block_size;
 
@@ -45,11 +59,13 @@ void mm_low_free(unsigned char* mem) {
                     // Merge with next block
                     next_ptr += *(int*)next_ptr;
 
+                // Set this block to be free and the size of the new region
                 *(int*)ptr = next_ptr - ptr;
                 
                 return;
             }
 
+            // Advance to the next block
             ptr = next_ptr;
         }
         else
@@ -117,6 +133,7 @@ unsigned char* mm_low_alloc_aligned(unsigned size, unsigned alignment) {
         prev_ptr = ptr;
     }
 
+    // Out of memory
     return 0;
 }
 
