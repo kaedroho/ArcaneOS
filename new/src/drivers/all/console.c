@@ -1,5 +1,5 @@
 #include <console.h>
-#include <screen.h>
+#include <x86/ibmpc.h>
 #include <string.h>
 
 unsigned short g_console_cursorx=0;

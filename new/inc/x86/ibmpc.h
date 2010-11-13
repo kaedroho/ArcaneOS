@@ -24,5 +24,22 @@ char kb_getnumlock();
 char kb_getscrolllock();
 char kb_getcaps();
 
+
+//SCREEN
+
+void screen_putc(unsigned short x,unsigned short y,unsigned short c);
+unsigned short screen_getc(unsigned short x,unsigned short y);
+void screen_positioncursor(unsigned short x,unsigned short y);
+void screen_putpixel(unsigned short x,unsigned short y,unsigned long p);
+
+unsigned short screen_getwidth();
+unsigned short screen_getheight();
+unsigned long screen_getframebuffer();
+
+
+//INITRD
+
+void initrd_init();
+
 #endif	/* KB_H */
 

@@ -25,9 +25,9 @@ bin/o/boot.c.o: src/loader/x86/boot.c
 
 drivers_x86-32: bin/o/initrd.c.o bin/o/clock.c.o bin/o/console.c.o bin/o/ibmpc.c.o bin/o/kb.c.o bin/o/screen.c.o bin/o/vbe_real.asm.o
 
-bin/o/initrd.c.o: src/drivers/all/initrd.c
+bin/o/initrd.c.o: src/drivers/x86/ibmpc/initrd.c
 	rm -f bin/o/initrd.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/initrd.c.o src/drivers/all/initrd.c
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/initrd.c.o src/drivers/x86/ibmpc/initrd.c
 
 
 bin/o/clock.c.o: src/drivers/x86/clock.c

@@ -1,7 +1,6 @@
 #include <x86/boot.h>
 #include <x86/ibmpc.h>
 #include <console.h>
-#include <screen.h>
 
 #define ARCANE_VERSION_STRING "0.01"
 
