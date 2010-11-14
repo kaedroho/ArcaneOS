@@ -5,16 +5,16 @@
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
             <name>InitRD_Builder</name>
             <make-project-type>0</make-project-type>
-            <c-extensions/>
-            <cpp-extensions>cpp</cpp-extensions>
+            <c-extensions>c</c-extensions>
+            <cpp-extensions/>
             <header-extensions/>
+            <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList/>
             <confList>
                 <confElem>Debug</confElem>
                 <confElem>Release</confElem>
             </confList>
-            <sourceEncoding>UTF-8</sourceEncoding>
         </data>
     </configuration>
 </project>

@@ -5,9 +5,10 @@
   <confs>
     <conf name="Debug" type="1">
       <gizmo_options version="3">
+        <configurationname>GizmoSimple</configurationname>
       </gizmo_options>
       <runprofile version="6">
-        <args></args>
+        <args>-o init.rd2 -i lol</args>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>
@@ -19,6 +20,7 @@
     </conf>
     <conf name="Release" type="1">
       <gizmo_options version="3">
+        <configurationname>GizmoSimple</configurationname>
       </gizmo_options>
       <runprofile version="6">
         <args></args>
