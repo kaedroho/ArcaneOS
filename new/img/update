@@ -8,6 +8,7 @@ sudo mount /dev/loop0 Mount
 sleep 0.1
 sudo cp ../bin/arcane_x86-32.bin Mount/kernel.bin
 sudo cp menu.lst Mount/boot/grub/menu.lst
+sudo cp init.rd Mount/init.rd
 sleep 0.1
 sudo umount /dev/loop0
 sleep 0.1
