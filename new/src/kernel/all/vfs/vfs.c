@@ -54,7 +54,6 @@ void vfs_close_filesystem(struct vfs_filesystem* filesystem)
 }
 
 
-#include <console.h>
 struct vfs_file* _vfs_open_file(struct vfs_filesystem* filesystem,struct vfs_file* file,char* name)
 {
 //Variables
@@ -89,10 +88,8 @@ struct vfs_file* vfs_open_file(struct vfs_filesystem* filesystem,struct vfs_file
                 return vfs_open_file(&filesystem->mountpoints[i],file,(char*)((void*)name)+mpsize);
             }
         }
-
     //Attempt to load the file in this filesystem
         return _vfs_open_file(filesystem,file,name);
-
     }
     return 0;
 }
@@ -104,7 +101,6 @@ void vfs_close_file(struct vfs_file* file)
 
 unsigned int vfs_readfile(struct vfs_file* file,void* buffer,unsigned int bytes)
 {
-    console_putu32_protected(bytes,10);
     if(file->filesystem->driver->readfile!=0)
         return file->filesystem->driver->readfile(file->data,buffer,bytes);
     else
