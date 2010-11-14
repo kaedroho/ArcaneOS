@@ -18,11 +18,11 @@ void kload()
     cpuid_init();
     console_puts_protected(" [Finished]\n");
 
+    pg_init();
     mm_init();
     lm_init();
     
-    pg_init();
-    //pg_enablepaging();
+    pg_enable_paging();
 
     //     .=============================================.
     //     |                   VBE Test                  |

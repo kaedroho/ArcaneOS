@@ -20,7 +20,7 @@ void mm_low_init() {
     // that it can only be traversed from start to end.
 
     mm_low_base = &low_phys + (&low_code_end - &low_code);
-    mm_low_end = &phys - sizeof(int);
+    mm_low_end = (unsigned char*)0x80000 - sizeof(int);
     
     // Set the first block to be the size of the available memory and free
     *(int*)mm_low_base = mm_low_end - mm_low_base;

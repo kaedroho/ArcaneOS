@@ -159,23 +159,35 @@ extern void cmos_set(unsigned char reg,unsigned char value);
 
 
 //PAGING STRUCTURES
-struct pg_pagedirectory
+struct pg_page_directory
 {
     unsigned int tables[1024];
 };
 
-struct pg_pagetable
+struct pg_page_table
 {
     unsigned int pages[1024];
 };
 
 //PAGING FUNCTIONS
-extern void pg_init();
-void pg_enablepaging();
-void pg_disablepaging();
-void pg_setdirectory(struct pg_pagedirectory* directory);
-struct pg_pagedirectory* pg_alloc_directory();
-void* pg_alloc_page(struct pg_pagedirectory* directory);
+void pg_init();
+void pg_map_page(struct pg_page_directory* directory, void* virtual, void* physical, unsigned attr);
+void pg_unmap_page(struct pg_page_directory* directory, void* virtual);
+void pg_set_directory(struct pg_page_directory* directory);
+void pg_physical_page_free(void* address);
+void pg_physical_page_reserve(void* address);
+void pg_physical_page_reserve_range(void* address, int count);
+int pg_is_physical_page_free(void* address);
+void* pg_physical_page_alloc();
+void* pg_physical_page_alloc_range(unsigned count);
+void pg_find_pages();
+void pg_init_directory(struct pg_page_directory* directory);
+void pg_init_table(struct pg_page_table* table);
+void pg_enable_paging();
+void pg_disable_paging();
+int pg_is_paging_enabled();
+void pg_push_state();
+void pg_pop_state();
 
 // LOWMEM FUNCTIONS
 void lm_init();

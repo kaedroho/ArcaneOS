@@ -10,6 +10,9 @@ extern g_gdtp
 extern g_idtp
 extern g_gdt
 extern irq_remap
+extern pg_push_state
+extern pg_pop_state
+extern pg_disable_paging
 
 global real_to_prot
 global prot_to_real
@@ -76,6 +79,7 @@ protcseg:
         push ecx
         push edx
         call irq_remap
+        call pg_pop_state
         pop edx
         pop ecx
         pop eax
@@ -89,6 +93,15 @@ protcseg:
 prot_to_real:
         ; Save flags
         pushf
+
+        push eax
+        push ecx
+        push edx
+        call pg_push_state
+        call pg_disable_paging
+        pop edx
+        pop ecx
+        pop eax
 
 	; just in case, set GDT
 	lgdt	[real_mode_gdt_ptr]
