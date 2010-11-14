@@ -40,8 +40,8 @@ void ibmpc_init()
         else
             console_puts_protected("INITRD: Error. Could not mount image to /init.\n");
 
-        char temp[4];
-        initrd_readfile(initrd_openfile(initfs->data,"new"),temp,3);
+        char temp[1000];
+        initrd_readfile(initrd_openfile(initfs->data,"Hello-World"),temp,1000);
         console_puts_protected(temp);
     }
 }
