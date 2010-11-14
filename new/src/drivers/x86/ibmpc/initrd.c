@@ -23,17 +23,42 @@ struct vfs_filesystem_driver initrd_fsdriver;
 
 void* initrd_openfs(void* data)     //Callback function
 {
-    return 0;
+    if(((struct initrd_filesystem*)data)->Magic==0xACAED123){
+        if(((struct initrd_filesystem*)data)->isopen){
+            return 0;   //Already open
+        }else{
+            ((struct initrd_filesystem*)data)->isopen=1;
+
+            //Setup files
+
+            return data;
+        }
+    }else{
+        return 0;   //Invalid image
+    }
 }
 
 void initrd_closefs(void* fsdata)     //Callback function
 {
-
+    if(((struct initrd_filesystem*)fsdata)->Magic==0xACAED123)
+        ((struct initrd_filesystem*)fsdata)->isopen=0;
 }
 
 
 void* initrd_openfile(void* fsdata,char* name)     //Callback function
 {
+    struct initrd_filesystem* FS=(struct initrd_filesystem*)fsdata;
+    if(FS->Magic==0xACAED123 && FS->isopen){
+        unsigned char i=0;
+        for(i=0;i<FS->FileCount;i++){
+            struct initrd_file* File=(struct initrd_file*)fsdata+sizeof(struct initrd_filesystem)+sizeof(struct initrd_file)*i;
+            if(strcmp(File->name,name)){
+
+            }
+        }
+    }else{
+        return 0;
+    }
     return 0;
 }
 

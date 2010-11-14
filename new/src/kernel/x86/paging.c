@@ -29,10 +29,21 @@ void pg_pop_state() {
 }
 
 void pg_init() {
+//Find end of kernel
+    struct multiboot_information* mboot=get_multiboot_info();
+    unsigned int i=0;
+    unsigned int kernend=(unsigned int)&end;
+    for(i=0;i<mboot->mods_count;i++){
+        if(mboot->mods_addr[i].mod_end>kernend){
+            kernend=mboot->mods_addr[i].mod_end;
+        }
+    }
+
 //Paging variables
     pg_page_size=0x1000;
-    pg_page_bitmap = (unsigned int*)((((unsigned)&end + pg_page_size-1)/pg_page_size)*pg_page_size);
+    pg_page_bitmap = (unsigned int*)(((kernend + pg_page_size-1)/pg_page_size)*pg_page_size);
     pg_page_bitmap_size = 0;
+
 //Find free pages
     pg_find_pages();
     

@@ -20,6 +20,7 @@ struct vfs_filesystem_driver
 
 struct vfs_filesystem
 {
+    char inuse; //(bool)
     struct vfs_filesystem_driver* driver;
     void* data;
     char* mountpoint;

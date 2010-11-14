@@ -29,7 +29,7 @@ void ibmpc_init()
             console_putc_protected('\n');
         }
     }
-    
+
 //Mount initrd
     if(initrd_ptr!=0){
         struct vfs_filesystem* initfs=vfs_open_filesystem(&initrd_fsdriver,initrd_ptr,"/init");
@@ -38,5 +38,4 @@ void ibmpc_init()
         else
             console_puts_protected("INITRD: Error. Could not mount image to /init.\n");
     }
-
 }
