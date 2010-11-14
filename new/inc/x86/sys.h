@@ -189,6 +189,9 @@ int pg_is_paging_enabled();
 void pg_push_state();
 void pg_pop_state();
 
+extern struct pg_page_directory* pg_kernel_directory;
+extern struct pg_page_directory* pg_current_directory;
+
 // LOWMEM FUNCTIONS
 void lm_init();
 

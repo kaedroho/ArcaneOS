@@ -182,6 +182,18 @@ void pg_find_pages() {
         pg_page_bitmap[i] = 0;
     for(i=0;i<mboot->mmap_length/24;i++)
     {
+        /*
+        // USEFUL CODE TO DISPLAY MEMORY MAP
+        //
+        console_puts_protected("0x");
+        console_putu32_protected(mboot->mmap_addr[i].base_addr_low,16);
+        console_puts_protected(" -> 0x");
+        console_putu32_protected(mboot->mmap_addr[i].base_addr_low + mboot->mmap_addr[i].length_low,16);
+        console_puts_protected(" : ");
+        console_putu32_protected(mboot->mmap_addr[i].type,16);
+        console_puts_protected("\n");
+         */
+
         // If region is available
         if(mboot->mmap_addr[i].type==1 && mboot->mmap_addr[i].base_addr_low >= 0x100000)
         {
@@ -198,26 +210,22 @@ void pg_find_pages() {
             page_end = (page_end/pg_page_size)*pg_page_size;
 
             if (page_end > page_start) {
-                // Add the number of pages in the range to the current page count
-                page_count += page_end - page_start;
-
                 // Update length of page bitmap
                 unsigned new_size = ((((page_end/pg_page_size - 256)+7)/8) + pg_page_size-1)/pg_page_size;
                 pg_page_bitmap_size = pg_page_bitmap_size > new_size ? pg_page_bitmap_size : new_size;
-                console_putu32_protected(page_end,16);
-                console_puts_protected(" ");
 
                 //Allocate pages
                 unsigned page;
-                for(page = page_start; page < page_end; page += pg_page_size)
+                for(page = page_start; page < page_end; page += pg_page_size) {
                     pg_physical_page_free((void*)page);
+                    page_count++;
+                }
             }
         }
     }
 
     // Subtract pages used by page bitmap
     page_count -= pg_page_bitmap_size;
-
     
     // Reserve pages used by page bitmap
     for (i = 0; i < pg_page_bitmap_size; i++)

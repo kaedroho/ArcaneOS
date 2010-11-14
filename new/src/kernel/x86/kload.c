@@ -24,11 +24,12 @@ void kload()
     
     pg_enable_paging();
 
+
     //     .=============================================.
     //     |                   VBE Test                  |
     //     `=============================================`
     // List VBE modes
-    /*
+    
     struct vbe_info_block* info = (struct vbe_info_block*)mm_low_alloc(sizeof(struct vbe_info_block));
 
     vbe_get_controller_info(info);
@@ -48,6 +49,8 @@ void kload()
         console_putu32_protected(mode_info->y_resolution, 10);
         console_puts_protected("x");
         console_putu32_protected(mode_info->bits_per_pixel, 10);
+        console_puts_protected(" @ 0x");
+        console_putu32_protected(mode_info->phys_base_addr, 16);
         console_puts_protected("\n");
 
     }
@@ -55,7 +58,7 @@ void kload()
     console_puts_protected("\n");
 
     mm_low_free((unsigned char*)info);
-//#define VBE_TEST
+#define VBE_TEST
 #ifdef VBE_TEST
 
     // Set mode to 24-bit 800x600
@@ -64,8 +67,15 @@ void kload()
     struct vbe_mode_info_block* modeinfo = (struct vbe_mode_info_block*)mm_low_alloc(sizeof(struct vbe_mode_info_block));
     vbe_get_mode_info(0x115, modeinfo);
 
+    // Map video memory into virtual memory
+    int i;
+    for (i = 0; i < ((800*600*3+4095)/4096); i++) {
+        void* ptr = (void*)(modeinfo->phys_base_addr + i*4096);
+        pg_map_page(pg_kernel_directory, ptr, ptr, 2);
+    }
+
     // Draw cool effect!
-    int x, y, i;
+    int x, y;
     for (i = -200; i < 600; i++) {
         unsigned char* addr = (unsigned char*)modeinfo->phys_base_addr;
         for (y = 0; y < 600; y++)
@@ -83,7 +93,7 @@ void kload()
     mm_low_free((unsigned char*)modeinfo);
     vbe_set_mode(0x3, 0);
 #endif
-*/
+
     //     .=============================================.
     //     |               End of VBE Test               |
     //     `=============================================`
