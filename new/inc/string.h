@@ -9,6 +9,7 @@ char memcmp(char* stra,char* strb,unsigned int length);
 
 int strlen(char* str);
 char strcmp(char* stra,char* strb);
+unsigned int strcmpbegin(char* stra,char* strb);
 
 
 

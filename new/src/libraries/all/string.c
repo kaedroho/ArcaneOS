@@ -79,3 +79,14 @@ char strcmp(char* stra,char* strb)
 //Return true
     return 1;
 }
+
+//Check if one of the strings is at the beginning of the other and return the distance in
+unsigned int strcmpbegin(char* stra,char* strb)
+{
+    unsigned int i=0;
+    while(stra[i]==strb[i])
+        i++;
+    if(stra[i]==0 || strb[i]==0)
+        return i;
+    return 0;
+}

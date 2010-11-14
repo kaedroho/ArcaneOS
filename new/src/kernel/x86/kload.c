@@ -3,6 +3,7 @@
 #include <string.h>
 #include <x86/vbe_real.h>
 #include <x86/gdt.h>
+#include <vfs.h>
 
 void kload()
 {
@@ -23,6 +24,8 @@ void kload()
     lm_init();
     
     pg_enable_paging();
+
+    vfs_init();
 
 
     //     .=============================================.

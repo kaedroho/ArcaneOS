@@ -24,6 +24,8 @@ struct vfs_filesystem
     struct vfs_filesystem_driver* driver;
     void* data;
     char* mountpoint;
+    unsigned int mountpointcount;
+    struct vfs_filesystem* mountpoints;
 };
 
 struct vfs_file
@@ -36,9 +38,9 @@ struct vfs_file
 void vfs_init();
 struct vfs_filesystem* vfs_open_filesystem(struct vfs_filesystem_driver* driver,void* data,char* mountpoint);
 void vfs_close_filesystem(struct vfs_filesystem* filesystem);
-struct vfs_file* vfs_open_file(char* name);
+struct vfs_file* vfs_open_file(struct vfs_filesystem* filesystem,struct vfs_file* file,char* name);
 void vfs_close_file(struct vfs_file* file);
-
+unsigned int vfs_readfile(struct vfs_file* file,void* buffer,unsigned int bytes);
 
 
 #endif	/* VFS_H */
