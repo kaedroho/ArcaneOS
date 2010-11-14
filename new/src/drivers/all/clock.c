@@ -1,4 +1,5 @@
 #include <clock.h>
+#include <console.h>
 
 struct clock_time clock_currenttime;
 
@@ -11,13 +12,33 @@ void clock_init()
     clock_clockhandler=0;
 
 //Update the time
-    if(clock_getcurrenttime!=0)
+    if(clock_getcurrenttime!=0){
         clock_currenttime=*clock_getcurrenttime();
+        console_puts_protected("CLOCK: Started. Current time is: ");
+        console_putu32_protected(clock_currenttime.hour,10);
+        console_putc_protected(':');
+        console_putu32_protected(clock_currenttime.minute,10);
+        console_putc_protected(':');
+        console_putu32_protected(clock_currenttime.seccond,10);
+        console_putc_protected(' ');
+        console_putu32_protected(clock_currenttime.dayofmonth,10);
+        console_putc_protected('/');
+        console_putu32_protected(clock_currenttime.month,10);
+        console_putc_protected('/');
+        console_putu32_protected(clock_currenttime.century,10);
+        console_putu32_protected(clock_currenttime.year,10);
+        console_putc_protected('\n');
+
+    }
 }
 
 unsigned char clock_getmonthend(unsigned char month,unsigned char year,unsigned char century)
 {
-    return 31;
+    if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12)
+        return 31;
+    if(month==2)
+        return (year%4==0)?29:28;
+    return 30;
 }
 
 void clock_tickseccond()
