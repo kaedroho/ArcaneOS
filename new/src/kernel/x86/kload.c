@@ -28,6 +28,7 @@ void kload()
     //     |                   VBE Test                  |
     //     `=============================================`
     // List VBE modes
+    /*
     struct vbe_info_block* info = (struct vbe_info_block*)mm_low_alloc(sizeof(struct vbe_info_block));
 
     vbe_get_controller_info(info);
@@ -37,7 +38,6 @@ void kload()
     
     struct vbe_mode_info_block* mode_info=(struct vbe_mode_info_block*)mm_low_alloc(sizeof(struct vbe_mode_info_block));
     while (*modes != 0xFFFF) {
-/*
         console_puts_protected("0x");
         int mode=*(modes++);
         console_putu32_protected(mode, 16);
@@ -49,7 +49,7 @@ void kload()
         console_puts_protected("x");
         console_putu32_protected(mode_info->bits_per_pixel, 10);
         console_puts_protected("\n");
- */
+
     }
     mm_low_free((unsigned char*)mode_info);
     console_puts_protected("\n");
@@ -83,6 +83,7 @@ void kload()
     mm_low_free((unsigned char*)modeinfo);
     vbe_set_mode(0x3, 0);
 #endif
+*/
     //     .=============================================.
     //     |               End of VBE Test               |
     //     `=============================================`
