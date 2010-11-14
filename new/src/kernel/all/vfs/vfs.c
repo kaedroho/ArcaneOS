@@ -86,7 +86,7 @@ struct vfs_file* vfs_open_file(struct vfs_filesystem* filesystem,struct vfs_file
             unsigned int mpsize=strcmpbegin(filesystem->mountpoints[i].mountpoint,name);
             if(mpsize>0){
             //It does, call this function for this mountpoint
-                return vfs_open_file(&filesystem->mountpoints[i],file,(char*)((void*)name)+mpsize+1);
+                return vfs_open_file(&filesystem->mountpoints[i],file,(char*)((void*)name)+mpsize);
             }
         }
 

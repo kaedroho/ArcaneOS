@@ -54,6 +54,7 @@ void initrd_closefs(void* fsdata)     //Callback function
 
 void* initrd_openfile(void* fsdata,char* name)     //Callback function
 {
+    name=(char*)((unsigned int)name+1);
     struct initrd_filesystem* FS=(struct initrd_filesystem*)fsdata;
     void* filestart=fsdata+sizeof(struct initrd_filesystem);
     if(FS->magic==0xACAED123 && FS->isopen){
