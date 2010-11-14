@@ -6,13 +6,16 @@ struct initrd_header
 {
     unsigned long Magic;
     unsigned char FileCount;
+    char isopen; //(bool)
 };
 
 struct initrd_file
 {
     char name[32];
+    void* initrd_base_ptr;
     unsigned long offset;
     unsigned long size;
+    char isopen; //(bool)
 };
 
 
@@ -43,6 +46,7 @@ int main(int argc, char** argv)
 //Make main header
     struct initrd_header Header;
     Header.Magic=0xACAED123;
+    Header.isopen=0;
 
 //Open input directory
     DIR* InputDIR=opendir(Input);
@@ -64,6 +68,8 @@ int main(int argc, char** argv)
             printf("Found File: %s\n",ENT->d_name);
             strncpy(FileHeader[Header.FileCount].name,ENT->d_name,32);
             FileHeader[Header.FileCount].offset=CurrentOffset;
+            FileHeader[Header.FileCount].initrd_base_ptr=0;
+            FileHeader[Header.FileCount].isopen=0;
             FILE* File=fopen(ENT->d_name,"rb");
             fseek(File,0,SEEK_END);
             FileHeader[Header.FileCount].size=ftell(File);
