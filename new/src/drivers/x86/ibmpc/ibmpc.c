@@ -5,6 +5,8 @@
 #include <vfs.h>
 
 extern struct vfs_filesystem_driver initrd_fsdriver;
+void* initrd_openfile(void* fsdata,char* name);
+void initrd_readfile(void* file,void* buffer,int bytes);
 
 void ibmpc_init()
 {
@@ -37,5 +39,9 @@ void ibmpc_init()
             console_puts_protected("INITRD: Image successfully mounted to /init.\n");
         else
             console_puts_protected("INITRD: Error. Could not mount image to /init.\n");
+
+        char temp[4];
+        initrd_readfile(initrd_openfile(initfs->data,"new"),temp,3);
+        console_puts_protected(temp);
     }
 }

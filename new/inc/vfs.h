@@ -14,8 +14,8 @@ struct vfs_filesystem_driver
     void(*closefs)(void* fsdata);
     void*(*openfile)(void* fsdata,char* name);
     void(*closefile)(void* filedata) ;
-    void(*readfile)(void* file,void* buffer,int bytes);
-    void(*writefile)(void* file,void* buffer,int bytes);
+    unsigned int(*readfile)(void* file,void* buffer,unsigned int bytes);
+    unsigned int(*writefile)(void* file,void* buffer,unsigned int bytes);
 };
 
 struct vfs_filesystem

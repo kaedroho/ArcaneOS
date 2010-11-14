@@ -4,8 +4,8 @@
 
 struct initrd_header
 {
-    unsigned long Magic;
-    unsigned char FileCount;
+    unsigned long magic;
+    unsigned char filecount;
     char isopen; //(bool)
 };
 
@@ -13,9 +13,10 @@ struct initrd_file
 {
     char name[32];
     void* initrd_base_ptr;
-    unsigned long offset;
-    unsigned long size;
+    unsigned int offset;
+    unsigned int size;
     char isopen; //(bool)
+    unsigned int currentpos;
 };
 
 
@@ -45,7 +46,7 @@ int main(int argc, char** argv)
 
 //Make main header
     struct initrd_header Header;
-    Header.Magic=0xACAED123;
+    Header.magic=0xACAED123;
     Header.isopen=0;
 
 //Open input directory
@@ -58,7 +59,7 @@ int main(int argc, char** argv)
 
 //File variables
     struct initrd_file FileHeader[256];
-    Header.FileCount=0;
+    Header.filecount=0;
     unsigned long CurrentOffset=0;
 
 //Find files
@@ -66,16 +67,16 @@ int main(int argc, char** argv)
     while(ENT=readdir(InputDIR)){
         if(ENT->d_type==DT_REG){
             printf("Found File: %s\n",ENT->d_name);
-            strncpy(FileHeader[Header.FileCount].name,ENT->d_name,32);
-            FileHeader[Header.FileCount].offset=CurrentOffset;
-            FileHeader[Header.FileCount].initrd_base_ptr=0;
-            FileHeader[Header.FileCount].isopen=0;
+            strncpy(FileHeader[Header.filecount].name,ENT->d_name,32);
+            FileHeader[Header.filecount].offset=CurrentOffset;
+            FileHeader[Header.filecount].initrd_base_ptr=0;
+            FileHeader[Header.filecount].isopen=0;
             FILE* File=fopen(ENT->d_name,"rb");
             fseek(File,0,SEEK_END);
-            FileHeader[Header.FileCount].size=ftell(File);
-            CurrentOffset+=FileHeader[Header.FileCount].size;
+            FileHeader[Header.filecount].size=ftell(File);
+            CurrentOffset+=FileHeader[Header.filecount].size;
             fclose(File);
-            Header.FileCount++;
+            Header.filecount++;
         }
     }
     closedir(InputDIR);
@@ -85,13 +86,13 @@ int main(int argc, char** argv)
     FILE* OutputFile=fopen(OutFile,"wb");
     chdir(Input);
     fwrite(&Header,sizeof(struct initrd_header),1,OutputFile);
-    fwrite(&FileHeader,sizeof(struct initrd_file),Header.FileCount,OutputFile);
+    fwrite(&FileHeader,sizeof(struct initrd_file),Header.filecount,OutputFile);
 
 //Open input directory
     chdir(Input);
 
 //Write files
-    for(i=0;i<Header.FileCount;i++){
+    for(i=0;i<Header.filecount;i++){
         FILE* File=fopen(FileHeader[i].name,"rb");
         int chr=getc(File);
         while(chr!=EOF){
