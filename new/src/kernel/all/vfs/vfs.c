@@ -83,7 +83,7 @@ struct vfs_file* vfs_open_file(struct vfs_filesystem* filesystem,struct vfs_file
         for(i=0;i<filesystem->mountpointcount;i++){
         //Check if this mountpoint contains this file
             unsigned int mpsize=strcmpbegin(filesystem->mountpoints[i].mountpoint,name);
-            if(mpsize>0){
+            if(mpsize>0 && name[mpsize]=='/'){
             //It does, call this function for this mountpoint
                 return vfs_open_file(&filesystem->mountpoints[i],file,(char*)((void*)name)+mpsize);
             }
