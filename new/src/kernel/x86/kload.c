@@ -61,7 +61,8 @@ void kload()
     console_puts_protected("\n");
 
     mm_low_free((unsigned char*)info);
-#define VBE_TEST
+
+//#define VBE_TEST
 #ifdef VBE_TEST
 
     // Set mode to 24-bit 800x600

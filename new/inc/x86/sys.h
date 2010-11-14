@@ -175,6 +175,7 @@ void pg_map_page(struct pg_page_directory* directory, void* virtual, void* physi
 void pg_unmap_page(struct pg_page_directory* directory, void* virtual);
 void pg_set_directory(struct pg_page_directory* directory);
 void pg_physical_page_free(void* address);
+void pg_physical_page_free_range(void* address, int count);
 void pg_physical_page_reserve(void* address);
 void pg_physical_page_reserve_range(void* address, int count);
 int pg_is_physical_page_free(void* address);
@@ -191,6 +192,7 @@ void pg_pop_state();
 
 extern struct pg_page_directory* pg_kernel_directory;
 extern struct pg_page_directory* pg_current_directory;
+extern unsigned int pg_page_size;
 
 // LOWMEM FUNCTIONS
 void lm_init();
@@ -200,5 +202,10 @@ void mm_init();
 void mm_low_free(unsigned char* mem);
 unsigned char* mm_low_alloc_aligned(unsigned size, unsigned alignment);
 unsigned char* mm_low_alloc(unsigned size);
+
+void* mm_kernel_page_alloc(unsigned count);
+void mm_kernel_page_free(void* ptr, unsigned count);
+void* mm_kernel_alloc(unsigned size);
+void mm_kernel_free(void* ptr);
 
 #endif

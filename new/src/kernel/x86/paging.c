@@ -116,6 +116,12 @@ void pg_physical_page_free(void* address) {
     pg_page_bitmap[page/32] |= (1u << (page % 32));
 }
 
+void pg_physical_page_free_range(void* address, int count) {
+    int i;
+    for (i = 0; i < count; i++)
+        pg_physical_page_free((void*)((unsigned)address + i*pg_page_size));
+}
+
 void pg_physical_page_reserve(void* address) {
     unsigned page = (unsigned)address / pg_page_size - 256;
     pg_page_bitmap[page/32] &= ~(1u << (page % 32));
@@ -149,6 +155,11 @@ void* pg_physical_page_alloc() {
 }
 
 void* pg_physical_page_alloc_range(unsigned count) {
+    if (!count)
+        return 0;
+    if (count == 1)
+        return pg_physical_page_alloc();
+    
     int i, j, k;
     for (i = 0; i < pg_page_bitmap_length; i++)
         if (pg_page_bitmap[i]) {
