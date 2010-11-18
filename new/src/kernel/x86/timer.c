@@ -1,5 +1,6 @@
 #include <x86/sys.h>
 #include <clock.h>
+#include <console.h>
 
 unsigned int timer_ticks = 0;
 unsigned int timer_ticksperseccond;
@@ -47,4 +48,9 @@ void timer_init()
 
 //Set ticks per seccond to 1000
     timer_phase(1000);
+
+//Print message
+    console_puts_protected("TIMER: Started. Running at ");
+    console_putu32_protected(timer_getticksperseccond(),10);
+    console_puts_protected("Hz.\n");
 }

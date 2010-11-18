@@ -39,13 +39,5 @@ void ibmpc_init()
             console_puts_protected("INITRD: Image successfully mounted to /init.\n");
         else
             console_puts_protected("INITRD: Error. Could not mount image to /init.\n");
-
-        struct vfs_file Myfile;
-        if(vfs_open_file(&vfs_rootfs,&Myfile,"/init/Hello-World")!=0){
-
-            char temp[1000];
-            vfs_readfile(&Myfile,temp,1000);
-            console_puts_protected(temp);
-        }
     }
 }

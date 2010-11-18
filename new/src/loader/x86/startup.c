@@ -31,11 +31,8 @@ int startup()
 
 //Load the kernel
     kload();
-
     ibmpc_init();
-
     clock_init();
-
     console_putc('\n');
 
 __asm__ __volatile__ ("sti");
