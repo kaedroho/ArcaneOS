@@ -49,7 +49,14 @@ struct KB_Layout KB_DefaultLayout = {
   'O', 'P', '{', '}', '\n', '\0', 'A', 'S',
   'D', 'F', 'G', 'H', 'J', 'K', 'L', ':',
   '\"', '~', '\0', '|', 'Z', 'X', 'C', 'V',
-  'B', 'N', 'M', '<', '>', '?', '\0'
+  'B', 'N', 'M', '<', '>', '?', '\0', '*',
+  '\0', ' ', '\0', '\0', '\0', '\0', '\0', '\0',
+  '\0', '\0', '\0', '\0', '\0', '\0', '\0', KB_KEY_HOME,
+  KB_KEY_UP, KB_KEY_NPAGE, '-', KB_KEY_LEFT, '\0', KB_KEY_RIGHT, '+', KB_KEY_END,
+  KB_KEY_DOWN, KB_KEY_PPAGE, '\0', KB_KEY_DC, '\0', '\0', '\0', '\0',
+  '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0',
+  '\0', '\0', '\0', '\0', '\0', KB_OLPC_UP, KB_OLPC_DOWN, KB_OLPC_LEFT,
+  KB_OLPC_RIGHT, '\0'
 }
 };
 
