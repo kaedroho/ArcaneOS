@@ -33,9 +33,11 @@ int startup()
     kload();
     ibmpc_init();
     clock_init();
-    console_putc('\n');
 
 __asm__ __volatile__ ("sti");
+    console_puts_protected("KERNEL: Interrupts started!\n");
+
+    console_putc('\n');
 
     return 0;
 }

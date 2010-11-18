@@ -19,6 +19,11 @@ void kload()
     cpuid_init();
     console_puts_protected(" [Finished]\n");
 
+    console_puts_protected("CPUID: Vendor: ");
+    struct cpuid_struct* CPUIDStruct=cpuid_getstruct();
+    console_puts_protected(CPUIDStruct->vendor);
+    console_puts_protected(".\n");
+
     timer_init();
 
     pg_init();
