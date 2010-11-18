@@ -19,7 +19,21 @@ struct initrd_file
 };
 
 
-struct vfs_filesystem_driver initrd_fsdriver;
+
+void* initrd_openfs(void* data);
+void initrd_closefs(void* fsdata);
+void* initrd_openfile(void* fsdata,char* name);
+void initrd_closefile(void* filedata);
+unsigned int initrd_readfile(void* file,void* buffer,unsigned int bytes);
+
+struct vfs_filesystem_driver initrd_fsdriver={
+    .openfs=initrd_openfs,
+    .closefs=initrd_closefs,
+    .openfile=initrd_openfile,
+    .closefile=initrd_closefile,
+    .readfile=initrd_readfile,
+    .writefile=0
+};
 
 
 void* initrd_openfs(void* data)     //Callback function
@@ -86,7 +100,7 @@ void initrd_closefile(void* filedata)     //Callback function
     file->isopen=0;
 }
 
-unsigned int initrd_readfile(void* file,void* buffer,unsigned int bytes)
+unsigned int initrd_readfile(void* file,void* buffer,unsigned int bytes)     //Callback function
 {
     if(bytes==0)
         return 0;
@@ -111,15 +125,4 @@ unsigned int initrd_readfile(void* file,void* buffer,unsigned int bytes)
         *(char*)buffer=0;
         return 0;   //Invalid filesystem
     }
-}
-
-
-void initrd_init()
-{
-    initrd_fsdriver.openfs=initrd_openfs;
-    initrd_fsdriver.closefs=initrd_closefs;
-    initrd_fsdriver.openfile=initrd_openfile;
-    initrd_fsdriver.closefile=initrd_closefile;
-    initrd_fsdriver.readfile=initrd_readfile;
-    initrd_fsdriver.writefile=0;
 }

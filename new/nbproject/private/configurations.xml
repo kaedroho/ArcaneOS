@@ -5,7 +5,6 @@
   <confs>
     <conf name="x86-32" type="1">
       <gizmo_options version="3">
-        <configurationname>GizmoSimple</configurationname>
       </gizmo_options>
       <runprofile version="6">
         <args></args>

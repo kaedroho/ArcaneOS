@@ -37,11 +37,6 @@ unsigned short screen_getheight();
 unsigned long screen_getframebuffer();
 
 
-//INITRD
-
-void initrd_init();
-
-
 //CLOCK
 
 void ibmpc_initclock();

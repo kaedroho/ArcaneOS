@@ -4,6 +4,7 @@
 #include <x86/vbe_real.h>
 #include <x86/gdt.h>
 #include <vfs.h>
+#include <dm.h>
 
 void kload()
 {
@@ -33,6 +34,8 @@ void kload()
     pg_enable_paging();
 
     vfs_init();
+
+    dm_init();
 
 
     //     .=============================================.

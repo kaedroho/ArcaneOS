@@ -16,9 +16,6 @@ void ibmpc_init()
 //Initialise clock
     ibmpc_initclock();
 
-//Initialise filesystems
-    initrd_init();
-
 //Load initrd
     struct multiboot_information* mboot=get_multiboot_info();
     unsigned int i=0;

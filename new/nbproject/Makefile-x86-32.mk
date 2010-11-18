@@ -43,13 +43,15 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/ibmpc.o \
 	${OBJECTDIR}/src/libraries/all/string.o \
 	${OBJECTDIR}/src/loader/x86/start32.o \
-	${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o \
 	${OBJECTDIR}/src/kernel/x86/cpuid.o \
+	${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o \
 	${OBJECTDIR}/src/kernel/x86/gdt32.o \
 	${OBJECTDIR}/src/kernel/x86/timer.o \
 	${OBJECTDIR}/src/kernel/x86/mm.o \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
 	${OBJECTDIR}/src/kernel/x86/irq32.o \
+	${OBJECTDIR}/src/kernel/all/driver-manager/devfs.o \
+	${OBJECTDIR}/src/kernel/all/driver-manager/dm.o \
 	${OBJECTDIR}/src/loader/x86/startup.o \
 	${OBJECTDIR}/src/kernel/x86/realmode.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
@@ -136,15 +138,15 @@ ${OBJECTDIR}/src/loader/x86/start32.o: src/loader/x86/start32.asm
 	${MKDIR} -p ${OBJECTDIR}/src/loader/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/loader/x86/start32.o src/loader/x86/start32.asm
 
-${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o: src/drivers/x86/ibmpc/initrd.c 
-	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o src/drivers/x86/ibmpc/initrd.c
-
 ${OBJECTDIR}/src/kernel/x86/cpuid.o: src/kernel/x86/cpuid.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/cpuid.o src/kernel/x86/cpuid.c
+
+${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o: src/drivers/x86/ibmpc/initrd.c 
+	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/initrd.o src/drivers/x86/ibmpc/initrd.c
 
 ${OBJECTDIR}/src/kernel/x86/gdt32.o: src/kernel/x86/gdt32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
@@ -167,6 +169,16 @@ ${OBJECTDIR}/src/kernel/x86/idt32.o: src/kernel/x86/idt32.asm
 ${OBJECTDIR}/src/kernel/x86/irq32.o: src/kernel/x86/irq32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/irq32.o src/kernel/x86/irq32.asm
+
+${OBJECTDIR}/src/kernel/all/driver-manager/devfs.o: src/kernel/all/driver-manager/devfs.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/devfs.o src/kernel/all/driver-manager/devfs.c
+
+${OBJECTDIR}/src/kernel/all/driver-manager/dm.o: src/kernel/all/driver-manager/dm.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/dm.o src/kernel/all/driver-manager/dm.c
 
 ${OBJECTDIR}/src/loader/x86/startup.o: src/loader/x86/startup.c 
 	${MKDIR} -p ${OBJECTDIR}/src/loader/x86

@@ -59,6 +59,9 @@
                          displayName="driver-manager"
                          projectFiles="true"
                          kind="SOURCE_LOGICAL_FOLDER">
+            <itemPath>src/kernel/all/driver-manager/devfs.c</itemPath>
+            <itemPath>src/kernel/all/driver-manager/dm.c</itemPath>
+            <itemPath>inc/dm.h</itemPath>
           </logicalFolder>
           <logicalFolder name="f1"
                          displayName="vfs"
