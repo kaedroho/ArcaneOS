@@ -43,11 +43,13 @@ int startup()
     ibmpc_init();
     clock_init();
 
-    __asm__ __volatile__ ("sti");
+    struct mt_thread* thread = 0;
+    syscall(&mt_create_thread, &thread, mt_kernel_process, &test, (void*)0x1234, 0);
+    
     console_puts_protected("KERNEL: Interrupts started!\n");
     console_putc('\n');
+__asm__ __volatile__ ("sti");
 
-    struct mt_thread* thread = mt_create_thread(mt_kernel_process, &test, (void*)0x1234, 0);
 
     return 0;
 }

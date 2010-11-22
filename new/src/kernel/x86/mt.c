@@ -70,53 +70,6 @@ void mt_free_thread(struct mt_thread* thread) {
     mm_kernel_free(thread);
 }
 
-struct mt_thread* mt_create_thread(struct mt_process* process, void (*fptr)(void*), void* param, int usermode) {
-    struct mt_thread* thread = mt_alloc_thread(process);
-    void* stack = mt_alloc_stack();
-    thread->regs = (struct regs*)((char*)stack + pg_page_size - sizeof(struct regs));
-    thread->esp = (unsigned)&thread->regs->gs;
-
-    if (usermode) {
-        thread->regs->gs = GDT_USERMODE_PROT_MODE_DSEG;
-        thread->regs->fs = GDT_USERMODE_PROT_MODE_DSEG;
-        thread->regs->es = GDT_USERMODE_PROT_MODE_DSEG;
-        thread->regs->ds = GDT_USERMODE_PROT_MODE_DSEG;
-        thread->regs->cs = GDT_USERMODE_PROT_MODE_CSEG;
-
-        // Allocate usermode stack
-        thread->regs->useresp = (unsigned)((char*)mt_alloc_stack() + pg_page_size);
-        thread->regs->ss = GDT_USERMODE_PROT_MODE_DSEG;
-
-        // TODO: Push return value onto stack to automatically delete
-        //       the thread when it returns.
-        thread->regs->usermode_return_address = 0;
-        thread->regs->usermode_param = (unsigned int)param;
-    } else {
-        thread->regs->gs = GDT_KERNEL_PROT_MODE_DSEG;
-        thread->regs->fs = GDT_KERNEL_PROT_MODE_DSEG;
-        thread->regs->es = GDT_KERNEL_PROT_MODE_DSEG;
-        thread->regs->ds = GDT_KERNEL_PROT_MODE_DSEG;
-        thread->regs->cs = GDT_KERNEL_PROT_MODE_CSEG;
-        // TODO: Push return value onto stack to automatically delete
-        //       the thread when it returns.
-        thread->regs->kernel_return_address = 0;
-        thread->regs->kernel_param = (unsigned int)param;
-    }
-    thread->regs->edi = 0;
-    thread->regs->esi = 0;
-    thread->regs->ebp = 0;
-    thread->regs->esp = (unsigned int)&thread->regs->int_no;
-    thread->regs->ebx = 0;
-    thread->regs->edx = 0;
-    thread->regs->ecx = 0;
-    thread->regs->eax = 0;
-    thread->regs->eip = (unsigned int)fptr;
-    thread->regs->eflags = 0x200; // Enable interrupts for thread
-
-    mt_schedule_insert_after(thread, mt_schedule_last_thread);
-
-    return thread;
-}
 void mt_init() {
     mt_kernel_process = mt_alloc_process();
     mt_current_thread = mt_alloc_thread(mt_kernel_process);
@@ -169,21 +122,6 @@ void mt_schedule_insert_after(struct mt_thread* thread, struct mt_thread* place)
     else
         mt_schedule_last_thread = thread;
 }
-void mt_schedule(struct regs* regs) {
-    // If there is at least one thread waiting in the queue
-    if (mt_schedule_first_thread) {
-        // Save current thread's registers
-        mt_current_thread->regs = regs;
-        mt_current_thread->esp = regs->new_esp;
-        // Reschedule current thread
-        mt_schedule_insert_after(mt_current_thread, mt_schedule_last_thread);
-
-        // Find next thread to make active
-        mt_current_thread = mt_schedule_pop();
-        // Switch stack to that of the next thread
-        regs->new_esp = mt_current_thread->esp;
-    }
-}
 void mt_sleep_remove(struct mt_thread* thread) {
     // A thread's sleep_delay is relative to the delay of the previous thread,
     // so that each tick, only the first thread in the queue needs to be updated
@@ -221,7 +159,7 @@ void mt_sleep_insert_after(struct mt_thread* thread, struct mt_thread* place) {
     if (thread->schedule_next)
         thread->schedule_next->sleep_delay -= thread->sleep_delay;
 }
-void mt_thread_sleep(struct mt_thread* thread, unsigned delay) {
+err_t mt_thread_sleep_impl(struct mt_thread* thread, unsigned delay) {
     if (thread->thread_state == MT_THREAD_STATE_SLEEPING)
         mt_sleep_remove(thread);
     else if (thread->thread_state == MT_THREAD_STATE_RUNNING)
@@ -245,8 +183,84 @@ void mt_thread_sleep(struct mt_thread* thread, unsigned delay) {
     }
     
     thread->thread_state = MT_THREAD_STATE_SLEEPING;
+
+    return ERR_OK;
 }
-void mt_tick(unsigned ticks) {
+SYSCALL_DEFINE( mt_create_thread,
+                syscall_state_kernel_cli, 0, syscall_datatype_ptr, syscall_datatype_ptr, syscall_datatype_ptr, syscall_datatype_ptr, syscall_datatype_s32
+                )(struct mt_thread** out_thread, struct mt_process* process, void (*fptr)(void*), void* param, int usermode) {
+    struct mt_thread* thread = mt_alloc_thread(process);
+    void* stack = mt_alloc_stack();
+    thread->regs = (struct regs*)((char*)stack + pg_page_size - sizeof(struct regs));
+    thread->esp = (unsigned)&thread->regs->gs;
+
+    if (usermode) {
+        thread->regs->gs = GDT_USERMODE_PROT_MODE_DSEG;
+        thread->regs->fs = GDT_USERMODE_PROT_MODE_DSEG;
+        thread->regs->es = GDT_USERMODE_PROT_MODE_DSEG;
+        thread->regs->ds = GDT_USERMODE_PROT_MODE_DSEG;
+        thread->regs->cs = GDT_USERMODE_PROT_MODE_CSEG;
+
+        // Allocate usermode stack
+        thread->regs->useresp = (unsigned)((char*)mt_alloc_stack() + pg_page_size);
+        thread->regs->ss = GDT_USERMODE_PROT_MODE_DSEG;
+
+        // TODO: Push return value onto stack to automatically delete
+        //       the thread when it returns.
+        thread->regs->usermode_return_address = 0;
+        thread->regs->usermode_param = (unsigned int)param;
+    } else {
+        thread->regs->gs = GDT_KERNEL_PROT_MODE_DSEG;
+        thread->regs->fs = GDT_KERNEL_PROT_MODE_DSEG;
+        thread->regs->es = GDT_KERNEL_PROT_MODE_DSEG;
+        thread->regs->ds = GDT_KERNEL_PROT_MODE_DSEG;
+        thread->regs->cs = GDT_KERNEL_PROT_MODE_CSEG;
+        // TODO: Push return value onto stack to automatically delete
+        //       the thread when it returns.
+        thread->regs->kernel_return_address = 0;
+        thread->regs->kernel_param = (unsigned int)param;
+    }
+    thread->regs->edi = 0;
+    thread->regs->esi = 0;
+    thread->regs->ebp = 0;
+    thread->regs->esp = (unsigned int)&thread->regs->int_no;
+    thread->regs->ebx = 0;
+    thread->regs->edx = 0;
+    thread->regs->ecx = 0;
+    thread->regs->eax = 0;
+    thread->regs->eip = (unsigned int)fptr;
+    thread->regs->eflags = 0x200; // Enable interrupts for thread
+
+    mt_schedule_insert_after(thread, mt_schedule_last_thread);
+
+    if (out_thread)
+        *out_thread = thread;
+
+    return ERR_OK;
+}
+SYSCALL_DEFINE( mt_schedule,
+                syscall_state_int_handler, 0, syscall_datatype_void
+                )() {
+    struct regs* regs = irq_regs;
+
+    // If there is at least one thread waiting in the queue
+    if (mt_schedule_first_thread) {
+        // Save current thread's registers
+        mt_current_thread->regs = regs;
+        mt_current_thread->esp = regs->new_esp;
+        // Reschedule current thread
+        mt_schedule_insert_after(mt_current_thread, mt_schedule_last_thread);
+
+        // Find next thread to make active
+        mt_current_thread = mt_schedule_pop();
+        // Switch stack to that of the next thread
+        regs->new_esp = mt_current_thread->esp;
+    }
+    return ERR_OK;
+}
+SYSCALL_DEFINE( mt_tick,
+                syscall_state_kernel_cli, 0, syscall_datatype_u32
+                )(unsigned ticks) {
     struct mt_thread* thread;
     while ((thread = mt_sleeping_first_thread)) {
         if (thread->sleep_delay <= ticks) {
@@ -259,12 +273,31 @@ void mt_tick(unsigned ticks) {
             break;
         }
     }
+    
+    return ERR_OK;
 }
 
-SYSCALL_DEFINE( void, mt_sleep,
-                syscall_state_int_handler, 0, syscall_datatype_void, syscall_datatype_u32
+SYSCALL_DEFINE( mt_sleep,
+                syscall_state_int_handler, 0, syscall_datatype_u32
                 )(unsigned delay) {
     struct mt_thread* thread = mt_current_thread;
-    mt_schedule(irq_regs);
-    mt_thread_sleep(thread, delay);
+    syscall(&mt_schedule);
+    mt_thread_sleep_impl(thread, delay);
+    
+    return ERR_OK;
+}
+
+SYSCALL_DEFINE( mt_thread_sleep,
+                syscall_state_none, 0, syscall_datatype_ptr, syscall_datatype_u32
+                )(struct mt_thread* thread, unsigned delay) {
+    err_t result;
+
+    if (thread != mt_current_thread) {
+        unsigned handle = irq_lock();
+        result = mt_thread_sleep_impl(thread, delay);
+        irq_unlock(handle);
+    } else
+        result = syscall(&mt_sleep, delay);
+
+    return result;
 }
