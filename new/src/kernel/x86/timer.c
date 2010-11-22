@@ -11,8 +11,7 @@ void timer_handler(struct regs *r)
  //Increase tick count
     timer_ticks++;
 
-    // Assumes 1 tick = 1 millisecond
-    mt_tick(10);
+    mt_tick(1000/timer_ticksperseccond);
     mt_schedule(r);
 
 //If ticks are a factor of 1000 then 1 seccond has passed
