@@ -1,6 +1,8 @@
 #include <console.h>
 #include <x86/ibmpc.h>
 #include <string.h>
+#include <x86/sys.h>
+#include <x86/vbe_real.h>
 
 unsigned short g_console_cursorx=0;
 unsigned short g_console_cursory=0;
@@ -11,6 +13,70 @@ unsigned char g_console_lineprotection[25]={0};
 
 char g_console_commandbuffer[256]={0};
 unsigned char g_console_commandbufferlength=0;
+
+void console_listvbemodes(char* params)
+{
+    if(strcmp(params," -list")){
+        struct vbe_info_block* info = (struct vbe_info_block*)mm_low_alloc(sizeof(struct vbe_info_block));
+
+        vbe_get_controller_info(info);
+
+        console_puts_protected("VBE Modes:\n");
+        unsigned short* modes = info->video_mode_ptr;
+
+        struct vbe_mode_info_block* mode_info=(struct vbe_mode_info_block*)mm_low_alloc(sizeof(struct vbe_mode_info_block));
+        while (*modes != 0xFFFF) {
+            console_puts_protected("0x");
+            int mode=*(modes++);
+            console_putu32_protected(mode, 16);
+            console_puts_protected(": ");
+            vbe_get_mode_info(mode,mode_info);
+            console_putu32_protected(mode_info->x_resolution, 10);
+            console_puts_protected("x");
+            console_putu32_protected(mode_info->y_resolution, 10);
+            console_puts_protected("x");
+            console_putu32_protected(mode_info->bits_per_pixel, 10);
+            console_puts_protected(" @ 0x");
+            console_putu32_protected(mode_info->phys_base_addr, 16);
+            console_puts_protected("\n");
+
+        }
+        mm_low_free((unsigned char*)mode_info);
+        console_puts_protected("\n");
+
+        mm_low_free((unsigned char*)info);
+        return;
+    }
+    if(strcmpbegin(params," -set")==5){
+        unsigned int length=strlen(params+8);
+        unsigned int mode=0,i;
+        for(i=0;i<length;i++){
+            if(params[8+i]=='1') mode|=(0x1<<(length-i-1)*4);
+            if(params[8+i]=='2') mode|=(0x2<<(length-i-1)*4);
+            if(params[8+i]=='3') mode|=(0x3<<(length-i-1)*4);
+            if(params[8+i]=='4') mode|=(0x4<<(length-i-1)*4);
+            if(params[8+i]=='5') mode|=(0x5<<(length-i-1)*4);
+            if(params[8+i]=='6') mode|=(0x6<<(length-i-1)*4);
+            if(params[8+i]=='7') mode|=(0x7<<(length-i-1)*4);
+            if(params[8+i]=='8') mode|=(0x8<<(length-i-1)*4);
+            if(params[8+i]=='9') mode|=(0x9<<(length-i-1)*4);
+            if(params[8+i]=='A') mode|=(0xA<<(length-i-1)*4);
+            if(params[8+i]=='B') mode|=(0xB<<(length-i-1)*4);
+            if(params[8+i]=='C') mode|=(0xC<<(length-i-1)*4);
+            if(params[8+i]=='D') mode|=(0xD<<(length-i-1)*4);
+            if(params[8+i]=='E') mode|=(0xE<<(length-i-1)*4);
+            if(params[8+i]=='F') mode|=(0xF<<(length-i-1)*4);
+            if(params[8+i]=='a') mode|=(0xA<<(length-i-1)*4);
+            if(params[8+i]=='b') mode|=(0xB<<(length-i-1)*4);
+            if(params[8+i]=='c') mode|=(0xC<<(length-i-1)*4);
+            if(params[8+i]=='d') mode|=(0xD<<(length-i-1)*4);
+            if(params[8+i]=='e') mode|=(0xE<<(length-i-1)*4);
+            if(params[8+i]=='f') mode|=(0xF<<(length-i-1)*4);
+        }
+        vbe_set_mode(mode,0);
+    }
+}
+
 
 void _console_putc(char c,int input)
 {
@@ -58,9 +124,13 @@ void _console_putc(char c,int input)
                 input=0;
                 if(g_console_commandbuffer[0]!=0)
                 {
-                    console_puts_protected("OUT: ");
-                    console_puts_protected(g_console_commandbuffer);
-                    console_putc_protected('\n');
+                    if(strcmpbegin(g_console_commandbuffer,"vbe")==3 || strcmp(g_console_commandbuffer,"vbe")){
+                        console_listvbemodes(&g_console_commandbuffer[3]);
+                    }else{
+                        console_puts_protected("OUT: ");
+                        console_puts_protected(g_console_commandbuffer);
+                        console_putc_protected('\n');
+                    }
                 }
                 memset((unsigned char*)g_console_commandbuffer,0,256);
                 g_console_commandbufferlength=0;
