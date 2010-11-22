@@ -7,6 +7,9 @@ struct gdt_entry g_gdt[GDT_COUNT];
 //GDT Pointer
 struct gdt_ptr g_gdtp;
 
+// Task state segment
+struct gdt_tss g_tss = {0};
+
 //Import functions from gdt.asm
 extern void gdt_setup();
 
@@ -32,6 +35,10 @@ void gdt_init()
 //Setup GDT pointer
     g_gdtp.limit=(sizeof(struct gdt_entry)*GDT_COUNT)-1;
     g_gdtp.base=(unsigned int)&g_gdt;
+
+// Setup task state segment
+    g_tss.ss0 = GDT_KERNEL_PROT_MODE_DSEG;
+    g_tss.iobp = sizeof(g_tss);
 
 //NULL Descriptor
     gdt_set_gate(GDT_NULL_SEG,0,0,0,0);
@@ -62,6 +69,27 @@ void gdt_init()
         GDT_KERNEL_REAL_MODE_DSEG, 0, 0xFFFFFFFF,
         GDT_ACCESS_PRESENT|GDT_ACCESS_KERNEL|GDT_ACCESS_DATA|GDT_ACCESS_DATA_WRITABLE,
         GDT_GRAN_BYTES|GDT_GRAN_16BIT
+        );
+
+// Task state segment
+    gdt_set_gate(
+        GDT_TASK_STATE_SEGMENT, (unsigned)&g_tss, sizeof(g_tss),
+        0x89,
+        GDT_GRAN_BYTES|GDT_GRAN_32BIT
+        );
+
+//User protected mode code segment
+    gdt_set_gate(
+        GDT_USERMODE_PROT_MODE_CSEG, 0, 0xFFFFFFFF,
+        GDT_ACCESS_PRESENT|GDT_ACCESS_USERMODE|GDT_ACCESS_CODE|GDT_ACCESS_CODE_READABLE,
+        GDT_GRAN_PAGES|GDT_GRAN_32BIT
+        );
+
+//User protected mode data segment
+    gdt_set_gate(
+        GDT_USERMODE_PROT_MODE_DSEG, 0, 0xFFFFFFFF,
+        GDT_ACCESS_PRESENT|GDT_ACCESS_USERMODE|GDT_ACCESS_DATA|GDT_ACCESS_DATA_WRITABLE,
+        GDT_GRAN_PAGES|GDT_GRAN_32BIT
         );
 
 //Setup GDT

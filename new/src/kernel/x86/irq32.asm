@@ -57,8 +57,11 @@ irq_common_stub:
     mov es, ax
     mov fs, ax
     mov gs, ax
-    mov eax, esp
 
+    ; Push ESP twice
+    mov eax, esp
+    push eax
+    mov eax, esp
     push eax
 
 ;Call IRQ handler
@@ -67,6 +70,10 @@ irq_common_stub:
 
 ;Pop stuff
     pop eax
+    pop eax
+
+; Switch to new stack if required
+    mov esp, eax
 
     pop gs
     pop fs
@@ -78,6 +85,7 @@ irq_common_stub:
 
 global irq_lock
 global irq_unlock
+global irq_query
 
 irq_lock:
     pushf
@@ -90,3 +98,10 @@ irq_unlock:
     push eax
     popf;
     ret;
+
+irq_query:
+    pushf
+    pop eax
+    shr eax, 9
+    and eax, 1
+    ret

@@ -1,4 +1,5 @@
 #include <x86/sys.h>
+#include <console.h>
 
 //Functions from isr.asm
 extern void isr0();
@@ -151,6 +152,37 @@ void exception_handler(struct regs *r)
         cli_puts("\n             EIP: ");cli_putu32(r->eip,16);
 	*/
         //Endless loop
+        console_puts_protected("An exception has occurred.\nException: (0x");
+        console_putu32_protected(r->err_code, 16);
+        console_puts_protected(") - ");
+        console_puts_protected(exception_messages[r->int_no]);
+        console_puts_protected("\n\nSystem Halted.\n\n");
+
+        //Put error code
+        console_puts_protected("Technical Information:\n\nError Code:  ");
+        console_putu32_protected(r->err_code,16);
+
+        //Put registers
+        console_puts_protected("\nRegs:        EAX: 0x");console_putu32_protected(r->eax,16);
+        console_puts_protected("\n             EBX: 0x");console_putu32_protected(r->ebx,16);
+        console_puts_protected("\n             ECX: 0x");console_putu32_protected(r->ecx,16);
+        console_puts_protected("\n             EDX: 0x");console_putu32_protected(r->edx,16);
+
+        console_puts_protected("\n             ESI: 0x");console_putu32_protected(r->esi,16);
+        console_puts_protected("\n             EDI: 0x");console_putu32_protected(r->edi,16);
+
+        console_puts_protected("\n             ESP: 0x");console_putu32_protected(r->esp,16);
+        console_puts_protected("\n             EBP: 0x");console_putu32_protected(r->ebp,16);
+
+        console_puts_protected("\n              CS: 0x");console_putu32_protected(r->cs,16);
+        console_puts_protected("\n              DS: 0x");console_putu32_protected(r->ds,16);
+        console_puts_protected("\n              ES: 0x");console_putu32_protected(r->es,16);
+        console_puts_protected("\n              FS: 0x");console_putu32_protected(r->fs,16);
+        console_puts_protected("\n              GS: 0x");console_putu32_protected(r->gs,16);
+        console_puts_protected("\n              SS: 0x");console_putu32_protected(r->ss,16);
+
+        console_puts_protected("\n             EIP: 0x");console_putu32_protected(r->eip,16);
+
         for(;;)
             __asm__ __volatile__ ("hlt");
     }

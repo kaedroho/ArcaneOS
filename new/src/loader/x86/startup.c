@@ -1,5 +1,7 @@
 #include <x86/boot.h>
 #include <x86/ibmpc.h>
+#include <x86/mt.h>
+#include <x86/syscall.h>
 #include <console.h>
 #include <clock.h>
 
@@ -8,6 +10,13 @@
 void kload();
 void* pg_physical_page_alloc();
 void pg_physical_page_free(void* ptr);
+
+void test(void* param) {
+    while (1) {
+        console_puts_protected("Test\n");
+        syscall(&mt_sleep, 500);
+    }
+}
 
 int startup()
 {
@@ -34,8 +43,11 @@ int startup()
     ibmpc_init();
     clock_init();
 
-__asm__ __volatile__ ("sti");
+    struct mt_thread* thread = mt_create_thread(mt_kernel_process, &test, (void*)0x1234, 0);
+    
     console_puts_protected("KERNEL: Interrupts started!\n");
+    console_putc('\n');
+__asm__ __volatile__ ("sti");
 
     console_putc('\n');
 

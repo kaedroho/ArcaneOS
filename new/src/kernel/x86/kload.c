@@ -3,6 +3,8 @@
 #include <string.h>
 #include <x86/vbe_real.h>
 #include <x86/gdt.h>
+#include <x86/mt.h>
+#include <x86/syscall.h>
 #include <vfs.h>
 #include <dm.h>
 
@@ -36,6 +38,8 @@ void kload()
     vfs_init();
 
     dm_init();
+    mt_init();
+    syscall_init();
 
 
     //     .=============================================.

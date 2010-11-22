@@ -1,4 +1,5 @@
 #include <x86/sys.h>
+#include <x86/mt.h>
 #include <clock.h>
 #include <console.h>
 
@@ -9,6 +10,10 @@ void timer_handler(struct regs *r)
 {
  //Increase tick count
     timer_ticks++;
+
+    // Assumes 1 tick = 1 millisecond
+    mt_tick(1);
+    mt_schedule(r);
 
 //If ticks are a factor of 1000 then 1 seccond has passed
     if(timer_ticks%timer_ticksperseccond==0)

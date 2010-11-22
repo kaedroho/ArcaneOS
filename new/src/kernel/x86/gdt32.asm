@@ -5,7 +5,9 @@
 ;This sets up the segment registers
 global gdt_setup
 extern g_gdtp
+
 gdt_setup:
+    ; Load GDT
     lgdt [g_gdtp]
     mov ax, GDT_KERNEL_PROT_MODE_DSEG
     mov ds, ax
@@ -13,8 +15,16 @@ gdt_setup:
     mov fs, ax
     mov gs, ax
     mov ss, ax
+
+    ; Far jump to set CS
     jmp GDT_KERNEL_PROT_MODE_CSEG:gdt_setup2
 gdt_setup2:
+
+    ; Load TSS
+    mov ax, GDT_TASK_STATE_SEGMENT
+    ltr ax
+
+    ; Return
     ret
 
 

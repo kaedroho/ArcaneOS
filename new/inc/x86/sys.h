@@ -82,11 +82,24 @@ extern void idt_set_gate(unsigned char num,unsigned long base,unsigned short sel
 //REGISTER STRUCTURE (FOR USE WITH INTERRUPTS)
 struct regs
 {
+    // Kernel and user mode values
+    unsigned int new_esp;
     unsigned int gs,fs,es,ds;
     unsigned int edi,esi,ebp,esp,ebx,edx,ecx,eax;
     unsigned int int_no,err_code;
-    unsigned int eip,cs,eflags,useresp,ss;
+    unsigned int eip,cs,eflags;
+    union {
+        struct {
+            unsigned int kernel_return_address, kernel_param;
+        };
+    // User mode only values
+        struct {
+            unsigned int useresp, ss;
+            unsigned int usermode_return_address, usermode_param;
+        };
+    };
 };
+
 
 //ISR FUNCTIONS
 extern void isr_init();
@@ -101,6 +114,8 @@ extern void irq_unmap(void);
 
 extern unsigned int irq_lock();
 extern void irq_unlock(unsigned int handle);
+extern unsigned int irq_query();
+extern struct regs* irq_regs;
 
 
 

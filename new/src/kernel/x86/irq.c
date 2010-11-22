@@ -1,4 +1,5 @@
 #include <x86/sys.h>
+#include <x86/mt.h>
 
 //Functions from irq.asm
 extern void irq0();
@@ -17,6 +18,8 @@ extern void irq12();
 extern void irq13();
 extern void irq14();
 extern void irq15();
+
+struct regs* irq_regs = 0;
 
 //IRQ Routines array
 void *g_irq_routines[16] =
@@ -89,13 +92,20 @@ void irq_init()
 
 void irq_handler(struct regs *r)
 {
+    
 //Variables
     void (*handler)(struct regs *r);
+
+    // Allow registers to be accessible anywhere
+    irq_regs = r;
 
 //Get handler and call it if it exists
     handler=g_irq_routines[r->int_no-32];
     if (handler)
         handler(r);
+
+    // Registers no longer valid
+    irq_regs = 0;
 
     if (r->int_no-32 == 7)
     {
