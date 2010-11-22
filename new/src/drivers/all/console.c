@@ -253,3 +253,17 @@ void console_scrollup(unsigned short spaces)
         g_console_lineprotection[y]=g_console_lineprotection[y+1];
     }
 }
+
+void console_error()
+{
+    g_console_colour=0x4F;
+    g_console_cursorx=g_console_cursory=0;
+    unsigned short y,x;
+    for(y=0;y<screen_getheight();y++){
+        for(x=0;x<screen_getwidth();x++){
+            screen_putc(x,y,(g_console_colour<<8));
+        }
+        g_console_lineprotection[y]=0;
+        g_console_linelengths[y]=0;
+    }
+}

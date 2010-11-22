@@ -24,7 +24,8 @@ void screen_positioncursor(unsigned short x,unsigned short y)
 
 void screen_putpixel(unsigned short x,unsigned short y,unsigned long p)
 {
-
+//Put the pixel
+    *((unsigned short*)0xB8000+y*80+x+1)=(unsigned char)p&0xFF;
 }
 
 unsigned short screen_getwidth()

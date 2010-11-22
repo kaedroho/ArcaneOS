@@ -12,6 +12,7 @@ void console_putu32_protected(unsigned int i, unsigned int base);
 void console_puti32(int i, unsigned int base);
 void console_puti32_protected(int i, unsigned int base);
 void console_scrollup(unsigned short spaces);
+void console_error();
 
 #endif	/* CONSOLE_H */
 

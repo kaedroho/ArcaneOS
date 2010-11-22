@@ -63,15 +63,15 @@ bin/o/vbe_real.asm.o: src/drivers/x86/ibmpc/vbe_real.asm
 	nasm -i ./inc/ -f aout -o bin/o/vbe_real.asm.o src/drivers/x86/ibmpc/vbe_real.asm
 
 
-kernel_x86-32: bin/o/dm.c.o bin/o/devfs.c.o bin/o2/fs.c.o bin/o2/io.c.o bin/o/vfs.c.o bin/o/cmos.c.o bin/o/kload.c.o bin/o/cpuid32.asm.o bin/o/cpuid.c.o bin/o/realmode.asm.o bin/o/gdt32.asm.o bin/o/gdt.c.o bin/o/idt32.asm.o bin/o/idt.c.o bin/o/irq32.asm.o bin/o/irq.c.o bin/o/isr32.asm.o bin/o/isr.c.o bin/o/mm.c.o bin/o/paging.c.o bin/o/paging32.asm.o bin/o/timer.c.o bin/o/lowmem.c.o bin/o/mt.c.o bin/o/syscall.c.o bin/o/syscall32.asm.o
+kernel_x86-32: bin/o2/dm.c.o bin/o2/devfs.c.o bin/o2/fs.c.o bin/o2/io.c.o bin/o2/vfs.c.o bin/o2/cmos.c.o bin/o2/kload.c.o bin/o2/cpuid32.asm.o bin/o2/cpuid.c.o bin/o2/realmode.asm.o bin/o2/gdt32.asm.o bin/o2/gdt.c.o bin/o2/idt32.asm.o bin/o2/idt.c.o bin/o2/irq32.asm.o bin/o2/irq.c.o bin/o2/isr32.asm.o bin/o2/isr.c.o bin/o2/mm.c.o bin/o2/paging.c.o bin/o2/paging32.asm.o bin/o2/timer.c.o bin/o2/lowmem.c.o bin/o2/mt.c.o bin/o2/syscall.c.o bin/o2/syscall32.asm.o
 
-bin/o/dm.c.o: src/kernel/all/driver-manager/dm.c
-	rm -f bin/o/dm.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/dm.c.o src/kernel/all/driver-manager/dm.c
+bin/o2/dm.c.o: src/kernel/all/driver-manager/dm.c
+	rm -f bin/o2/dm.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/dm.c.o src/kernel/all/driver-manager/dm.c
 
-bin/o/devfs.c.o: src/kernel/all/driver-manager/devfs.c
-	rm -f bin/o/devfs.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/devfs.c.o src/kernel/all/driver-manager/devfs.c
+bin/o2/devfs.c.o: src/kernel/all/driver-manager/devfs.c
+	rm -f bin/o2/devfs.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/devfs.c.o src/kernel/all/driver-manager/devfs.c
 
 bin/o2/fs.c.o: src/kernel/all/driver-manager/classes/fs.c
 	rm -f bin/o2/fs.c.o
@@ -82,106 +82,106 @@ bin/o2/io.c.o: src/kernel/all/driver-manager/classes/io.c
 	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/io.c.o src/kernel/all/driver-manager/classes/io.c
 
 
-bin/o/vfs.c.o: src/kernel/all/vfs/vfs.c
-	rm -f bin/o/vfs.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/vfs.c.o src/kernel/all/vfs/vfs.c
+bin/o2/vfs.c.o: src/kernel/all/vfs/vfs.c
+	rm -f bin/o2/vfs.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/vfs.c.o src/kernel/all/vfs/vfs.c
 
 
-bin/o/cmos.c.o: src/kernel/x86/cmos.c
-	rm -f bin/o/cmos.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/cmos.c.o src/kernel/x86/cmos.c
+bin/o2/cmos.c.o: src/kernel/x86/cmos.c
+	rm -f bin/o2/cmos.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/cmos.c.o src/kernel/x86/cmos.c
 
-bin/o/kload.c.o: src/kernel/x86/kload.c
-	rm -f bin/o/kload.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/kload.c.o src/kernel/x86/kload.c
+bin/o2/kload.c.o: src/kernel/x86/kload.c
+	rm -f bin/o2/kload.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/kload.c.o src/kernel/x86/kload.c
 
-bin/o/cpuid32.asm.o: src/kernel/x86/cpuid32.asm
-	rm -f bin/o/cpuid32.asm.o
+bin/o2/cpuid32.asm.o: src/kernel/x86/cpuid32.asm
+	rm -f bin/o2/cpuid32.asm.o
 	nasm -i ./inc/ -f aout -o bin/o/cpuid32.asm.o src/kernel/x86/cpuid32.asm
 
-bin/o/cpuid.c.o: src/kernel/x86/cpuid.c
-	rm -f bin/o/cpuid.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/cpuid.c.o src/kernel/x86/cpuid.c
+bin/o2/cpuid.c.o: src/kernel/x86/cpuid.c
+	rm -f bin/o2/cpuid.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/cpuid.c.o src/kernel/x86/cpuid.c
 
 
-bin/o/realmode.asm.o: src/kernel/x86/realmode.asm
-	rm -f bin/o/realmode.asm.o
+bin/o2/realmode.asm.o: src/kernel/x86/realmode.asm
+	rm -f bin/o2/realmode.asm.o
 	nasm -i ./inc/ -f aout -o bin/o/realmode.asm.o src/kernel/x86/realmode.asm
 
-bin/o/gdt32.asm.o: src/kernel/x86/gdt32.asm
-	rm -f bin/o/gdt32.asm.o
+bin/o2/gdt32.asm.o: src/kernel/x86/gdt32.asm
+	rm -f bin/o2/gdt32.asm.o
 	nasm -i ./inc/ -f aout -o bin/o/gdt32.asm.o src/kernel/x86/gdt32.asm
 
-bin/o/gdt.c.o: src/kernel/x86/gdt.c
-	rm -f bin/o/gdt.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/gdt.c.o src/kernel/x86/gdt.c
+bin/o2/gdt.c.o: src/kernel/x86/gdt.c
+	rm -f bin/o2/gdt.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/gdt.c.o src/kernel/x86/gdt.c
 
 
-bin/o/idt32.asm.o: src/kernel/x86/idt32.asm
-	rm -f bin/o/idt32.asm.o
+bin/o2/idt32.asm.o: src/kernel/x86/idt32.asm
+	rm -f bin/o2/idt32.asm.o
 	nasm -i ./inc/ -f aout -o bin/o/idt32.asm.o src/kernel/x86/idt32.asm
 
-bin/o/idt.c.o: src/kernel/x86/idt.c
-	rm -f bin/o/idt.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/idt.c.o src/kernel/x86/idt.c
+bin/o2/idt.c.o: src/kernel/x86/idt.c
+	rm -f bin/o2/idt.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/idt.c.o src/kernel/x86/idt.c
 
 
-bin/o/irq32.asm.o: src/kernel/x86/irq32.asm
-	rm -f bin/o/irq32.asm.o
+bin/o2/irq32.asm.o: src/kernel/x86/irq32.asm
+	rm -f bin/o2/irq32.asm.o
 	nasm -i ./inc/ -f aout -o bin/o/irq32.asm.o src/kernel/x86/irq32.asm
 
-bin/o/irq.c.o: src/kernel/x86/irq.c
-	rm -f bin/o/irq.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/irq.c.o src/kernel/x86/irq.c
+bin/o2/irq.c.o: src/kernel/x86/irq.c
+	rm -f bin/o2/irq.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/irq.c.o src/kernel/x86/irq.c
 
 
-bin/o/isr32.asm.o: src/kernel/x86/isr32.asm
-	rm -f bin/o/isr32.asm.o
+bin/o2/isr32.asm.o: src/kernel/x86/isr32.asm
+	rm -f bin/o2/isr32.asm.o
 	nasm -i ./inc/ -f aout -o bin/o/isr32.asm.o src/kernel/x86/isr32.asm
 
-bin/o/isr.c.o: src/kernel/x86/isr.c
-	rm -f bin/o/isr.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/isr.c.o src/kernel/x86/isr.c
+bin/o2/isr.c.o: src/kernel/x86/isr.c
+	rm -f bin/o2/isr.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/isr.c.o src/kernel/x86/isr.c
 
 
-bin/o/mm.c.o: src/kernel/x86/mm.c
-	rm -f bin/o/mm.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/mm.c.o src/kernel/x86/mm.c
+bin/o2/mm.c.o: src/kernel/x86/mm.c
+	rm -f bin/o2/mm.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/mm.c.o src/kernel/x86/mm.c
 
 
-bin/o/paging.c.o: src/kernel/x86/paging.c
-	rm -f bin/o/paging.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/paging.c.o src/kernel/x86/paging.c
+bin/o2/paging.c.o: src/kernel/x86/paging.c
+	rm -f bin/o2/paging.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/paging.c.o src/kernel/x86/paging.c
 
-bin/o/paging32.asm.o: src/kernel/x86/paging32.asm
-	rm -f bin/o/paging32.asm.o
+bin/o2/paging32.asm.o: src/kernel/x86/paging32.asm
+	rm -f bin/o2/paging32.asm.o
 	nasm -i ./inc/ -f aout -o bin/o/paging32.asm.o src/kernel/x86/paging32.asm
 
-bin/o/timer.c.o: src/kernel/x86/timer.c
-	rm -f bin/o/timer.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/timer.c.o src/kernel/x86/timer.c
+bin/o2/timer.c.o: src/kernel/x86/timer.c
+	rm -f bin/o2/timer.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/timer.c.o src/kernel/x86/timer.c
 
-bin/o/lowmem.c.o: src/kernel/x86/lowmem.c
-	rm -f bin/o/lowmem.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/lowmem.c.o src/kernel/x86/lowmem.c
+bin/o2/lowmem.c.o: src/kernel/x86/lowmem.c
+	rm -f bin/o2/lowmem.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/lowmem.c.o src/kernel/x86/lowmem.c
 
-bin/o/mt.c.o: src/kernel/x86/mt.c
-	rm -f bin/o/mt.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/mt.c.o src/kernel/x86/mt.c
+bin/o2/mt.c.o: src/kernel/x86/mt.c
+	rm -f bin/o2/mt.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/mt.c.o src/kernel/x86/mt.c
 
-bin/o/syscall.c.o: src/kernel/x86/syscall.c
-	rm -f bin/o/syscall.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/syscall.c.o src/kernel/x86/syscall.c
+bin/o2/syscall.c.o: src/kernel/x86/syscall.c
+	rm -f bin/o2/syscall.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/syscall.c.o src/kernel/x86/syscall.c
 
-bin/o/syscall32.asm.o: src/kernel/x86/syscall32.asm
-	rm -f bin/o/syscall32.asm.o
-	nasm -i ./inc/ -f aout -o bin/o/syscall32.asm.o src/kernel/x86/syscall32.asm
+bin/o2/syscall32.asm.o: src/kernel/x86/syscall32.asm
+	rm -f bin/o2/syscall32.asm.o
+	nasm -i ./inc/ -f aout -o bin/o2/syscall32.asm.o src/kernel/x86/syscall32.asm
 
 
 
-libraries_x86-32: bin/o/string.c.o
+libraries_x86-32: bin/o2/string.c.o
 	
 
-bin/o/string.c.o: src/libraries/all/string.c
-	rm -f bin/o/string.c.o
-	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/string.c.o src/libraries/all/string.c
+bin/o2/string.c.o: src/libraries/all/string.c
+	rm -f bin/o2/string.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/string.c.o src/libraries/all/string.c

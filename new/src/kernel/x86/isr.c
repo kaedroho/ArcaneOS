@@ -1,5 +1,6 @@
 #include <x86/sys.h>
 #include <console.h>
+#include <x86/vbe_real.h>
 
 //Functions from isr.asm
 extern void isr0();
@@ -152,7 +153,9 @@ void exception_handler(struct regs *r)
         cli_puts("\n             EIP: ");cli_putu32(r->eip,16);
 	*/
         //Endless loop
-        console_puts_protected("An exception has occurred.\nException: (0x");
+        vbe_set_mode(0x3,0);
+        console_error();
+        console_puts_protected("\nAn exception has occurred.\nException: (0x");
         console_putu32_protected(r->err_code, 16);
         console_puts_protected(") - ");
         console_puts_protected(exception_messages[r->int_no]);
