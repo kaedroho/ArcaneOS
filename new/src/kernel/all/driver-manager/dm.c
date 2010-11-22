@@ -7,7 +7,7 @@ extern struct dm_fs_driver devfs_fsdriver;
 void dm_init()
 {
 //Initialise built in classes
-    dm_fs_init();
+    //dm_fs_init();
 
 //Mount DevFS
     if(vfs_open_filesystem(&devfs_fsdriver,0,"/devices")){
