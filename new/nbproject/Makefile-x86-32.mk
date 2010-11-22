@@ -55,6 +55,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/all/driver-manager/dm.o \
 	${OBJECTDIR}/src/kernel/x86/realmode.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
+	${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o \
 	${OBJECTDIR}/src/kernel/x86/gdt.o \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o \
 	${OBJECTDIR}/inc/x86/gdt32.o \
@@ -197,6 +198,11 @@ ${OBJECTDIR}/src/drivers/all/console.o: src/drivers/all/console.c
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/all
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/all/console.o src/drivers/all/console.c
+
+${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o: src/kernel/all/driver-manager/classes/io.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager/classes
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o src/kernel/all/driver-manager/classes/io.c
 
 ${OBJECTDIR}/src/kernel/x86/gdt.o: src/kernel/x86/gdt.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86

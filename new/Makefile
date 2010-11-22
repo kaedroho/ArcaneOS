@@ -77,6 +77,9 @@ bin/o2/fs.c.o: src/kernel/all/driver-manager/classes/fs.c
 	rm -f bin/o2/fs.c.o
 	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/fs.c.o src/kernel/all/driver-manager/classes/fs.c
 
+bin/o2/io.c.o: src/kernel/all/driver-manager/classes/io.c
+	rm -f bin/o2/io.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o2/io.c.o src/kernel/all/driver-manager/classes/io.c
 
 
 bin/o/vfs.c.o: src/kernel/all/vfs/vfs.c

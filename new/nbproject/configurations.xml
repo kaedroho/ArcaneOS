@@ -64,6 +64,7 @@
                            projectFiles="true"
                            kind="SOURCE_LOGICAL_FOLDER">
               <itemPath>src/kernel/all/driver-manager/classes/fs.c</itemPath>
+              <itemPath>src/kernel/all/driver-manager/classes/io.c</itemPath>
             </logicalFolder>
             <itemPath>src/kernel/all/driver-manager/devfs.c</itemPath>
             <itemPath>src/kernel/all/driver-manager/dm.c</itemPath>

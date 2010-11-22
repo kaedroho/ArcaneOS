@@ -53,5 +53,17 @@ void dm_fs_init();
 void dm_fs_register_driver(struct dm_fs_driver* driver,char* name);
 void dm_fs_unregister_driver(struct dm_fs_driver* driver);
 
+
+//INPUT/OUTPUT CLASS
+struct dm_io_driver
+{
+    unsigned int(*read)(void* device,void* buffer,unsigned int bytes);
+    unsigned int(*write)(void* device,void* buffer,unsigned int bytes);
+    void* data;
+};
+void dm_io_init();
+void dm_io_register_driver(struct dm_io_driver* driver,char* name);
+void dm_io_unregister_driver(struct dm_io_driver* driver);
+
 #endif	/* DRIVER_MANAGER_H */
 
