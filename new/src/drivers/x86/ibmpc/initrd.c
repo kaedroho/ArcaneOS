@@ -26,7 +26,7 @@ void* initrd_openfile(void* fsdata,char* name);
 void initrd_closefile(void* filedata);
 unsigned int initrd_readfile(void* file,void* buffer,unsigned int bytes);
 
-struct vfs_filesystem_driver initrd_fsdriver={
+struct dm_fs_driver initrd_fsdriver={
     .openfs=initrd_openfs,
     .closefs=initrd_closefs,
     .openfile=initrd_openfile,

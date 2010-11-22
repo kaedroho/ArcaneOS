@@ -50,7 +50,7 @@ char memcmp(char* stra,char* strb,unsigned int length)
 }
 
 
-int strlen(char* str)
+unsigned int strlen(char* str)
 {
 //Variables
     int length=0;
@@ -89,4 +89,20 @@ unsigned int strcmpbegin(char* stra,char* strb)
     if(stra[i]==0 || strb[i]==0)
         return i;
     return 0;
+}
+
+unsigned int strcpy(char* src,char* dest)
+{
+//Variables
+    int bytescopied=0;
+
+//Loop through string until a null character is found
+    while(src[bytescopied]!='\0'){
+        dest[bytescopied]=src[bytescopied];
+        bytescopied++;
+    }
+    dest[bytescopied]=0;
+
+//Return length
+    return bytescopied;
 }

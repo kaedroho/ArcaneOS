@@ -4,7 +4,7 @@
 #include <string.h>
 #include <vfs.h>
 
-extern struct vfs_filesystem_driver initrd_fsdriver;
+extern struct dm_fs_driver initrd_fsdriver;
 extern struct vfs_filesystem vfs_rootfs;
 
 

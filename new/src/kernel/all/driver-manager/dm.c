@@ -2,10 +2,14 @@
 #include <vfs.h>
 #include <console.h>
 
-extern struct vfs_filesystem_driver devfs_fsdriver;
+extern struct dm_fs_driver devfs_fsdriver;
 
 void dm_init()
 {
+//Initialise built in classes
+    dm_fs_init();
+
+//Mount DevFS
     if(vfs_open_filesystem(&devfs_fsdriver,0,"/devices")){
         console_puts_protected("DEVICE MANAGER: DevFS successfully mounted to /devices.\n");
     }
