@@ -8,6 +8,7 @@ void dm_init()
 {
 //Initialise built in classes
     dm_fs_init();
+    dm_io_init();
 
 //Mount DevFS
     if(vfs_open_filesystem(&devfs_fsdriver,0,"/devices")){
