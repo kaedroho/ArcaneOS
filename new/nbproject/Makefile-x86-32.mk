@@ -51,8 +51,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
 	${OBJECTDIR}/src/kernel/x86/irq32.o \
 	${OBJECTDIR}/src/kernel/all/driver-manager/devfs.o \
-	${OBJECTDIR}/src/kernel/all/driver-manager/dm.o \
 	${OBJECTDIR}/src/loader/x86/startup.o \
+	${OBJECTDIR}/src/kernel/all/driver-manager/dm.o \
 	${OBJECTDIR}/src/kernel/x86/realmode.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
 	${OBJECTDIR}/src/kernel/x86/gdt.o \
@@ -64,7 +64,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/idt.o \
 	${OBJECTDIR}/src/kernel/x86/cmos.o \
 	${OBJECTDIR}/src/kernel/all/vfs/vfs.o \
-	${OBJECTDIR}/src/drivers/x86/ibmpc/kb.o
+	${OBJECTDIR}/src/drivers/x86/ibmpc/kb.o \
+	${OBJECTDIR}/src/kernel/x86/syscall32.o \
+	${OBJECTDIR}/src/kernel/x86/syscall.o \
+	${OBJECTDIR}/src/kernel/x86/mt.o
 
 
 # C Compiler Flags
@@ -175,15 +178,15 @@ ${OBJECTDIR}/src/kernel/all/driver-manager/devfs.o: src/kernel/all/driver-manage
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/devfs.o src/kernel/all/driver-manager/devfs.c
 
-${OBJECTDIR}/src/kernel/all/driver-manager/dm.o: src/kernel/all/driver-manager/dm.c 
-	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/dm.o src/kernel/all/driver-manager/dm.c
-
 ${OBJECTDIR}/src/loader/x86/startup.o: src/loader/x86/startup.c 
 	${MKDIR} -p ${OBJECTDIR}/src/loader/x86
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/loader/x86/startup.o src/loader/x86/startup.c
+
+${OBJECTDIR}/src/kernel/all/driver-manager/dm.o: src/kernel/all/driver-manager/dm.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/dm.o src/kernel/all/driver-manager/dm.c
 
 ${OBJECTDIR}/src/kernel/x86/realmode.o: src/kernel/x86/realmode.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
@@ -241,6 +244,20 @@ ${OBJECTDIR}/src/drivers/x86/ibmpc/kb.o: src/drivers/x86/ibmpc/kb.c
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/kb.o src/drivers/x86/ibmpc/kb.c
+
+${OBJECTDIR}/src/kernel/x86/syscall32.o: src/kernel/x86/syscall32.asm 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
+	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/syscall32.o src/kernel/x86/syscall32.asm
+
+${OBJECTDIR}/src/kernel/x86/syscall.o: src/kernel/x86/syscall.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/syscall.o src/kernel/x86/syscall.c
+
+${OBJECTDIR}/src/kernel/x86/mt.o: src/kernel/x86/mt.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/mt.o src/kernel/x86/mt.c
 
 # Subprojects
 .build-subprojects:

@@ -12,7 +12,7 @@ void timer_handler(struct regs *r)
     timer_ticks++;
 
     // Assumes 1 tick = 1 millisecond
-    mt_tick(1);
+    mt_tick(10);
     mt_schedule(r);
 
 //If ticks are a factor of 1000 then 1 seccond has passed
@@ -52,7 +52,7 @@ void timer_init()
     irq_install_handler(0,timer_handler);
 
 //Set ticks per seccond to 1000
-    timer_phase(1000);
+    timer_phase(100);
 
 //Print message
     console_puts_protected("TIMER: Started. Running at ");
