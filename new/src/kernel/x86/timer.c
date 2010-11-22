@@ -55,6 +55,6 @@ void timer_init()
 
 //Print message
     console_puts_protected("TIMER: Started. Running at ");
-    console_putu32_protected(timer_getticksperseccond(),10);
+    console_putu32_protected(timer_ticksperseccond,10);
     console_puts_protected("Hz.\n");
 }
