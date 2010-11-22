@@ -2,7 +2,6 @@
 
 char devfs_started=0;
 
-
 void* devfs_openfs(void* data);
 void devfs_closefs(void* fsdata);
 void* devfs_openfile(void* fsdata,char* name);

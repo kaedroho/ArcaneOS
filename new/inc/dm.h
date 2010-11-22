@@ -9,21 +9,28 @@
 
 struct dm_class
 {
+    char exists;
     char name[32];
+    unsigned int id;
+    void(*unregister_driver)(void* data);
 };
 
 struct dm_driver
 {
+    char exists;
     char name[32];
     struct dm_class* dclass;
     void* data;
+    unsigned int id;
 };
 
 struct dm_device
 {
+    char exists;
     char name[32];
     struct dm_driver* driver;
     void* data;
+    unsigned int id;
 };
 
 
@@ -49,7 +56,6 @@ struct dm_fs_driver
 
     void* data;
 };
-void dm_fs_init();
 void dm_fs_register_driver(struct dm_fs_driver* driver,char* name);
 void dm_fs_unregister_driver(struct dm_fs_driver* driver);
 
@@ -61,7 +67,6 @@ struct dm_io_driver
     unsigned int(*write)(void* device,void* buffer,unsigned int bytes);
     void* data;
 };
-void dm_io_init();
 void dm_io_register_driver(struct dm_io_driver* driver,char* name);
 void dm_io_unregister_driver(struct dm_io_driver* driver);
 

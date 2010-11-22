@@ -44,7 +44,7 @@ int startup()
     clock_init();
 
     struct mt_thread* thread = 0;
-    syscall(&mt_create_thread, &thread, mt_kernel_process, &test, (void*)0x1234, 0);
+    //syscall(&mt_create_thread, &thread, mt_kernel_process, &test, (void*)0x1234, 0);
     
     console_puts_protected("KERNEL: Interrupts started!\n");
     console_putc('\n');
