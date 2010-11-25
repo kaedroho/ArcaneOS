@@ -37,6 +37,8 @@
                          projectFiles="true"
                          kind="SOURCE_LOGICAL_FOLDER">
             <itemPath>src/drivers/x86/ibmpc/clock.c</itemPath>
+            <itemPath>src/drivers/x86/ibmpc/floppy.c</itemPath>
+            <itemPath>inc/x86/floppy.h</itemPath>
             <itemPath>src/drivers/x86/ibmpc/ibmpc.c</itemPath>
             <itemPath>inc/x86/ibmpc.h</itemPath>
             <itemPath>src/drivers/x86/ibmpc/initrd.c</itemPath>
@@ -101,6 +103,8 @@
           <itemPath>inc/x86/mt.h</itemPath>
           <itemPath>src/kernel/x86/paging.c</itemPath>
           <itemPath>src/kernel/x86/realmode.asm</itemPath>
+          <itemPath>src/kernel/x86/sync.c</itemPath>
+          <itemPath>inc/x86/sync.h</itemPath>
           <itemPath>inc/x86/sys.h</itemPath>
           <itemPath>src/kernel/x86/syscall.c</itemPath>
           <itemPath>inc/x86/syscall.h</itemPath>

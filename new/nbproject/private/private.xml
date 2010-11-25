@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/home/karl/ArcaneSVN/new/src/drivers/x86/ibmpc/initrd.c</file>
-        <file>file:/home/karl/ArcaneSVN/new/src/kernel/x86/kload.c</file>
-        <file>file:/home/karl/ArcaneSVN/new/src/loader/x86/startup.c</file>
-        <file>file:/home/karl/ArcaneSVN/new/inc/x86/ibmpc.h</file>
-        <file>file:/home/karl/ArcaneSVN/new/src/drivers/x86/ibmpc/ibmpc.c</file>
-        <file>file:/home/karl/ArcaneSVN/new/src/kernel/all/vfs/vfs.c</file>
-        <file>file:/home/karl/ArcaneSVN/new/inc/vfs.h</file>
-    </open-files>
 </project-private>

@@ -37,6 +37,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/clock.o \
 	${OBJECTDIR}/src/kernel/x86/kload.o \
 	${OBJECTDIR}/src/kernel/x86/isr.o \
+	${OBJECTDIR}/src/kernel/x86/sync.o \
 	${OBJECTDIR}/src/kernel/x86/paging.o \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/vbe_real.o \
 	${OBJECTDIR}/src/kernel/x86/isr32.o \
@@ -49,14 +50,15 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/timer.o \
 	${OBJECTDIR}/src/kernel/x86/mm.o \
 	${OBJECTDIR}/src/kernel/x86/idt32.o \
+	${OBJECTDIR}/src/drivers/x86/ibmpc/floppy.o \
 	${OBJECTDIR}/src/kernel/x86/irq32.o \
 	${OBJECTDIR}/src/kernel/all/driver-manager/devfs.o \
 	${OBJECTDIR}/src/loader/x86/startup.o \
 	${OBJECTDIR}/src/kernel/all/driver-manager/dm.o \
 	${OBJECTDIR}/src/kernel/x86/realmode.o \
 	${OBJECTDIR}/src/drivers/all/console.o \
-	${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o \
 	${OBJECTDIR}/src/kernel/x86/gdt.o \
+	${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o \
 	${OBJECTDIR}/inc/x86/gdt32.o \
 	${OBJECTDIR}/src/kernel/all/driver-manager/classes/fs.o \
@@ -116,6 +118,11 @@ ${OBJECTDIR}/src/kernel/x86/isr.o: src/kernel/x86/isr.c
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/isr.o src/kernel/x86/isr.c
 
+${OBJECTDIR}/src/kernel/x86/sync.o: src/kernel/x86/sync.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/sync.o src/kernel/x86/sync.c
+
 ${OBJECTDIR}/src/kernel/x86/paging.o: src/kernel/x86/paging.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	${RM} $@.d
@@ -171,6 +178,11 @@ ${OBJECTDIR}/src/kernel/x86/idt32.o: src/kernel/x86/idt32.asm
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/idt32.o src/kernel/x86/idt32.asm
 
+${OBJECTDIR}/src/drivers/x86/ibmpc/floppy.o: src/drivers/x86/ibmpc/floppy.c 
+	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/floppy.o src/drivers/x86/ibmpc/floppy.c
+
 ${OBJECTDIR}/src/kernel/x86/irq32.o: src/kernel/x86/irq32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/src/kernel/x86/irq32.o src/kernel/x86/irq32.asm
@@ -199,15 +211,15 @@ ${OBJECTDIR}/src/drivers/all/console.o: src/drivers/all/console.c
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/all/console.o src/drivers/all/console.c
 
-${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o: src/kernel/all/driver-manager/classes/io.c 
-	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager/classes
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o src/kernel/all/driver-manager/classes/io.c
-
 ${OBJECTDIR}/src/kernel/x86/gdt.o: src/kernel/x86/gdt.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/x86/gdt.o src/kernel/x86/gdt.c
+
+${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o: src/kernel/all/driver-manager/classes/io.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager/classes
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o src/kernel/all/driver-manager/classes/io.c
 
 ${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o: src/drivers/x86/ibmpc/screen.c 
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
