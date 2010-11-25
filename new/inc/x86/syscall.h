@@ -37,7 +37,9 @@ enum err_facility {
     err_facility_none = 0,
     err_facility_syscall,
     err_facility_mt,
-    err_facility_pg
+    err_facility_pg,
+    err_facility_floppy,
+    err_facility_sync
 };
 
 enum syscall_err_code {
@@ -77,7 +79,7 @@ extern unsigned int syscall_datasize[syscall_datatype_count];
 struct syscall_function {
     enum syscall_state required_state; // Required state to call function
     void* fptr; // Function pointer
-    void* mutex; // Mutex (ownership required before syscall)
+    struct sync_mutex* mutex; // Mutex (ownership required before syscall)
     enum syscall_datatype parameters[32];
     int is_initialised;
     unsigned parameter_count;

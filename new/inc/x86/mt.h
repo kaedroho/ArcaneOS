@@ -44,6 +44,17 @@ extern struct mt_thread* mt_sleeping_last_thread;
 #define MT_THREAD_STATE_PAUSED 1
 #define MT_THREAD_STATE_SLEEPING 2
 
+// Safe to use
+SYSCALL_DECLARE(mt_create_thread)(struct mt_thread** out_thread, struct mt_process* process, void (*fptr)(void*), void* param, int usermode);
+SYSCALL_DECLARE(mt_schedule)();
+SYSCALL_DECLARE(mt_tick)(unsigned ticks);
+SYSCALL_DECLARE(mt_sleep)(unsigned delay);
+SYSCALL_DECLARE(mt_thread_sleep)(struct mt_thread* thread, unsigned delay);
+SYSCALL_DECLARE(mt_pause)();
+SYSCALL_DECLARE(mt_thread_pause)(struct mt_thread* thread);
+SYSCALL_DECLARE(mt_thread_resume)(struct mt_thread* thread);
+
+// Internal use only
 struct mt_process* mt_alloc_process();
 void mt_free_process(struct mt_process* process);
 struct mt_thread* mt_alloc_thread(struct mt_process* process);
@@ -57,12 +68,6 @@ void mt_schedule_insert_after(struct mt_thread* thread, struct mt_thread* place)
 void mt_sleep_remove(struct mt_thread* thread);
 void mt_sleep_insert_after(struct mt_thread* thread, struct mt_thread* place);
 err_t mt_thread_sleep_impl(struct mt_thread* thread, unsigned delay);
-
-SYSCALL_DECLARE(mt_create_thread)(struct mt_thread** out_thread, struct mt_process* process, void (*fptr)(void*), void* param, int usermode);
-SYSCALL_DECLARE(mt_schedule)();
-SYSCALL_DECLARE(mt_tick)(unsigned ticks);
-SYSCALL_DECLARE(mt_sleep)(unsigned delay);
-SYSCALL_DECLARE(mt_thread_sleep)(struct mt_thread* thread, unsigned delay);
 
 #endif	/* MT_H */
 

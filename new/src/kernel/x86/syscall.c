@@ -1,5 +1,7 @@
 #include "x86/sys.h"
 #include "x86/syscall.h"
+#include "x86/sync.h"
+#include "x86/mt.h"
 
 unsigned int syscall_datasize[syscall_datatype_count] = {
     0,
@@ -63,7 +65,15 @@ err_t syscall(struct syscall_function* func, ...) {
 
     unsigned handle;
 
-    // TODO: Handle mutex
+    // Handle mutex
+    if (func->mutex) {
+        if (irq_query()) {
+            while (ERR_FAILED(result = syscall(&sync_mutex_lock, func->mutex)))
+                syscall(&mt_sleep, 10);
+        } else
+            if (ERR_FAILED(result = syscall(&sync_mutex_lock, func->mutex)))
+                return result;
+    }
 
     switch (func->required_state) {
     case syscall_state_none:
@@ -90,9 +100,14 @@ err_t syscall(struct syscall_function* func, ...) {
         else if (irq_query()) {
             result = syscall_interrupt(fptr, params, func->parameter_bytes);
         } else
-            return ERR(1, err_facility_syscall, syscall_err_invalidcall);
+            result = ERR(1, err_facility_syscall, syscall_err_invalidcall);
+        break;
     default:
-        return ERR(1, err_facility_syscall, syscall_err_invalidcall);
+        result = ERR(1, err_facility_syscall, syscall_err_invalidcall);
+    }
+
+    if (func->mutex) {
+        syscall(&sync_mutex_unlock, func->mutex);
     }
 
     return result;

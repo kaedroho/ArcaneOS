@@ -2,6 +2,7 @@
 #include <x86/ibmpc.h>
 #include <x86/mt.h>
 #include <x86/syscall.h>
+#include <x86/floppy.h>
 #include <console.h>
 #include <clock.h>
 
@@ -12,10 +13,24 @@ void* pg_physical_page_alloc();
 void pg_physical_page_free(void* ptr);
 
 void test(void* param) {
-    while (1) {
-        console_puts_protected("Test\n");
-        syscall(&mt_sleep, 500);
+    unsigned char* buffer;
+
+    if (ERR_SUCCEEDED(syscall(&floppy_lock_buffer, &buffer))) {
+        syscall(&floppy_reset, floppy_primary);
+        syscall(&floppy_read_track, floppy_primary, 0);
+
+        console_puts_protected("Floppy data: ");
+        int i;
+        for (i = 0; i < 10; i++) {
+            console_putu32_protected(buffer[i] >> 4, 16);
+            console_putu32_protected(buffer[i] & 0xF, 16);
+        }
+        console_puts_protected("\n");
+
+        syscall(&floppy_unlock_buffer);
     }
+
+    while(1);
 }
 
 int startup()
@@ -44,11 +59,12 @@ int startup()
     clock_init();
 
     struct mt_thread* thread = 0;
-    //syscall(&mt_create_thread, &thread, mt_kernel_process, &test, (void*)0x1234, 0);
+    syscall(&mt_create_thread, &thread, mt_kernel_process, &test, (void*)0x1234, 0);
     
     console_puts_protected("KERNEL: Interrupts started!\n");
     console_putc('\n');
-__asm__ __volatile__ ("sti");
+
+    __asm__ __volatile__ ("sti");
 
 
     return 0;

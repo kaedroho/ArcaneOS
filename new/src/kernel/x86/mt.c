@@ -276,7 +276,6 @@ SYSCALL_DEFINE( mt_tick,
     
     return ERR_OK;
 }
-
 SYSCALL_DEFINE( mt_sleep,
                 syscall_state_int_handler, 0, syscall_datatype_u32
                 )(unsigned delay) {
@@ -286,7 +285,6 @@ SYSCALL_DEFINE( mt_sleep,
     
     return ERR_OK;
 }
-
 SYSCALL_DEFINE( mt_thread_sleep,
                 syscall_state_none, 0, syscall_datatype_ptr, syscall_datatype_u32
                 )(struct mt_thread* thread, unsigned delay) {
@@ -298,6 +296,55 @@ SYSCALL_DEFINE( mt_thread_sleep,
         irq_unlock(handle);
     } else
         result = syscall(&mt_sleep, delay);
+
+    return result;
+}
+SYSCALL_DEFINE( mt_pause,
+                syscall_state_int_handler, 0, syscall_datatype_u32
+                )() {
+    struct mt_thread* thread = mt_current_thread;
+    syscall(&mt_schedule);
+
+    if (thread->thread_state == MT_THREAD_STATE_SLEEPING)
+        mt_sleep_remove(thread);
+    else if (thread->thread_state == MT_THREAD_STATE_RUNNING)
+        mt_schedule_remove(thread);
+    thread->thread_state = MT_THREAD_STATE_PAUSED;
+
+    return ERR_OK;
+}
+SYSCALL_DEFINE( mt_thread_pause,
+                syscall_state_none, 0, syscall_datatype_ptr
+                )(struct mt_thread* thread) {
+    err_t result = ERR_OK;
+
+    if (thread != mt_current_thread) {
+        unsigned handle = irq_lock();
+        if (thread->thread_state == MT_THREAD_STATE_SLEEPING)
+            mt_sleep_remove(thread);
+        else if (thread->thread_state == MT_THREAD_STATE_RUNNING)
+            mt_schedule_remove(thread);
+
+        thread->thread_state = MT_THREAD_STATE_PAUSED;
+        irq_unlock(handle);
+    } else
+        result = syscall(&mt_pause);
+
+    return result;
+}
+SYSCALL_DEFINE( mt_thread_resume,
+                syscall_state_kernel_cli, 0, syscall_datatype_ptr
+                )(struct mt_thread* thread) {
+    err_t result = ERR_OK;
+
+    if (thread->thread_state == MT_THREAD_STATE_PAUSED)
+        mt_schedule_insert_after(thread, mt_schedule_last_thread);
+    else if (thread->thread_state == MT_THREAD_STATE_SLEEPING) {
+        mt_sleep_remove(thread);
+        mt_schedule_insert_after(thread, mt_schedule_last_thread);
+    }
+
+    thread->thread_state = MT_THREAD_STATE_RUNNING;
 
     return result;
 }
