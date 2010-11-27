@@ -3,8 +3,9 @@
 #include <console.h>
 #include <string.h>
 #include <vfs.h>
+#include <x86/floppy.h>
 
-extern struct dm_fs_driver initrd_fsdriver;
+extern struct vfs_filesystem_driver initrd_fsdriver;
 extern struct vfs_filesystem vfs_rootfs;
 
 
@@ -37,4 +38,7 @@ void ibmpc_init()
         else
             console_puts_protected("INITRD: Error. Could not mount image to /init.\n");
     }
+
+//Initialise floppy
+    floppy_init();
 }

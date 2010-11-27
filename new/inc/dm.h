@@ -61,6 +61,7 @@ struct dm_bus_device
     unsigned int size;
     struct dm_bus_driver* driver;
     struct dm_bus_device* bus;
+    void* bus_device;
     void* data;
 };
 void dm_bus_register_driver(struct dm_bus_driver* driver,char* name);
@@ -81,6 +82,7 @@ struct dm_io_device
     unsigned int size;
     struct dm_storage_driver* driver;
     struct dm_bus_device* bus;
+    void* bus_device;
     void* data;
 };
 void dm_io_register_driver(struct dm_io_driver* driver,char* name);
@@ -101,6 +103,7 @@ struct dm_storage_device
     unsigned int size;
     struct dm_storage_driver* driver;
     struct dm_bus_device* bus;
+    void* bus_device;
     void* data;
 };
 void dm_storage_register_driver(struct dm_storage_driver* driver,char* name);
