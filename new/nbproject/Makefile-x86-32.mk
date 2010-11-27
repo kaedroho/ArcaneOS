@@ -60,6 +60,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/x86/gdt.o \
 	${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o \
+	${OBJECTDIR}/src/kernel/all/driver-manager/classes/bus.o \
 	${OBJECTDIR}/inc/x86/gdt32.o \
 	${OBJECTDIR}/src/kernel/all/driver-manager/classes/storage.o \
 	${OBJECTDIR}/src/kernel/x86/cpuid32.o \
@@ -225,6 +226,11 @@ ${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o: src/drivers/x86/ibmpc/screen.c
 	${MKDIR} -p ${OBJECTDIR}/src/drivers/x86/ibmpc
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o src/drivers/x86/ibmpc/screen.c
+
+${OBJECTDIR}/src/kernel/all/driver-manager/classes/bus.o: src/kernel/all/driver-manager/classes/bus.c 
+	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager/classes
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/classes/bus.o src/kernel/all/driver-manager/classes/bus.c
 
 ${OBJECTDIR}/inc/x86/gdt32.o: inc/x86/gdt32.mac 
 	${MKDIR} -p ${OBJECTDIR}/inc/x86

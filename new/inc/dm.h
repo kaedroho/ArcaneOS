@@ -49,11 +49,38 @@ void dm_register_device(struct dm_device* device);
 void dm_unregister_device(struct dm_device* device);
 
 
+//BUS CLASS
+struct dm_bus_driver
+{
+
+    void* data;
+};
+struct dm_bus_device
+{
+    char name[32];
+    unsigned int size;
+    struct dm_bus_driver* driver;
+    struct dm_bus_device* bus;
+    void* data;
+};
+void dm_bus_register_driver(struct dm_bus_driver* driver,char* name);
+void dm_bus_unregister_driver(struct dm_bus_driver* driver);
+
+
 //INPUT/OUTPUT CLASS
+struct dm_io_device;
 struct dm_io_driver
 {
-    unsigned int(*read)(void* device,void* buffer,unsigned int bytes);
-    unsigned int(*write)(void* device,void* buffer,unsigned int bytes);
+    unsigned int(*read)(struct dm_io_device* device,void* buffer,unsigned int bytes);
+    unsigned int(*write)(struct dm_io_device* device,void* buffer,unsigned int bytes);
+    void* data;
+};
+struct dm_io_device
+{
+    char name[32];
+    unsigned int size;
+    struct dm_storage_driver* driver;
+    struct dm_bus_device* bus;
     void* data;
 };
 void dm_io_register_driver(struct dm_io_driver* driver,char* name);
@@ -61,10 +88,19 @@ void dm_io_unregister_driver(struct dm_io_driver* driver);
 
 
 //STORAGE CLASS
+struct dm_storage_device;
 struct dm_storage_driver
 {
-    unsigned int(*read)(void* device,void* buffer,unsigned int bytes);
-    unsigned int(*write)(void* device,void* buffer,unsigned int bytes);
+    unsigned int(*read)(struct dm_storage_device* device,void* buffer,unsigned int from,unsigned int bytes);
+    unsigned int(*write)(struct dm_storage_device* device,void* buffer,unsigned int to,unsigned int bytes);
+    void* data;
+};
+struct dm_storage_device
+{
+    char name[32];
+    unsigned int size;
+    struct dm_storage_driver* driver;
+    struct dm_bus_device* bus;
     void* data;
 };
 void dm_storage_register_driver(struct dm_storage_driver* driver,char* name);

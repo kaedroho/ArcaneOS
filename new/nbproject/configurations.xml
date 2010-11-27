@@ -65,6 +65,7 @@
                            displayName="classes"
                            projectFiles="true"
                            kind="SOURCE_LOGICAL_FOLDER">
+              <itemPath>src/kernel/all/driver-manager/classes/bus.c</itemPath>
               <itemPath>src/kernel/all/driver-manager/classes/io.c</itemPath>
               <itemPath>src/kernel/all/driver-manager/classes/storage.c</itemPath>
             </logicalFolder>

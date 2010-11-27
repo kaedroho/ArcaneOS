@@ -8,14 +8,17 @@ extern struct dm_fs_driver devfs_fsdriver;
 struct dm_class** dm_classlist=0;
 unsigned int dm_classcount;
 
-extern struct dm_class dm_fs_class;
+extern struct dm_class dm_bus_class;
 extern struct dm_class dm_io_class;
+extern struct dm_class dm_storage_class;
 
 void* mm_kernel_alloc(unsigned size);
 void dm_init()
 {
 //Register built in classes
+    dm_register_class(&dm_bus_class);
     dm_register_class(&dm_io_class);
+    dm_register_class(&dm_storage_class);
 
 //Mount DevFS
     if(vfs_open_filesystem(&devfs_fsdriver,0,"/devices")){
