@@ -17,15 +17,22 @@ void test(void* param) {
 
     if (ERR_SUCCEEDED(syscall(&floppy_lock_buffer, &buffer))) {
         syscall(&floppy_reset, floppy_primary);
-        syscall(&floppy_read_track, floppy_primary, 0);
 
-        console_puts_protected("Floppy data: ");
-        int i;
-        for (i = 0; i < 10; i++) {
-            console_putu32_protected(buffer[i] >> 4, 16);
-            console_putu32_protected(buffer[i] & 0xF, 16);
+        int j;
+        for(j=0;j<10;j++){
+            syscall(&floppy_read_track, floppy_primary, j);
+
+            if((j&0x01)==0)
+                console_puts_protected("Floppy data: ");
+
+            int i;
+            for (i = 0; i < 10; i++) {
+                console_putu32_protected(buffer[i] >> 4, 16);
+                console_putu32_protected(buffer[i] & 0xF, 16);
+            }
+            if((j&0x01)==1)
+                console_puts_protected("\n");
         }
-        console_puts_protected("\n");
 
         syscall(&floppy_unlock_buffer);
     }
