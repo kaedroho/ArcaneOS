@@ -4,11 +4,11 @@
 
 ;This sets up the segment registers
 global gdt_setup
-extern g_gdtp
+extern gdt_gdtp
 
 gdt_setup:
     ; Load GDT
-    lgdt [g_gdtp]
+    lgdt [gdt_gdtp]
     mov ax, GDT_KERNEL_PROT_MODE_DSEG
     mov ds, ax
     mov es, ax

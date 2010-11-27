@@ -73,7 +73,7 @@ void isr_init()
     idt_set_gate(31,(unsigned)isr31,0x08,0x8E);
 }
 
-char *exception_messages[] =
+char *isr_exception_messages[] =
 {
     "Division By Zero",
     "Debug",
@@ -109,7 +109,7 @@ char *exception_messages[] =
     "Reserved"
 };
 
-void exception_handler(struct regs *r)
+void isr_exception_handler(struct regs *r)
 {
 //Check if it is an exception
     if (r->int_no < 32)
@@ -158,7 +158,7 @@ void exception_handler(struct regs *r)
         console_puts_protected("\nAn exception has occurred.\nException: (0x");
         console_putu32_protected(r->err_code, 16);
         console_puts_protected(") - ");
-        console_puts_protected(exception_messages[r->int_no]);
+        console_puts_protected(isr_exception_messages[r->int_no]);
         console_puts_protected("\n\nSystem Halted.\n\n");
 
         //Put error code

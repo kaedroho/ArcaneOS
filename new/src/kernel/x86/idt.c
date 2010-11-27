@@ -19,10 +19,10 @@ struct idt_ptr
 
 
 //Allocate 256 IDT entries
-struct idt_entry g_idt[256];
+struct idt_entry idt_idt[256];
 
 //IDT Pointer
-struct idt_ptr g_idtp;
+struct idt_ptr idt_idtp;
 
 //Import functions from idt.asm
 extern void idt_load();
@@ -31,23 +31,23 @@ extern void idt_load();
 void idt_set_gate(unsigned char num,unsigned long base,unsigned short sel,unsigned char flags)
 {
 //Add bases to IDT
-    g_idt[num].base_lo=base & 0xFFFF;
-    g_idt[num].base_hi=(base>>16) & 0xFFFF;
+    idt_idt[num].base_lo=base & 0xFFFF;
+    idt_idt[num].base_hi=(base>>16) & 0xFFFF;
 
 //Set the other values
-    g_idt[num].sel=sel;
-    g_idt[num].always0=0;
-    g_idt[num].flags=flags;
+    idt_idt[num].sel=sel;
+    idt_idt[num].always0=0;
+    idt_idt[num].flags=flags;
 }
 
 void idt_init()
 {
 //Setup GDT pointer
-    g_idtp.limit=(sizeof(struct idt_entry)*256)-1;
-    g_idtp.base=(unsigned int)&g_idt;
+    idt_idtp.limit=(sizeof(struct idt_entry)*256)-1;
+    idt_idtp.base=(unsigned int)&idt_idt;
 
 //Zero IDT
-    memset((unsigned char*)&g_idt,0,sizeof(struct idt_entry)*256);
+    memset((unsigned char*)&idt_idt,0,sizeof(struct idt_entry)*256);
 
 //Load IDT
     idt_load();

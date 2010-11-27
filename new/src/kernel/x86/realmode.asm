@@ -6,9 +6,9 @@ REAL_MODE_STACK_ADDR equ real_mode_stack
 GDT_COUNT equ 8
 GDT_SIZE equ (GDT_COUNT*8)
 
-extern g_gdtp
-extern g_idtp
-extern g_gdt
+extern gdt_gdtp
+extern idt_idtp
+extern gdt_gdt
 extern irq_remap
 extern pg_push_state
 extern pg_pop_state
@@ -27,7 +27,7 @@ real_mode_idt:
 
 real_mode_gdt_ptr:
     dw GDT_SIZE-1
-    dd g_gdt
+    dd gdt_gdt
 
 real_to_prot:
 	[BITS 16]
@@ -73,7 +73,7 @@ protcseg:
 	xor	eax, eax
 
         ; Restore IDT
-        lidt [g_idtp]
+        lidt [idt_idtp]
 
         push eax
         push ecx

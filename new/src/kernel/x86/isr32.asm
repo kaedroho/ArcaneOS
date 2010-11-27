@@ -251,7 +251,7 @@ isr31:
     push byte 31
     jmp isr_common_stub
 
-extern exception_handler
+extern isr_exception_handler
 
 isr_common_stub:
 
@@ -270,7 +270,7 @@ isr_common_stub:
     push eax
 
 ;Call exception handler
-    mov eax, exception_handler
+    mov eax, isr_exception_handler
     call eax
 
 ;Pop stuff

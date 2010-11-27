@@ -61,13 +61,13 @@ struct KB_Layout KB_DefaultLayout = {
 };
 
 
-char g_KB_Keypress[128];
-char g_KB_CapsLock;
-char g_KB_NumLock;
-char g_KB_ScrollLock;
-char g_KB_CapsLockNP;
-char g_KB_NumLockNP;
-char g_KB_ScrollLockNP;
+char kb_keypress[128];
+char kb_capslock;
+char kb_numlock;
+char kb_scrolllock;
+char kb_capslock_np;
+char kb_numlock_np;
+char kb_scrolllock_np;
 
 struct KB_Layout* g_KB_Layout;
 
@@ -88,13 +88,13 @@ void kb_init()
     kb_setlayout(&KB_DefaultLayout);
 
 //Zero keystates
-    memset((unsigned char*)g_KB_Keypress,0,128);
-    g_KB_CapsLock=0;
-    g_KB_NumLock=0;
-    g_KB_ScrollLock=0;
-    g_KB_CapsLockNP=0;
-    g_KB_NumLockNP=0;
-    g_KB_ScrollLockNP=0;
+    memset((unsigned char*)kb_keypress,0,128);
+    kb_capslock=0;
+    kb_numlock=0;
+    kb_scrolllock=0;
+    kb_capslock_np=0;
+    kb_numlock_np=0;
+    kb_scrolllock_np=0;
 
     console_puts_protected("KEYBOARD: Started. Using US Keyboard layout.\n");
 
@@ -111,65 +111,65 @@ void kb_hitbutton(unsigned char scancode)
     if(scancode&0x80)
     {
     //Unclick the key
-        g_KB_Keypress[scancode&0x7F]=0;
+        kb_keypress[scancode&0x7F]=0;
 
     //Check if its caps lock
         if(scancode==0x3A)
-            g_KB_CapsLockNP=0;
+            kb_capslock_np=0;
 
     //Check if its num block
         if(scancode==0x45)
-            g_KB_NumLockNP=0;
+            kb_numlock_np=0;
 
     //Check if its scroll lock
         if(scancode==0x46) //125
-            g_KB_ScrollLockNP=0;
+            kb_scrolllock_np=0;
 
 
     }else{
-    //Say that the key has been pressed
-        g_KB_Keypress[scancode]=1;
+    //Click the key
+        kb_keypress[scancode]=1;
 
     //TEMP: Put the ASCII character onto the screen
         console_putc(kb_convertscancodetoascii(scancode,kb_getcaps()));
 
     //Check if its caps lock
-        if(scancode==0xBA && g_KB_CapsLockNP==0)
+        if(scancode==0xBA && kb_capslock_np==0)
         {
-            g_KB_CapsLock=1-g_KB_CapsLock;
-            g_KB_CapsLockNP=1;
+            kb_capslock=1-kb_capslock;
+            kb_capslock_np=1;
 
         //Update lights
             while((inb(0x64)&2)!=0);
             outb(0x60,0xED);
             while((inb(0x64)&2)!=0);
-            outb(0x60,(g_KB_ScrollLock&0x1)|((g_KB_NumLock&0x1)<<1)|((g_KB_CapsLock&0x1)<<2));
+            outb(0x60,(kb_scrolllock&0x1)|((kb_numlock&0x1)<<1)|((kb_capslock&0x1)<<2));
         }
 
     //Check if its num block
-        if(scancode==0xC5 && g_KB_NumLockNP==0)
+        if(scancode==0xC5 && kb_numlock_np==0)
         {
-            g_KB_NumLock=1-g_KB_NumLock;
-            g_KB_NumLockNP=1;
+            kb_numlock=1-kb_numlock;
+            kb_numlock_np=1;
 
         //Update lights
             while((inb(0x64)&2)!=0);
             outb(0x60,0xED);
             while((inb(0x64)&2)!=0);
-            outb(0x60,(g_KB_ScrollLock&0x1)|((g_KB_NumLock&0x1)<<1)|((g_KB_CapsLock&0x1)<<2));
+            outb(0x60,(kb_scrolllock&0x1)|((kb_numlock&0x1)<<1)|((kb_capslock&0x1)<<2));
         }
 
     //Check if its scroll lock
-        if(scancode==0xC6 && g_KB_ScrollLockNP==0) //125
+        if(scancode==0xC6 && kb_scrolllock_np==0) //125
         {
-            g_KB_ScrollLock=1-g_KB_ScrollLock;
-            g_KB_ScrollLockNP=1;
+            kb_scrolllock=1-kb_scrolllock;
+            kb_scrolllock_np=1;
 
         //Update lights
             while((inb(0x64)&2)!=0);
             outb(0x60,0xED);
             while((inb(0x64)&2)!=0);
-            outb(0x60,(g_KB_ScrollLock&0x1)|((g_KB_NumLock&0x1)<<1)|((g_KB_CapsLock&0x1)<<2));
+            outb(0x60,(kb_scrolllock&0x1)|((kb_numlock&0x1)<<1)|((kb_capslock&0x1)<<2));
         }
     }
 
@@ -197,25 +197,25 @@ char kb_convertscancodetoascii(unsigned char scancode,char caps)
 
 char kb_getkeystate(unsigned char scancode)
 {
-    return g_KB_Keypress[scancode];
+    return kb_keypress[scancode];
 }
 
 char kb_getcapslock()
 {
-    return g_KB_CapsLock;
+    return kb_capslock;
 }
 
 char kb_getnumlock()
 {
-    return g_KB_NumLock;
+    return kb_numlock;
 }
 
 char kb_getscrolllock()
 {
-    return g_KB_ScrollLock;
+    return kb_scrolllock;
 }
 
 char kb_getcaps()
 {
-    return (((g_KB_CapsLock^(g_KB_Keypress[0x36]|g_KB_Keypress[0x2A]))&0x1)<<1)|((g_KB_Keypress[0x36]|g_KB_Keypress[0x2A])&0x1);
+    return (((kb_capslock^(kb_keypress[0x36]|kb_keypress[0x2A]))&0x1)<<1)|((kb_keypress[0x36]|kb_keypress[0x2A])&0x1);
 }

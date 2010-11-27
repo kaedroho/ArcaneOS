@@ -13,7 +13,6 @@ struct clock_time
     unsigned char century;
 };
 
-//RTC FUNCTIONS
 extern void clock_init();
 extern void clock_tickseccond();
 extern struct clock_time* clock_gettime();

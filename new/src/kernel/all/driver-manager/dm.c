@@ -3,7 +3,7 @@
 #include <console.h>
 #include <string.h>
 
-extern struct dm_fs_driver devfs_fsdriver;
+extern struct vfs_filesystem_driver devfs_fsdriver;
 
 struct dm_class** dm_classlist=0;
 unsigned int dm_classcount;

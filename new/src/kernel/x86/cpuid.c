@@ -1,7 +1,7 @@
 #include <x86/sys.h>
 #include <string.h>
 
-struct cpuid_struct g_cpuid_info;
+struct cpuid_struct cpuid_info;
 
 //Functions from cpuid.asm
 extern void cpuid_run();
@@ -9,7 +9,7 @@ extern void cpuid_run();
 void cpuid_init()
 {
 //Clear struct
-    memset((unsigned char*)&g_cpuid_info,0,sizeof(struct cpuid_struct));
+    memset((unsigned char*)&cpuid_info,0,sizeof(struct cpuid_struct));
 
 //Run cpuid
     cpuid_run();
@@ -17,5 +17,5 @@ void cpuid_init()
 
 struct cpuid_struct* cpuid_getstruct()
 {
-    return &g_cpuid_info;
+    return &cpuid_info;
 }

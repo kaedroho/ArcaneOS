@@ -96,13 +96,13 @@ struct gdt_tss {
 #define GDT_COUNT 8
 
 //Allocate 4 GDT entries. NULL, CS, DS, TSS.
-extern struct gdt_entry g_gdt[GDT_COUNT];
+extern struct gdt_entry gdt_gdt[GDT_COUNT];
 
 //GDT Pointer
-extern struct gdt_ptr g_gdtp;
+extern struct gdt_ptr gdt_gdtp;
 
 // TSS Pointer
-extern struct gdt_tss g_tss;
+extern struct gdt_tss gdt_tss;
 
 #endif	/* GDT_H */
 

@@ -28,7 +28,6 @@ void clock_init()
         console_putu32_protected(clock_currenttime.century,10);
         console_putu32_protected(clock_currenttime.year,10);
         console_putc_protected('\n');
-
     }
 }
 

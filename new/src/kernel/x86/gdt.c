@@ -2,13 +2,13 @@
 #include <x86/gdt.h>
 
 //Allocate 4 GDT entries. NULL, CS, DS, TSS.
-struct gdt_entry g_gdt[GDT_COUNT];
+struct gdt_entry gdt_gdt[GDT_COUNT];
 
 //GDT Pointer
-struct gdt_ptr g_gdtp;
+struct gdt_ptr gdt_gdtp;
 
 // Task state segment
-struct gdt_tss g_tss = {0};
+struct gdt_tss gdt_tss = {0};
 
 //Import functions from gdt.asm
 extern void gdt_setup();
@@ -19,26 +19,26 @@ void gdt_set_gate(int seg,unsigned long base,unsigned long limit,unsigned char a
     int num = seg>>3;
     
 //Set base address
-    g_gdt[num].base_low =(base & 0xFFFF);
-    g_gdt[num].base_middle =(base>>16) & 0xFF;
-    g_gdt[num].base_high=(base>>24) & 0xFF;
+    gdt_gdt[num].base_low =(base & 0xFFFF);
+    gdt_gdt[num].base_middle =(base>>16) & 0xFF;
+    gdt_gdt[num].base_high=(base>>24) & 0xFF;
 
 //Set the other values
-    g_gdt[num].limit_low=(limit & 0xFFFF);
-    g_gdt[num].granularity=((limit>>16) & 0x0F);
-    g_gdt[num].granularity|=(gran & 0xF0);
-    g_gdt[num].access=access;
+    gdt_gdt[num].limit_low=(limit & 0xFFFF);
+    gdt_gdt[num].granularity=((limit>>16) & 0x0F);
+    gdt_gdt[num].granularity|=(gran & 0xF0);
+    gdt_gdt[num].access=access;
 }
 
 void gdt_init()
 {
 //Setup GDT pointer
-    g_gdtp.limit=(sizeof(struct gdt_entry)*GDT_COUNT)-1;
-    g_gdtp.base=(unsigned int)&g_gdt;
+    gdt_gdtp.limit=(sizeof(struct gdt_entry)*GDT_COUNT)-1;
+    gdt_gdtp.base=(unsigned int)&gdt_gdt;
 
 // Setup task state segment
-    g_tss.ss0 = GDT_KERNEL_PROT_MODE_DSEG;
-    g_tss.iobp = sizeof(g_tss);
+    gdt_tss.ss0 = GDT_KERNEL_PROT_MODE_DSEG;
+    gdt_tss.iobp = sizeof(gdt_tss);
 
 //NULL Descriptor
     gdt_set_gate(GDT_NULL_SEG,0,0,0,0);
@@ -73,7 +73,7 @@ void gdt_init()
 
 // Task state segment
     gdt_set_gate(
-        GDT_TASK_STATE_SEGMENT, (unsigned)&g_tss, sizeof(g_tss),
+        GDT_TASK_STATE_SEGMENT, (unsigned)&gdt_tss, sizeof(gdt_tss),
         0x89,
         GDT_GRAN_BYTES|GDT_GRAN_32BIT
         );
