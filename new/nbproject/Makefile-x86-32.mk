@@ -61,7 +61,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/kernel/all/driver-manager/classes/io.o \
 	${OBJECTDIR}/src/drivers/x86/ibmpc/screen.o \
 	${OBJECTDIR}/inc/x86/gdt32.o \
-	${OBJECTDIR}/src/kernel/all/driver-manager/classes/fs.o \
+	${OBJECTDIR}/src/kernel/all/driver-manager/classes/storage.o \
 	${OBJECTDIR}/src/kernel/x86/cpuid32.o \
 	${OBJECTDIR}/src/drivers/all/clock.o \
 	${OBJECTDIR}/src/loader/x86/boot.o \
@@ -230,10 +230,10 @@ ${OBJECTDIR}/inc/x86/gdt32.o: inc/x86/gdt32.mac
 	${MKDIR} -p ${OBJECTDIR}/inc/x86
 	$(AS) $(ASFLAGS) -g -o ${OBJECTDIR}/inc/x86/gdt32.o inc/x86/gdt32.mac
 
-${OBJECTDIR}/src/kernel/all/driver-manager/classes/fs.o: src/kernel/all/driver-manager/classes/fs.c 
+${OBJECTDIR}/src/kernel/all/driver-manager/classes/storage.o: src/kernel/all/driver-manager/classes/storage.c 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/all/driver-manager/classes
 	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/classes/fs.o src/kernel/all/driver-manager/classes/fs.c
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/kernel/all/driver-manager/classes/storage.o src/kernel/all/driver-manager/classes/storage.c
 
 ${OBJECTDIR}/src/kernel/x86/cpuid32.o: src/kernel/x86/cpuid32.asm 
 	${MKDIR} -p ${OBJECTDIR}/src/kernel/x86

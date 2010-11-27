@@ -4,17 +4,21 @@
  *
  * Created on 18 November 2010, 16:56
  */
-#ifndef DRIVER_MANAGER_H
-#define	DRIVER_MANAGER_H
+#ifndef DEVICE_MANAGER_H
+#define	DEVICE_MANAGER_H
 
+struct dm_driver;
 struct dm_class
 {
     char exists;
     char name[32];
     unsigned int id;
     void(*unregister_driver)(void* data);
+    struct dm_driver** driverlist;
+    unsigned int drivercount;
 };
 
+struct dm_device;
 struct dm_driver
 {
     char exists;
@@ -22,6 +26,8 @@ struct dm_driver
     struct dm_class* dclass;
     void* data;
     unsigned int id;
+    struct dm_device** devicelist;
+    unsigned int devicecount;
 };
 
 struct dm_device
@@ -43,23 +49,6 @@ void dm_register_device(struct dm_device* device);
 void dm_unregister_device(struct dm_device* device);
 
 
-
-//FILESYSTEM CLASS
-struct dm_fs_driver
-{
-    void*(*openfs)(void* data);
-    void(*closefs)(void* fsdata);
-    void*(*openfile)(void* fsdata,char* name);
-    void(*closefile)(void* filedata) ;
-    unsigned int(*readfile)(void* file,void* buffer,unsigned int bytes);
-    unsigned int(*writefile)(void* file,void* buffer,unsigned int bytes);
-
-    void* data;
-};
-void dm_fs_register_driver(struct dm_fs_driver* driver,char* name);
-void dm_fs_unregister_driver(struct dm_fs_driver* driver);
-
-
 //INPUT/OUTPUT CLASS
 struct dm_io_driver
 {
@@ -69,6 +58,17 @@ struct dm_io_driver
 };
 void dm_io_register_driver(struct dm_io_driver* driver,char* name);
 void dm_io_unregister_driver(struct dm_io_driver* driver);
+
+
+//STORAGE CLASS
+struct dm_storage_driver
+{
+    unsigned int(*read)(void* device,void* buffer,unsigned int bytes);
+    unsigned int(*write)(void* device,void* buffer,unsigned int bytes);
+    void* data;
+};
+void dm_storage_register_driver(struct dm_storage_driver* driver,char* name);
+void dm_storage_unregister_driver(struct dm_storage_driver* driver);
 
 #endif	/* DRIVER_MANAGER_H */
 

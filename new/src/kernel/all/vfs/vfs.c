@@ -14,7 +14,7 @@ void vfs_init()
 }
 
 
-struct vfs_filesystem* vfs_open_filesystem(struct dm_fs_driver* driver,void* data,char* mountpoint)
+struct vfs_filesystem* vfs_open_filesystem(struct vfs_filesystem_driver* driver,void* data,char* mountpoint)
 {
     void* fsdata=0;
     if(driver->openfs!=0)

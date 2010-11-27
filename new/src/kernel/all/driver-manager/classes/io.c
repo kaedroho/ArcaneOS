@@ -2,7 +2,7 @@
 #include <string.h>
 
 struct dm_class dm_io_class={
-    .name="io"
+    .name="io",
 };
 
 void* mm_kernel_alloc(unsigned size);

@@ -9,7 +9,7 @@ void devfs_closefile(void* filedata);
 unsigned int devfs_readfile(void* file,void* buffer,unsigned int bytes);
 unsigned int devfs_writefile(void* file,void* buffer,unsigned int bytes);
 
-struct dm_fs_driver devfs_fsdriver={
+struct vfs_filesystem_driver devfs_fsdriver={
     .openfs=devfs_openfs,
     .closefs=devfs_closefs,
     .openfile=devfs_openfile,

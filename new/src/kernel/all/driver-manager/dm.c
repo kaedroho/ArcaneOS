@@ -15,7 +15,6 @@ void* mm_kernel_alloc(unsigned size);
 void dm_init()
 {
 //Register built in classes
-    dm_register_class(&dm_fs_class);
     dm_register_class(&dm_io_class);
 
 //Mount DevFS
@@ -74,7 +73,26 @@ void dm_unregister_class(struct dm_class* dclass)
 
 void dm_register_driver(struct dm_driver* driver)
 {
+    unsigned int i=0;
+    for(i=0;i<driver->dclass->drivercount;i++){
+        if(driver->dclass->driverlist[i]->exists==0){
+            driver->dclass->driverlist[i]=driver;
+            driver->dclass->driverlist[i]->exists=1;
+            console_puts_protected("DEVICE MANAGER: Registered driver: ");console_puts_protected(driver->name);console_putc_protected('\n');
+            return;
+        }
+    }
 
+    driver->dclass->drivercount++;
+    struct dm_driver** tempdriverlist=(struct dm_driver**)mm_kernel_alloc(driver->dclass->drivercount*sizeof(struct dm_driver*));
+    memcpy((unsigned char*)tempdriverlist,(unsigned char*)driver->dclass->driverlist,(driver->dclass->drivercount-1)*sizeof(struct dm_driver*));
+    if(driver->dclass->drivercount!=1)
+        mm_kernel_free(driver->dclass->driverlist);
+    driver->dclass->driverlist=tempdriverlist;
+    driver->dclass->driverlist[driver->dclass->drivercount-1]=driver;
+    driver->dclass->driverlist[driver->dclass->drivercount-1]->id=driver->dclass->drivercount;
+
+    console_puts_protected("DEVICE MANAGER: Registered driver: ");console_puts_protected(driver->name);console_putc_protected('\n');
 }
 
 void dm_unregister_driver(struct dm_driver* driver)
@@ -85,8 +103,22 @@ void dm_unregister_driver(struct dm_driver* driver)
 
 void _dm_unregister_driver(struct dm_driver* driver)
 {
-    if(driver->id!=0){
-        //Driver ID = driver->id-1
+    console_puts_protected("DEVICE MANAGER: Unregistered driver: ");console_puts_protected(driver->name);console_putc_protected('\n');
+    driver->exists=0;
+
+    unsigned int olddrivercount=driver->dclass->drivercount;
+    while(driver->dclass->driverlist[driver->dclass->drivercount-1]->exists==0)
+        driver->dclass->drivercount--;
+
+    if(driver->dclass->drivercount!=olddrivercount){
+        if(driver->dclass->drivercount==0){
+            mm_kernel_free(driver->dclass->driverlist);
+        }else{
+            struct dm_driver** tempdriverlist=(struct dm_driver**)mm_kernel_alloc(driver->dclass->drivercount*sizeof(struct dm_driver*));
+            memcpy((unsigned char*)tempdriverlist,(unsigned char*)driver->dclass->driverlist,driver->dclass->drivercount*sizeof(struct dm_class*));
+            mm_kernel_free(driver->dclass->driverlist);
+            driver->dclass->driverlist=tempdriverlist;
+        }
     }
 }
 

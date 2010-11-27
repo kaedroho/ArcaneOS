@@ -58,15 +58,15 @@
                        projectFiles="true"
                        kind="SOURCE_LOGICAL_FOLDER">
           <logicalFolder name="f2"
-                         displayName="driver-manager"
+                         displayName="device-manager"
                          projectFiles="true"
                          kind="SOURCE_LOGICAL_FOLDER">
             <logicalFolder name="f1"
                            displayName="classes"
                            projectFiles="true"
                            kind="SOURCE_LOGICAL_FOLDER">
-              <itemPath>src/kernel/all/driver-manager/classes/fs.c</itemPath>
               <itemPath>src/kernel/all/driver-manager/classes/io.c</itemPath>
+              <itemPath>src/kernel/all/driver-manager/classes/storage.c</itemPath>
             </logicalFolder>
             <itemPath>src/kernel/all/driver-manager/devfs.c</itemPath>
             <itemPath>src/kernel/all/driver-manager/dm.c</itemPath>
