@@ -50,7 +50,7 @@ void timer_init()
 //Install timer handler
     irq_install_handler(0,timer_handler);
 
-//Set ticks per seccond to 1000
+//Set ticks per seccond to 100
     timer_phase(100);
 
 //Print message

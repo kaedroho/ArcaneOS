@@ -31,12 +31,6 @@ enum floppy_err_code {
     floppy_err_invalidbufferaddress
 };
 
-enum floppy_base
-{
-    floppy_primary = 0x03f0,
-    floppy_secondary = 0x0370
-};
-
 enum floppy_reg
 {
     floppy_reg_status_a = 0x0, // read-only
@@ -88,25 +82,28 @@ enum floppy_dir {
 // and must not cross 64k borders so easiest thing is to align it
 // to 2^N boundary at least as big as the block
 #define floppy_dmalen 0x4800
+#define floppy_max 2
 
 extern unsigned char floppy_dmabuf[floppy_dmalen] __attribute__((aligned(0x8000)));
+extern unsigned int floppy_base[floppy_max];
+extern unsigned floppy_current_track[floppy_max];
 
 void floppy_init();
-err_t floppy_write_cmd(int base, char cmd);
-unsigned char floppy_read_data(int base);
-err_t floppy_check_interrupt(int base, int *st0, int *cyl);
-err_t floppy_calibrate(int base);
-err_t floppy_motor(int base, int onoff);
-err_t floppy_motor_kill(int base);
-void floppy_timer();
-err_t floppy_seek(int base, unsigned cyli, int head);
+err_t floppy_write_cmd(int index, char cmd);
+unsigned char floppy_read_data(int index);
+err_t floppy_check_interrupt(int index, int *st0, int *cyl);
+err_t floppy_calibrate(int index);
+err_t floppy_motor(int index, int onoff);
+err_t floppy_motor_kill(int index);
+void floppy_timer(void* data);
+err_t floppy_seek(int index, unsigned cyli, int head);
 err_t floppy_dma_init(enum floppy_dir dir);
-err_t floppy_do_track(int base, unsigned cyl, enum floppy_dir dir);
+err_t floppy_do_track(int index, unsigned cyl, enum floppy_dir dir);
 
 // Safe to use
-SYSCALL_DECLARE(floppy_reset)(int base);
-SYSCALL_DECLARE(floppy_read_track)(int base, unsigned cyl);
-SYSCALL_DECLARE(floppy_write_track)(int base, unsigned cyl);
+SYSCALL_DECLARE(floppy_reset)(int index);
+SYSCALL_DECLARE(floppy_read_track)(int index, unsigned cyl);
+SYSCALL_DECLARE(floppy_write_track)(int index, unsigned cyl);
 SYSCALL_DECLARE(floppy_lock_buffer)(unsigned char** buffer);
 SYSCALL_DECLARE(floppy_unlock_buffer)();
 

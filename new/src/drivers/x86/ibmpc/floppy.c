@@ -23,8 +23,11 @@ struct sync_mutex floppy_mutex = sync_thread_mutex;
 const unsigned floppy_irq = 6;
 
 unsigned char floppy_dmabuf[floppy_dmalen] __attribute__((aligned(0x8000)));
+unsigned int floppy_base[floppy_max] = {0x03f0, 0x0370};
+unsigned floppy_current_track[floppy_max] = {-1, -1};
 
 struct mt_thread* volatile floppy_waiting_thread = 0;
+struct mt_thread* floppy_motor_thread = 0;
 
 void floppy_irq_begin_wait() {
     floppy_waiting_thread = mt_current_thread;
@@ -53,57 +56,66 @@ void floppy_init() {
     console_puts_protected("FLOPPY DRIVE 1: ");
     console_puts_protected(drive_types[drives & 0xF]);
     console_puts_protected("\n");
+
+
+    if (drives)
+        syscall(&mt_create_thread, &floppy_motor_thread, mt_kernel_process, &floppy_timer, 0, 0);
+
+    if (drives >> 4)
+        _floppy_reset(0);
+    if (drives & 0xF)
+        _floppy_reset(1);
 }
-err_t floppy_write_cmd(int base, char cmd) {
+err_t floppy_write_cmd(int index, char cmd) {
     int i; // do timeout, 6 seconds
     for(i = 0; i < 600; i++) {
         syscall(&mt_sleep, 10); // sleep 10 ms
-        if(0x80 & inb(base + floppy_reg_main_status)) {
-            outb(base + floppy_reg_data_fifo, cmd);
+        if(0x80 & inb(floppy_base[index] + floppy_reg_main_status)) {
+            outb(floppy_base[index] + floppy_reg_data_fifo, cmd);
             return ERR_OK;
         }
     }
     return ERR(1, err_facility_floppy, floppy_err_controllertimeout);
 }
-unsigned char floppy_read_data(int base) {
+unsigned char floppy_read_data(int index) {
 
     int i; // do timeout, 60 seconds
     for(i = 0; i < 600; i++) {
         syscall(&mt_sleep, 10); // sleep 10 ms
-        if(0x80 & inb(base + floppy_reg_main_status)) {
-            return inb(base + floppy_reg_data_fifo);
+        if(0x80 & inb(floppy_base[index] + floppy_reg_main_status)) {
+            return inb(floppy_base[index] + floppy_reg_data_fifo);
         }
     }
     return 0;
 }
-err_t floppy_check_interrupt(int base, int *st0, int *cyl) {
+err_t floppy_check_interrupt(int index, int *st0, int *cyl) {
 
-    floppy_write_cmd(base, floppy_cmd_sense_interrupt);
+    floppy_write_cmd(index, floppy_cmd_sense_interrupt);
 
-    *st0 = floppy_read_data(base);
-    *cyl = floppy_read_data(base);
+    *st0 = floppy_read_data(index);
+    *cyl = floppy_read_data(index);
 
     return ERR_OK;
 }
 // Move to cylinder 0, which calibrates the drive..
-err_t floppy_calibrate(int base) {
+err_t floppy_calibrate(int index) {
     err_t result = ERR_OK;
 
     int i, st0, cyl = -1; // set to bogus cylinder
 
-    floppy_motor(base, floppy_motor_on);
+    floppy_motor(index, floppy_motor_on);
 
     for(i = 0; i < 10; i++) {
         result = ERR_OK;
 
         floppy_irq_begin_wait();
         // Attempt to positions head to cylinder 0
-        floppy_write_cmd(base, floppy_cmd_recalibrate);
-        floppy_write_cmd(base, 0); // argument is drive, we only support 0
+        floppy_write_cmd(index, floppy_cmd_recalibrate);
+        floppy_write_cmd(index, 0); // argument is drive, we only support 0
 
         floppy_irq_end_wait();
 
-        if (ERR_FAILED(result = floppy_check_interrupt(base, &st0, &cyl))) return result;
+        if (ERR_FAILED(result = floppy_check_interrupt(index, &st0, &cyl))) return result;
 
         if(st0 & 0xC0) {
             switch (st0 >> 6) {
@@ -115,38 +127,38 @@ err_t floppy_calibrate(int base) {
         }
 
         if(!cyl) { // found cylinder 0 ?
-            floppy_motor(base, floppy_motor_off);
+            floppy_motor(index, floppy_motor_off);
             return ERR_OK;
         }
     }
 
-    floppy_motor(base, floppy_motor_off);
+    floppy_motor(index, floppy_motor_off);
 
     return result;
 }
 
-static volatile int floppy_motor_ticks = 0;
-static volatile int floppy_motor_state = 0;
+static volatile int floppy_motor_ticks[floppy_max] = {0};
+static volatile int floppy_motor_state[floppy_max] = {0};
 
 SYSCALL_DEFINE( floppy_reset,
                 syscall_state_kernel_sti, &floppy_mutex, syscall_datatype_s32
-                )(int base) {
+                )(int index) {
     err_t result = ERR_OK;
 
     floppy_irq_begin_wait();
 
-    outb(base + floppy_reg_digital_output, 0x00); // disable controller
-    outb(base + floppy_reg_digital_output, 0x0C); // enable controller
+    outb(floppy_base[index] + floppy_reg_digital_output, 0x00); // disable controller
+    outb(floppy_base[index] + floppy_reg_digital_output, 0x0C); // enable controller
 
     floppy_irq_end_wait(); // sleep until interrupt occurs
 
     {
         int st0, cyl; // ignore these here..
-        if(ERR_FAILED(result = floppy_check_interrupt(base, &st0, &cyl))) return result;
+        if(ERR_FAILED(result = floppy_check_interrupt(index, &st0, &cyl))) return result;
     }
 
     // set transfer speed 500kb/s
-    outb(base + floppy_reg_config_control, 0x00);
+    outb(floppy_base[index] + floppy_reg_config_control, 0x00);
 
     //  - 1st byte is: bits[7:4] = steprate, bits[3:0] = head unload time
     //  - 2nd byte is: bits[7:1] = head load time, bit[0] = no-DMA
@@ -155,34 +167,34 @@ SYSCALL_DEFINE( floppy_reset,
     //  head_unload = 8ms * entry * (1MB/s / xfer_rate), where entry 0 -> 16
     //  head_load   = 1ms * entry * (1MB/s / xfer_rate), where entry 0 -> 128
     //
-    floppy_write_cmd(base, floppy_cmd_specify);
-    floppy_write_cmd(base, 0xdf); /* steprate = 3ms, unload time = 240ms */
-    floppy_write_cmd(base, 0x02); /* load time = 16ms, no-DMA = 0 */
+    floppy_write_cmd(index, floppy_cmd_specify);
+    floppy_write_cmd(index, 0xdf); /* steprate = 3ms, unload time = 240ms */
+    floppy_write_cmd(index, 0x02); /* load time = 16ms, no-DMA = 0 */
 
     // it could fail...
-    if(ERR_FAILED(result = floppy_calibrate(base))) return result;
+    if(ERR_FAILED(result = floppy_calibrate(index))) return result;
 
     return result;
 }
-err_t floppy_motor(int base, int onoff) {
+err_t floppy_motor(int index, int onoff) {
 
     if(onoff) {
-        if(!floppy_motor_state) {
+        if(!floppy_motor_state[index]) {
             // need to turn on
-            outb(base + floppy_reg_digital_output, 0x1c);
+            outb(floppy_base[index] + floppy_reg_digital_output, 0x1c);
             syscall(&mt_sleep, 500); // wait 500 ms = hopefully enough for modern drives
         }
-        floppy_motor_state = floppy_motor_on;
+        floppy_motor_state[index] = floppy_motor_on;
     } else {
-        floppy_motor_ticks = 3000; // 3 seconds, see floppy_timer() below
-        floppy_motor_state = floppy_motor_wait;
+        floppy_motor_ticks[index] = 3000; // 3 seconds, see floppy_timer() below
+        floppy_motor_state[index] = floppy_motor_wait;
     }
 
     return ERR_OK;
 }
-err_t floppy_motor_kill(int base) {
-    outb(base + floppy_reg_digital_output, 0x0c);
-    floppy_motor_state = floppy_motor_off;
+err_t floppy_motor_kill(int index) {
+    outb(floppy_base[index] + floppy_reg_digital_output, 0x0c);
+    floppy_motor_state[index] = floppy_motor_off;
 
     return ERR_OK;
 }
@@ -190,27 +202,36 @@ err_t floppy_motor_kill(int base) {
 // THIS SHOULD BE STARTED IN A SEPARATE THREAD.
 //
 //
-void floppy_timer(int floppy_base) {
+void floppy_timer(void* data) {
+    int index;
     while(1) {
         // sleep for 500ms at a time, which gives around half
         // a second jitter, but that's hardly relevant here.
         syscall(&mt_sleep, 500);
-        if(floppy_motor_state == floppy_motor_wait) {
-            floppy_motor_ticks -= 500;
-            if(floppy_motor_ticks <= 0) {
-                floppy_motor_kill(floppy_base);
+
+        for (index = 0; index < floppy_max; index++)
+            if(floppy_motor_state[index] == floppy_motor_wait) {
+                unsigned handle = irq_lock();
+
+                floppy_motor_ticks[index] -= 500;
+
+                if(floppy_motor_ticks[index] <= 0) {
+                    console_puts_protected("Stopping floppy motor...\n");
+                    floppy_motor_kill(index);
+                }
+
+                irq_unlock(handle);
             }
-        }
     }
 }
 // Seek for a given cylinder, with a given head
-err_t floppy_seek(int base, unsigned cyli, int head) {
+err_t floppy_seek(int index, unsigned cyli, int head) {
 
     err_t result = ERR_OK;
     
     int i, st0, cyl = -1; // set to bogus cylinder
 
-    floppy_motor(base, floppy_motor_on);
+    floppy_motor(index, floppy_motor_on);
 
     for(i = 0; i < 10; i++) {
         result = ERR_OK;
@@ -219,13 +240,13 @@ err_t floppy_seek(int base, unsigned cyli, int head) {
         // Attempt to position to given cylinder
         // 1st byte bit[1:0] = drive, bit[2] = head
         // 2nd byte is cylinder number
-        floppy_write_cmd(base, floppy_cmd_seek);
-        floppy_write_cmd(base, head<<2);
-        floppy_write_cmd(base, cyli);
+        floppy_write_cmd(index, floppy_cmd_seek);
+        floppy_write_cmd(index, head<<2);
+        floppy_write_cmd(index, cyli);
 
         floppy_irq_end_wait();
 
-        floppy_check_interrupt(base, &st0, &cyl);
+        floppy_check_interrupt(index, &st0, &cyl);
 
         if(st0 & 0xC0) {
             switch (st0 >> 6) {
@@ -237,13 +258,13 @@ err_t floppy_seek(int base, unsigned cyli, int head) {
         }
 
         if(cyl == cyli) {
-            floppy_motor(base, floppy_motor_off);
+            floppy_motor(index, floppy_motor_off);
             return result;
         }
 
     }
 
-    floppy_motor(base, floppy_motor_off);
+    floppy_motor(index, floppy_motor_off);
     return result;
 }
 err_t floppy_dma_init(enum floppy_dir dir) {
@@ -303,7 +324,7 @@ err_t floppy_dma_init(enum floppy_dir dir) {
 // It retries (a lot of times) on all errors except write-protection
 // which is normally caused by mechanical switch on the disk.
 //
-err_t floppy_do_track(int base, unsigned cyl, enum floppy_dir dir) {
+err_t floppy_do_track(int index, unsigned cyl, enum floppy_dir dir) {
    
     err_t result = ERR_OK;
 
@@ -328,14 +349,14 @@ err_t floppy_do_track(int base, unsigned cyl, enum floppy_dir dir) {
     }
 
     // seek both heads <-- necessary to seek both?
-    if (ERR_FAILED(result = floppy_seek(base, cyl, 0))) return result;
-    if (ERR_FAILED(result = floppy_seek(base, cyl, 1))) return result;
+    if (ERR_FAILED(result = floppy_seek(index, cyl, 0))) return result;
+    if (ERR_FAILED(result = floppy_seek(index, cyl, 1))) return result;
 
     int i;
     for(i = 0; i < 20; i++) {
         result = ERR_OK;
 
-        floppy_motor(base, floppy_motor_on);
+        floppy_motor(index, floppy_motor_on);
 
         // init dma..
         floppy_dma_init(dir);
@@ -344,33 +365,33 @@ err_t floppy_do_track(int base, unsigned cyl, enum floppy_dir dir) {
 
         floppy_irq_begin_wait();
 
-        floppy_write_cmd(base, cmd);  // set above for current direction
-        floppy_write_cmd(base, 0);    // 0:0:0:0:0:HD:US1:US0 = head and drive
-        floppy_write_cmd(base, cyl);  // cylinder
-        floppy_write_cmd(base, 0);    // first head (should match with above)
-        floppy_write_cmd(base, 1);    // first sector, strangely counts from 1
-        floppy_write_cmd(base, 2);    // bytes/sector, 128*2^x (x=2 -> 512)
-        floppy_write_cmd(base, 18);   // number of tracks to operate on
-        floppy_write_cmd(base, 0x1b); // GAP3 length, 27 is default for 3.5"
-        floppy_write_cmd(base, 0xff); // data length (0xff if B/S != 0)
+        floppy_write_cmd(index, cmd);  // set above for current direction
+        floppy_write_cmd(index, 0);    // 0:0:0:0:0:HD:US1:US0 = head and drive
+        floppy_write_cmd(index, cyl);  // cylinder
+        floppy_write_cmd(index, 0);    // first head (should match with above)
+        floppy_write_cmd(index, 1);    // first sector, strangely counts from 1
+        floppy_write_cmd(index, 2);    // bytes/sector, 128*2^x (x=2 -> 512)
+        floppy_write_cmd(index, 18);   // number of tracks to operate on
+        floppy_write_cmd(index, 0x1b); // GAP3 length, 27 is default for 3.5"
+        floppy_write_cmd(index, 0xff); // data length (0xff if B/S != 0)
        
         floppy_irq_end_wait(); // don't SENSE_INTERRUPT here!
 
         // first read status information
         unsigned char st0, st1, st2, rcy, rhe, rse, bps;
-        st0 = floppy_read_data(base);
-        st1 = floppy_read_data(base);
-        st2 = floppy_read_data(base);
+        st0 = floppy_read_data(index);
+        st1 = floppy_read_data(index);
+        st2 = floppy_read_data(index);
         /*
          * These are cylinder/head/sector values, updated with some
          * rather bizarre logic, that I would like to understand.
          *
          */
-        rcy = floppy_read_data(base);
-        rhe = floppy_read_data(base);
-        rse = floppy_read_data(base);
+        rcy = floppy_read_data(index);
+        rhe = floppy_read_data(index);
+        rse = floppy_read_data(index);
         // bytes per sector, should be what we programmed in
-        bps = floppy_read_data(base);
+        bps = floppy_read_data(index);
 
         if(st0 & 0xC0) {
             switch (st0 >> 6) {
@@ -420,28 +441,41 @@ err_t floppy_do_track(int base, unsigned cyl, enum floppy_dir dir) {
         }
 
         if(ERR_SUCCEEDED(result)) {
-            floppy_motor(base, floppy_motor_off);
+            floppy_motor(index, floppy_motor_off);
             return result;
         }
         if(result == ERR(1, err_facility_floppy, floppy_err_notwritable)) {
-            floppy_motor(base, floppy_motor_off);
+            floppy_motor(index, floppy_motor_off);
             return result;
         }
     }
 
-    floppy_motor(base, floppy_motor_off);
+    floppy_motor(index, floppy_motor_off);
     return result;
 
 }
 SYSCALL_DEFINE( floppy_read_track,
                 syscall_state_kernel_sti, &floppy_mutex, syscall_datatype_s32, syscall_datatype_u32
-                )(int base, unsigned cyl) {
-    return floppy_do_track(base, cyl, floppy_dir_read);
+                )(int index, unsigned cyl) {
+
+    // TODO: Detect floppy change
+
+    if (floppy_current_track[index] == cyl)
+        return ERR_OK;
+
+    err_t result = floppy_do_track(index, cyl, floppy_dir_read);
+    
+    if (ERR_SUCCEEDED(result))
+        floppy_current_track[index] = cyl;
+    else
+        floppy_current_track[index] = -1;
+
+    return result;
 }
 SYSCALL_DEFINE( floppy_write_track,
                 syscall_state_kernel_sti, &floppy_mutex, syscall_datatype_s32, syscall_datatype_u32
-                )(int base, unsigned cyl) {
-    return floppy_do_track(base, cyl, floppy_dir_write);
+                )(int index, unsigned cyl) {
+    return floppy_do_track(index, cyl, floppy_dir_write);
 }
 SYSCALL_DEFINE( floppy_lock_buffer,
                 syscall_state_none, 0, syscall_datatype_ptr

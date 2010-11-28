@@ -16,11 +16,9 @@ void test(void* param) {
     unsigned char* buffer;
 
     if (ERR_SUCCEEDED(syscall(&floppy_lock_buffer, &buffer))) {
-        syscall(&floppy_reset, floppy_primary);
-
         int j;
         for(j=0;j<10;j++){
-            syscall(&floppy_read_track, floppy_primary, j);
+            syscall(&floppy_read_track, 0, j);
 
             if((j&0x01)==0)
                 console_puts_protected("Floppy data: ");

@@ -23,7 +23,7 @@ bin/o/boot.c.o: src/loader/x86/boot.c
 
 
 
-drivers_x86-32: bin/o/initrd.c.o bin/o/ibmpc-clock.c.o bin/o/clock.c.o bin/o/console.c.o bin/o/ibmpc.c.o bin/o/kb.c.o bin/o/screen.c.o bin/o/vbe_real.asm.o bin/o/floppy.c.o
+drivers_x86-32: bin/o/initrd.c.o bin/o/ibmpc-clock.c.o bin/o/clock.c.o bin/o/console.c.o bin/o/ibmpc.c.o bin/o/kb.c.o bin/o/screen.c.o bin/o/vbe_real.asm.o bin/o/floppy.c.o bin/o/fat.c.o
 
 bin/o/initrd.c.o: src/drivers/x86/ibmpc/initrd.c
 	rm -f bin/o/initrd.c.o
@@ -66,6 +66,9 @@ bin/o/floppy.c.o: src/drivers/x86/ibmpc/floppy.c
 	rm -f bin/o/floppy.c.o
 	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/floppy.c.o src/drivers/x86/ibmpc/floppy.c
 
+bin/o/fat.c.o: src/drivers/x86/ibmpc/fat.c
+	rm -f bin/o/fat.c.o
+	gcc -m32 -Wall -O0 -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -I./inc -c -o bin/o/fat.c.o src/drivers/x86/ibmpc/fat.c
 
 kernel_x86-32: bin/o2/dm.c.o bin/o2/devfs.c.o bin/o2/bus.c.o bin/o2/io.c.o bin/o2/storage.c.o bin/o2/vfs.c.o bin/o2/cmos.c.o bin/o2/kload.c.o bin/o2/cpuid32.asm.o bin/o2/cpuid.c.o bin/o/realmode.asm.o bin/o2/gdt32.asm.o bin/o2/gdt.c.o bin/o2/idt32.asm.o bin/o2/idt.c.o bin/o2/irq32.asm.o bin/o2/irq.c.o bin/o2/isr32.asm.o bin/o2/isr.c.o bin/o2/mm.c.o bin/o2/paging.c.o bin/o2/paging32.asm.o bin/o2/timer.c.o bin/o2/lowmem.c.o bin/o2/mt.c.o bin/o2/syscall.c.o bin/o2/syscall32.asm.o bin/o2/sync.c.o
 
